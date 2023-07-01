@@ -3,28 +3,14 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
 	"os"
-	"runtime"
 
 	"github.com/joho/godotenv"
 	"github.com/knailk/learning-platform/app/api"
-	"github.com/knailk/learning-platform/app/controllers"
 	"github.com/knailk/learning-platform/db"
 
 	"github.com/gin-gonic/gin"
 )
-
-var auth = new(controllers.AuthController)
-
-// TokenAuthMiddleware ...
-// JWT Authentication middleware attached to each request that needs to be authenitcated to validate the access_token in the header
-func TokenAuthMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		auth.TokenValid(c)
-		c.Next()
-	}
-}
 
 func main() {
 	ctx := context.Background()
@@ -46,12 +32,10 @@ func main() {
 	//Example: db.GetRedis().Set(KEY, VALUE, at.Sub(now)).Err()
 	db.InitRedis(1)
 
-	handler, err := api.Handler(ctx)
+	r, err := api.Handler(ctx)
 	if err != nil {
 		return
 	}
-
-	
 
 	port := os.Getenv("PORT")
 

@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/knailk/learning-platform/forms"
-	"github.com/knailk/learning-platform/models"
+	"github.com/knailk/learning-platform/app/forms"
+	"github.com/knailk/learning-platform/app/models"
 
 	"net/http"
 

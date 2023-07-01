@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/knailk/learning-platform/db"
-	"github.com/knailk/learning-platform/forms"
+	"github.com/knailk/learning-platform/app/forms"
 
 	"golang.org/x/crypto/bcrypt"
 )

@@ -8,8 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	jwt "github.com/golang-jwt/jwt/v4"
-	"github.com/knailk/learning-platform/forms"
-	"github.com/knailk/learning-platform/models"
+	"github.com/knailk/learning-platform/app/forms"
+	"github.com/knailk/learning-platform/app/models"
 )
 
 // AuthController ...
