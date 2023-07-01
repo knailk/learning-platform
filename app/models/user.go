@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/knailk/learning-platform/db"
-	"github.com/knailk/learning-platform/app/forms"
+	"github.com/knailk/learning-platform/app/controllers/request"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -25,7 +25,7 @@ type UserModel struct{}
 var authModel = new(AuthModel)
 
 // Login ...
-func (m UserModel) Login(form forms.LoginForm) (user User, token Token, err error) {
+func (m UserModel) Login(form request.LoginForm) (user User, token Token, err error) {
 
 	err = db.GetDB().SelectOne(&user, "SELECT id, email, password, name, updated_at, created_at FROM public.user WHERE email=LOWER($1) LIMIT 1", form.Email)
 
@@ -59,7 +59,7 @@ func (m UserModel) Login(form forms.LoginForm) (user User, token Token, err erro
 }
 
 // Register ...
-func (m UserModel) Register(form forms.RegisterForm) (user User, err error) {
+func (m UserModel) Register(form request.RegisterForm) (user User, err error) {
 	getDb := db.GetDB()
 
 	//Check if the user exists in database

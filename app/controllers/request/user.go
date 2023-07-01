@@ -1,4 +1,4 @@
-package forms
+package request
 
 import (
 	"encoding/json"
@@ -6,24 +6,24 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-// UserForm ...
-type UserForm struct{}
+// UserRequest ...
+type UserRequest struct{}
 
-// LoginForm ...
-type LoginForm struct {
+// LoginRequest ...
+type LoginRequest struct {
 	Email    string `form:"email" json:"email" binding:"required,email"`
 	Password string `form:"password" json:"password" binding:"required,min=3,max=50"`
 }
 
-// RegisterForm ...
-type RegisterForm struct {
+// RegisterRequest ...
+type RegisterRequest struct {
 	Name     string `form:"name" json:"name" binding:"required,min=3,max=20,fullName"` //fullName rule is in validator.go
 	Email    string `form:"email" json:"email" binding:"required,email"`
 	Password string `form:"password" json:"password" binding:"required,min=3,max=50"`
 }
 
 // Name ...
-func (f UserForm) Name(tag string, errMsg ...string) (message string) {
+func (f UserRequest) Name(tag string, errMsg ...string) (message string) {
 	switch tag {
 	case "required":
 		if len(errMsg) == 0 {
@@ -40,7 +40,7 @@ func (f UserForm) Name(tag string, errMsg ...string) (message string) {
 }
 
 // Email ...
-func (f UserForm) Email(tag string, errMsg ...string) (message string) {
+func (f UserRequest) Email(tag string, errMsg ...string) (message string) {
 	switch tag {
 	case "required":
 		if len(errMsg) == 0 {
@@ -55,7 +55,7 @@ func (f UserForm) Email(tag string, errMsg ...string) (message string) {
 }
 
 // Password ...
-func (f UserForm) Password(tag string) (message string) {
+func (f UserRequest) Password(tag string) (message string) {
 	switch tag {
 	case "required":
 		return "Please enter your password"
@@ -69,7 +69,7 @@ func (f UserForm) Password(tag string) (message string) {
 }
 
 // Signin ...
-func (f UserForm) Login(err error) string {
+func (f UserRequest) Login(err error) string {
 	switch err.(type) {
 	case validator.ValidationErrors:
 
@@ -94,7 +94,7 @@ func (f UserForm) Login(err error) string {
 }
 
 // Register ...
-func (f UserForm) Register(err error) string {
+func (f UserRequest) Register(err error) string {
 	switch err.(type) {
 	case validator.ValidationErrors:
 

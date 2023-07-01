@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/knailk/learning-platform/app/forms"
+	"github.com/knailk/learning-platform/app/controllers/request"
 	"github.com/knailk/learning-platform/app/models"
 
 	"net/http"
@@ -13,7 +13,7 @@ import (
 type UserController struct{}
 
 var userModel = new(models.UserModel)
-var userForm = new(forms.UserForm)
+var userRequest = new(request.UserRequest)
 
 // getUserID ...
 func getUserID(c *gin.Context) (userID int64) {
@@ -23,15 +23,15 @@ func getUserID(c *gin.Context) (userID int64) {
 
 // Login ...
 func (ctrl UserController) Login(c *gin.Context) {
-	var loginForm forms.LoginForm
+	var loginRequest request.LoginRequest
 
-	if validationErr := c.ShouldBindJSON(&loginForm); validationErr != nil {
-		message := userForm.Login(validationErr)
+	if validationErr := c.ShouldBindJSON(&loginRequest); validationErr != nil {
+		message := userRequest.Login(validationErr)
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
 		return
 	}
 
-	user, token, err := userModel.Login(loginForm)
+	user, token, err := userModel.Login(loginRequest)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid login details"})
 		return
@@ -42,15 +42,15 @@ func (ctrl UserController) Login(c *gin.Context) {
 
 // Register ...
 func (ctrl UserController) Register(c *gin.Context) {
-	var registerForm forms.RegisterForm
+	var registerRequest request.RegisterRequest
 
-	if validationErr := c.ShouldBindJSON(&registerForm); validationErr != nil {
-		message := userForm.Register(validationErr)
+	if validationErr := c.ShouldBindJSON(&registerRequest); validationErr != nil {
+		message := userRequest.Register(validationErr)
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
 		return
 	}
 
-	user, err := userModel.Register(registerForm)
+	user, err := userModel.Register(registerRequest)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
 		return

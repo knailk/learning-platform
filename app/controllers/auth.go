@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	jwt "github.com/golang-jwt/jwt/v4"
-	"github.com/knailk/learning-platform/app/forms"
+	"github.com/knailk/learning-platform/app/controllers/request"
 	"github.com/knailk/learning-platform/app/models"
 )
 
@@ -40,16 +40,16 @@ func (ctl AuthController) TokenValid(c *gin.Context) {
 
 // Refresh ...
 func (ctl AuthController) Refresh(c *gin.Context) {
-	var tokenForm forms.Token
+	var tokenRequest request.Token
 
-	if c.ShouldBindJSON(&tokenForm) != nil {
-		c.JSON(http.StatusNotAcceptable, gin.H{"message": "Invalid form", "form": tokenForm})
+	if c.ShouldBindJSON(&tokenRequest) != nil {
+		c.JSON(http.StatusNotAcceptable, gin.H{"message": "Invalid request", "request": tokenRequest})
 		c.Abort()
 		return
 	}
 
 	//verify the token
-	token, err := jwt.Parse(tokenForm.RefreshToken, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(tokenRequest.RefreshToken, func(token *jwt.Token) (interface{}, error) {
 		//Make sure that the token method conform to "SigningMethodHMAC"
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
