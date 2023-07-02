@@ -1,0 +1,19 @@
+.content {
+    height: 1600px;
+    padding: 50px 120px;
+    border: 1px solid red;
+}
+
+.avatarWrapper {
+    margin-right: 48px;
+    margin-left: 0px;
+    img {
+        height: 180px;
+        width: 180px;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+    }
+}
