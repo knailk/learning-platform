@@ -7,32 +7,32 @@ import ProfilePage from '../pages/user/ProfilePage';
 export const ROUTERS = {
     MENU_NAV_BAR: [
         {
-            title: 'Learning',
+            title: 'LEARNING',
             path: '/',
             component: <LearningPage />,
         },
         {
-            title: 'Practice',
+            title: 'PRACTICE',
             path: '/practice',
             component: <PracticePage />,
         },
         {
-            title: 'Ranking',
+            title: 'RANKING',
             path: '/ranking',
             component: <RankingPage />,
         },
         {
-            title: 'Mission',
+            title: 'MISSION',
             path: '/mission',
             component: <MissionPage />,
         },
         {
-            title: 'Store',
+            title: 'STORE',
             path: '/store',
             component: <StorePage />,
         },
         {
-            title: 'Profile',
+            title: 'PROFILE',
             path: '/profile',
             component: <ProfilePage />,
         },
