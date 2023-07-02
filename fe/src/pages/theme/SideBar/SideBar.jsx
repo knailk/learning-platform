@@ -4,7 +4,7 @@ import ItemSideBar from './ItemSideBar';
 import { ROUTERS } from '../../../utils/router';
 
 const SideBar = () => {
-    const [isActive, setStateActive] = useState('123');
+    const [isActive, setStateActive] = useState('');
     console.log(isActive);
     const setState = (title) => {
         setStateActive(title);
@@ -16,7 +16,15 @@ const SideBar = () => {
                 <div className="nav"></div>
                 <div className="navbar">
                     {ROUTERS.MENU_NAV_BAR.map((item, index) => {
-                        return <ItemSideBar onClick={setState(item.title)} key={index} title={item.title} url={item.path} isActive={isActive === item.title} />;
+                        return (
+                            <ItemSideBar
+                                onClick={() => setState(item.title)}
+                                key={index}
+                                title={item.title}
+                                url={item.path}
+                                isActive={isActive === item.title}
+                            />
+                        );
                     })}
                 </div>
             </div>

@@ -8,7 +8,7 @@ const ItemSideBar = ({ children, ...props }) => {
     return (
         <>
             <Link to={props.url}>
-                <Button className={clsx(style.itemNavBar, [(style.itemActive = props.isActive)])}>{props.title}</Button>
+                <Button className={clsx(style.itemNavBar, { [style.itemActive]: false })}>{props.title}</Button>
             </Link>
         </>
     );
