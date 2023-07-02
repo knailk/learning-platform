@@ -28,7 +28,7 @@ func main() {
 	//Example: db.GetDB() - More info in the models folder
 	db.Init()
 
-	//Start Redis on database 1 - it's used to store the JWT but you can use it for anythig else
+	//Start Redis on database 1 - it's used to store the JWT but you can use it for anything else
 	//Example: db.GetRedis().Set(KEY, VALUE, at.Sub(now)).Err()
 	db.InitRedis(1)
 
