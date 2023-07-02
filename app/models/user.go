@@ -3,8 +3,8 @@ package models
 import (
 	"errors"
 
-	"github.com/knailk/learning-platform/db"
 	"github.com/knailk/learning-platform/app/controllers/request"
+	"github.com/knailk/learning-platform/db"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -25,16 +25,16 @@ type UserModel struct{}
 var authModel = new(AuthModel)
 
 // Login ...
-func (m UserModel) Login(form request.LoginForm) (user User, token Token, err error) {
+func (m UserModel) Login(request request.LoginRequest) (user User, token Token, err error) {
 
-	err = db.GetDB().SelectOne(&user, "SELECT id, email, password, name, updated_at, created_at FROM public.user WHERE email=LOWER($1) LIMIT 1", form.Email)
+	err = db.GetDB().SelectOne(&user, "SELECT id, email, password, name, updated_at, created_at FROM public.user WHERE email=LOWER($1) LIMIT 1", request.Email)
 
 	if err != nil {
 		return user, token, err
 	}
 
-	//Compare the password form and database if match
-	bytePassword := []byte(form.Password)
+	//Compare the password request and database if match
+	bytePassword := []byte(request.Password)
 	byteHashedPassword := []byte(user.Password)
 
 	err = bcrypt.CompareHashAndPassword(byteHashedPassword, bytePassword)
@@ -50,20 +50,21 @@ func (m UserModel) Login(form request.LoginForm) (user User, token Token, err er
 	}
 
 	saveErr := authModel.CreateAuth(user.ID, tokenDetails)
-	if saveErr == nil {
-		token.AccessToken = tokenDetails.AccessToken
-		token.RefreshToken = tokenDetails.RefreshToken
+	if saveErr != nil {
+		return user, token, saveErr
 	}
+	token.AccessToken = tokenDetails.AccessToken
+	token.RefreshToken = tokenDetails.RefreshToken
 
 	return user, token, nil
 }
 
 // Register ...
-func (m UserModel) Register(form request.RegisterForm) (user User, err error) {
+func (m UserModel) Register(request request.RegisterRequest) (user User, err error) {
 	getDb := db.GetDB()
 
 	//Check if the user exists in database
-	checkUser, err := getDb.SelectInt("SELECT count(id) FROM public.user WHERE email=LOWER($1) LIMIT 1", form.Email)
+	checkUser, err := getDb.SelectInt("SELECT count(id) FROM public.user WHERE email=LOWER($1) LIMIT 1", request.Email)
 	if err != nil {
 		return user, errors.New("something went wrong, please try again later")
 	}
@@ -72,20 +73,20 @@ func (m UserModel) Register(form request.RegisterForm) (user User, err error) {
 		return user, errors.New("email already exists")
 	}
 
-	bytePassword := []byte(form.Password)
+	bytePassword := []byte(request.Password)
 	hashedPassword, err := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
 	if err != nil {
 		return user, errors.New("something went wrong, please try again later")
 	}
 
 	//Create the user and return back the user ID
-	err = getDb.QueryRow("INSERT INTO public.user(email, password, name) VALUES($1, $2, $3) RETURNING id", form.Email, string(hashedPassword), form.Name).Scan(&user.ID)
+	err = getDb.QueryRow("INSERT INTO public.user(email, password, name) VALUES($1, $2, $3) RETURNING id", request.Email, string(hashedPassword), request.Name).Scan(&user.ID)
 	if err != nil {
 		return user, errors.New("something went wrong, please try again later")
 	}
 
-	user.Name = form.Name
-	user.Email = form.Email
+	user.Name = request.Name
+	user.Email = request.Email
 
 	return user, err
 }

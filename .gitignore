@@ -11,6 +11,7 @@
 .gitconfig
 .env
 cert/
+./.vscode
 
 # BUILD #
 ./learning-platform
