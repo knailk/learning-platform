@@ -3,7 +3,7 @@ package controllers
 import (
 	"strconv"
 
-	"github.com/knailk/learning-platform/app/forms"
+	"github.com/knailk/learning-platform/app/controllers/request"
 	"github.com/knailk/learning-platform/app/models"
 
 	"net/http"
@@ -15,21 +15,21 @@ import (
 type ArticleController struct{}
 
 var articleModel = new(models.ArticleModel)
-var articleForm = new(forms.ArticleForm)
+var articleRequest = new(request.ArticleRequest)
 
 // Create ...
 func (ctrl ArticleController) Create(c *gin.Context) {
 	userID := getUserID(c)
 
-	var form forms.CreateArticleForm
+	var request request.CreateArticleRequest
 
-	if validationErr := c.ShouldBindJSON(&form); validationErr != nil {
-		message := articleForm.Create(validationErr)
+	if validationErr := c.ShouldBindJSON(&request); validationErr != nil {
+		message := articleRequest.Create(validationErr)
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
 		return
 	}
 
-	id, err := articleModel.Create(userID, form)
+	id, err := articleModel.Create(userID, request)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Article could not be created"})
 		return
@@ -84,15 +84,15 @@ func (ctrl ArticleController) Update(c *gin.Context) {
 		return
 	}
 
-	var form forms.CreateArticleForm
+	var request request.CreateArticleRequest
 
-	if validationErr := c.ShouldBindJSON(&form); validationErr != nil {
-		message := articleForm.Create(validationErr)
+	if validationErr := c.ShouldBindJSON(&request); validationErr != nil {
+		message := articleRequest.Create(validationErr)
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
 		return
 	}
 
-	err = articleModel.Update(userID, getID, form)
+	err = articleModel.Update(userID, getID, request)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"Message": "Article could not be updated"})
 		return

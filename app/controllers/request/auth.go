@@ -1,4 +1,4 @@
-package forms
+package request
 
 // Token ...
 type Token struct {
