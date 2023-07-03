@@ -17,3 +17,19 @@
         -o-border-radius: 50%;
     }
 }
+
+.inforWrapper {
+    border: 1px solid black;
+    .userName {
+        font-weight: 700;
+        font-size: 28px;
+        line-height: 34px;
+        word-break: break-word;
+    }
+    .userId {
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 20px;
+        color: #afafaf;
+    }
+}

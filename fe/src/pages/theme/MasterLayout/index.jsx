@@ -6,9 +6,11 @@ const MasterLayout = ({ children, ...props }) => {
     console.log(props);
     return (
         <>
-            <Layout hasSider>
+            <Layout hasSider style={{ backgroundColor: 'white' }}>
                 <SideBar></SideBar>
-                <Layout className={style.container}>{children}</Layout>
+                <Layout className={style.container} style={{ backgroundColor: 'white' }}>
+                    {children}
+                </Layout>
             </Layout>
         </>
     );

@@ -5,12 +5,16 @@ const PersionalInformation = () => {
     return (
         <>
             <Row style={{ width: '100%' }}>
-                <Col span={4}>
+                <Col span={6}>
                     <div className={style.avatarWrapper}>
-                        <img alt="Minh Toàn" class="_33LFc fs-exclude" src="//simg-ssl.duolingo.com/avatars/1164864020/I4X9TktOvb/xxlarge" />
+                        <img alt="Minh Toàn" src="//simg-ssl.duolingo.com/avatars/1164864020/I4X9TktOvb/xxlarge" />
                     </div>
                 </Col>
-                <Col span={16}>INFOR</Col>
+                <Col className={style.inforWrapper} span={14}>
+                    <Row className={style.userName}>Minh Toàn</Row>
+                    <Row className={style.userId}>UserId</Row>
+                    <Row className={style.userFollow}>Following/Follower</Row>
+                </Col>
                 <Col span={4}>EDIT BUTTON</Col>
             </Row>
         </>
