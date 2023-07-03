@@ -1,12 +1,11 @@
-import clsx from 'clsx';
 import { memo } from 'react';
-import style from './style.module.scss';
+import style from './style.scss';
 import { Row, Col } from 'antd';
 
 import PersionalInfomation from './PersionalInfomation';
 const Profile = () => {
     return (
-        <div className={clsx(style.content)}>
+        <div className="content">
             <Row style={{ width: '100%' }}>
                 <PersionalInfomation />
             </Row>
