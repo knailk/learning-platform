@@ -1,21 +1,25 @@
-import clsx from 'clsx';
 import { memo } from 'react';
-import style from './style.module.scss';
 import { Row, Col } from 'antd';
-
 import PersionalInfomation from './PersionalInfomation';
+import Statistical from './Statistical/Statistical';
+import Achievement from './Achievement/Achievement';
+
 const Profile = () => {
     return (
-        <div className={clsx(style.content)}>
+        <div className="content">
             <Row style={{ width: '100%' }}>
                 <PersionalInfomation />
             </Row>
             <Row>
-                <Col>
-                    <Row>Thong ke</Row>
-                    <Row>Thanh tich</Row>
+                <Col span={16}>
+                    <Row>
+                        <Statistical />
+                    </Row>
+                    <Row>
+                        <Achievement />
+                    </Row>
                 </Col>
-                <Col>Ban be</Col>
+                <Col span={8}>Ban be</Col>
             </Row>
         </div>
     );

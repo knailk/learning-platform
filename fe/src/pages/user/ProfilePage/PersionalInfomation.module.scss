@@ -1,0 +1,68 @@
+.personalInformationWrapper {
+    width: 100%;
+    &::after {
+        margin-top: 10px;
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(to right, #fffefe, #afafaf, #fffefe);
+        margin-bottom: 20px;
+    }
+
+    .avatarWrapper {
+        margin-left: 0px;
+        position: relative;
+        height: 180px;
+        width: 180px;
+        img {
+            height: 180px;
+            width: 180px;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+        }
+        .editAvatarButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            right: 13.8604px;
+            top: 13.8604px;
+            font-size: 15px;
+            border: 2px solid rgb(255, 255, 255);
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+            background-color: #1cb0f6;
+            color: white;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .inforWrapper {
+        color: #8d8d8d;
+    }
+
+    .editButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border-radius: 16px;
+        color: white;
+        background-color: #1cb0f6;
+        height: 40px;
+        width: 120px;
+        span {
+            margin-right: 5px;
+        }
+    }
+}

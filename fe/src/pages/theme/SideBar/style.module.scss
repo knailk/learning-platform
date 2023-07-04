@@ -30,7 +30,7 @@
     -ms-border-radius: 16px;
     -o-border-radius: 16px;
     &:hover {
-        border: #84d8ff 2px solid;
+        border: #84d8ff 1px solid;
         color: #1cb0f6;
         animation: none;
         -webkit-animation: none;
@@ -41,10 +41,10 @@
             display: inline-block;
         }
     }
-    border: 2px solid #d0cece;
+    // border: 2px solid #d0cece;
 }
 .itemActive {
-    border: #84d8ff 2px solid;
+    border: #84d8ff 1px solid;
     background-color: #ddf4ff;
     color: #1cb0f6;
 }
