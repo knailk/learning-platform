@@ -17,7 +17,7 @@ const PersionalInformation = () => {
                     </div>
                 </Col>
                 <Col className={style.inforWrapper} span={14}>
-                    <Row className={style.userName}>Minh Toàn</Row>
+                    <Row className="titleProfile">Minh Toàn</Row>
                     <Row className="userInfo">
                         <span>
                             <FontAwesomeIcon icon={faUser} />

@@ -1,8 +1,9 @@
 import { memo } from 'react';
-import style from './style.scss';
 import { Row, Col } from 'antd';
-
 import PersionalInfomation from './PersionalInfomation';
+import Statistical from './Statistical/Statistical';
+import Achievement from './Achievement/Achievement';
+
 const Profile = () => {
     return (
         <div className="content">
@@ -10,11 +11,15 @@ const Profile = () => {
                 <PersionalInfomation />
             </Row>
             <Row>
-                <Col>
-                    <Row>Thong ke</Row>
-                    <Row>Thanh tich</Row>
+                <Col span={16}>
+                    <Row>
+                        <Statistical />
+                    </Row>
+                    <Row>
+                        <Achievement />
+                    </Row>
                 </Col>
-                <Col>Ban be</Col>
+                <Col span={8}>Ban be</Col>
             </Row>
         </div>
     );
