@@ -23,4 +23,19 @@
     line-height: 34px;
     word-break: break-word;
     margin-bottom: 10px;
+    color: black !important;
+}
+
+.ant-tabs-tab-btn {
+    font-size: 16px;
+    font-weight: bold;
+    &:hover {
+        color: #1cb0f6;
+    }
+    &:focus {
+        color: #1cb0f6;
+    }
+}
+.ant-tabs-tab.ant-tabs-tab-active {
+    color: #1cb0f6 !important;
 }

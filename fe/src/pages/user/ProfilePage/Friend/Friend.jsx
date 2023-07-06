@@ -6,22 +6,42 @@ const Friend = () => {
         {
             key: '1',
             label: 'Đang theo dõi',
-            children: <Follow />,
+            children: (
+                <div className={style.listFollow}>
+                    <Follow name="Nguyễn Danh Tiến Dũng" level="Level 12" avatar="https://simg-ssl.duolingo.com/avatars/1201162690/cP2eBdsTRR/xlarge" />
+                    <Follow name="Nguyễn Danh Tiến Dũng" level="Level 12" avatar="https://simg-ssl.duolingo.com/avatars/1201162690/cP2eBdsTRR/xlarge" />
+                    <Follow name="Nguyễn Danh Tiến Dũng" level="Level 12" avatar="https://simg-ssl.duolingo.com/avatars/1201162690/cP2eBdsTRR/xlarge" />
+                    <Follow name="Nguyễn Danh Tiến Dũng" level="Level 12" avatar="https://simg-ssl.duolingo.com/avatars/1201162690/cP2eBdsTRR/xlarge" />
+                    <Follow name="Nguyễn Danh Tiến Dũng" level="Level 12" avatar="https://simg-ssl.duolingo.com/avatars/1201162690/cP2eBdsTRR/xlarge" />
+                    <Follow name="Nguyễn Danh Tiến Dũng" level="Level 12" avatar="https://simg-ssl.duolingo.com/avatars/1201162690/cP2eBdsTRR/xlarge" />
+                    <Follow name="Nguyễn Danh Tiến Dũng" level="Level 12" avatar="https://simg-ssl.duolingo.com/avatars/1201162690/cP2eBdsTRR/xlarge" />
+                    <Follow name="Nguyễn Danh Tiến Dũng" level="Level 12" avatar="https://simg-ssl.duolingo.com/avatars/1201162690/cP2eBdsTRR/xlarge" />
+                </div>
+            ),
         },
         {
             key: '2',
             label: 'Người theo dõi',
-            children: `Content of Tab Pane 2`,
+            children: (
+                <div className={style.listFollow}>
+                    <Follow name="Trần Minh Toàn" level="Level 12" avatar="https://simg-ssl.duolingo.com/avatars/1164864020/I4X9TktOvb/xxlarge" />
+                </div>
+            ),
         },
     ];
     const styleTabs = {
-        border: '1px solid black',
+        // border: '1px solid black',
+        justifyContent: 'space-between',
     };
     return (
         <>
             <div classNames={style.friendWrapper}>
-                <div className="titleProfile">Bạn bè</div>
-                <Tabs tabBarStyle={styleTabs} centered tabBarGutter={16} defaultActiveKey="1" items={items} className={style.friendTab}></Tabs>
+                <div className="titleProfile" style={{ marginBottom: '16px' }}>
+                    Bạn bè
+                </div>
+                <div className={style.tabWrapper}>
+                    <Tabs tabBarStyle={styleTabs} centered tabBarGutter={40} defaultActiveKey="1" items={items} className={style.friendTab}></Tabs>
+                </div>
             </div>
         </>
     );

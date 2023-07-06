@@ -1,10 +1,53 @@
+.listFollow {
+    max-height: 250px;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    margin-bottom: 5px;
+}
+
 .friendWrapper {
 }
 
-.friendTab {
-    width: 100%;
+.tabWrapper {
+    min-width: 300px;
+    border: 2px solid #e5e5e5;
+    padding: 5px 10px 0px 10px;
+    border-radius: 16px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    -ms-border-radius: 16px;
+    -o-border-radius: 16px;
 }
 
 .followWraper {
-    border: 1px solid black;
+    // border: 1px solid black;
+    width: 100%;
+    margin-bottom: 15px;
+    &::after {
+        margin-top: 10px;
+        content: '';
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(to right, #fffefe, #afafaf, #fffefe);
+        // margin-bottom: 20px;
+    }
+    cursor: pointer;
+}
+.avatar {
+    img {
+        height: 48px;
+        width: 48px;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+    }
+}
+
+.level {
+    color: #8d8d8d;
+    font-size: 16px;
 }
