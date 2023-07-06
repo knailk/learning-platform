@@ -8,7 +8,7 @@ const PersionalInformation = () => {
     return (
         <>
             <Row className={style.personalInformationWrapper}>
-                <Col span={6}>
+                <Col xl={6} lg={8} md={8}>
                     <div className={style.avatarWrapper}>
                         <div className={style.editAvatarButton}>
                             <FontAwesomeIcon icon={faPen} />
@@ -16,7 +16,7 @@ const PersionalInformation = () => {
                         <img alt="Minh Toàn" src="//simg-ssl.duolingo.com/avatars/1164864020/I4X9TktOvb/xxlarge" />
                     </div>
                 </Col>
-                <Col className={style.inforWrapper} span={14}>
+                <Col className={style.inforWrapper} xl={14} lg={12} md={16}>
                     <Row className="titleProfile">Minh Toàn</Row>
                     <Row className="userInfo">
                         <span>
@@ -43,7 +43,7 @@ const PersionalInformation = () => {
                         Đang theo dõi 0 / 0 Người đang theo dõi
                     </Row>
                 </Col>
-                <Col span={4}>
+                <Col xl={4} lg={4} md={24}>
                     <Button className={style.editButton}>
                         <span>
                             <FontAwesomeIcon icon={faUserPen} />
