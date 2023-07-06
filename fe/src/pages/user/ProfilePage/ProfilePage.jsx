@@ -3,6 +3,7 @@ import { Row, Col } from 'antd';
 import PersionalInfomation from './PersionalInfomation';
 import Statistical from './Statistical/Statistical';
 import Achievement from './Achievement/Achievement';
+import Friend from './Friend/Friend';
 
 const Profile = () => {
     return (
@@ -19,7 +20,9 @@ const Profile = () => {
                         <Achievement />
                     </Row>
                 </Col>
-                <Col span={8}>Ban be</Col>
+                <Col span={8}>
+                    <Friend />
+                </Col>
             </Row>
         </div>
     );
