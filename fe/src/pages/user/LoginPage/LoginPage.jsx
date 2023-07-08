@@ -67,7 +67,7 @@ const LoginPage = () => {
                   </div>
                 </form>
                 <div className="social-login">
-                <Divider className={styles.social-divider}>Hoặc đăng nhập bằng</Divider>
+                <Divider >Hoặc đăng nhập bằng</Divider>
                   <ul className="socials">
                     <li>
                       <a href="#">
