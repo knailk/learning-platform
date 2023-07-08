@@ -4,10 +4,11 @@ import PersionalInfomation from './PersionalInfomation';
 import Statistical from './Statistical/Statistical';
 import Achievement from './Achievement/Achievement';
 import Friend from './Friend/Friend';
+import common_style from './style.module.scss';
 
 const Profile = () => {
     return (
-        <div className="content">
+        <div className={common_style.content}>
             <Row style={{ width: '100%' }}>
                 <PersionalInfomation />
             </Row>

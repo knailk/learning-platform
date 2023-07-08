@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { memo } from 'react';
-import style from './style.module.css';
+import style from './style.module.scss';
 const MissionPage = () => {
     return <div className={clsx(style.content)}>MissionPage</div>;
 };
