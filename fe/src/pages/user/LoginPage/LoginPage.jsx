@@ -1,10 +1,18 @@
 import clsx from "clsx";
 import { memo } from "react";
 import "./style.scss";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { faUser, faLock, faFacebookF } from '@fortawesome/free-solid-svg-icons';
+import ReactDOM from "react-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebook,
+  faTwitter,
+  faGoogle,
+} from "@fortawesome/free-brands-svg-icons";
+import { Divider } from 'antd';
 
 const LoginPage = () => {
   return (
@@ -13,19 +21,19 @@ const LoginPage = () => {
         <title>Đăng nhập || CPP</title>
       </Helmet>
       <div className="main">
-        <section className="sign-in">
-          <div className="container">
-            <div className="signin-content">
-              <div className="signin-image">
-                <img src="/images/signin-image.jpg" alt="sign in" />
-                <Link to="/register" className="signin-link">
+        <section className="login">
+          <div className="log-in-container">
+            <div className="login-content">
+              <div className="login-image">
+                <img src="/images/login.png" alt="sign in" />
+                <Link to="/register" className="login-link">
                   Create an account
                 </Link>
               </div>
 
-              <div className="signin-form">
-                <h2 className="form-title">Sign up</h2>
-                <form method="POST" className="register-form" id="login-form">
+              <div className="login-form-container">
+                <h2 className="form-title">Đăng nhập</h2>
+                <form method="POST" className="login-form" id="login-form">
                   <div className="form-group">
                     <label for="your_name">
                       <FontAwesomeIcon icon={faUser} />
@@ -48,46 +56,51 @@ const LoginPage = () => {
                       placeholder="Password"
                     />
                   </div>
-                  <div className="form-group">
-                    <input
-                      type="checkbox"
-                      name="remember-me"
-                      id="remember-me"
-                      className="agree-term"
-                    />
-                    <label for="remember-me" className="label-agree-term">
-                      <span>
-                        <span></span>
-                      </span>
-                      Remember me
-                    </label>
-                  </div>
                   <div className="form-group form-button">
                     <input
                       type="submit"
-                      name="signin"
-                      id="signin"
+                      name="login"
+                      id="login"
                       className="form-submit"
                       value="Log in"
                     />
                   </div>
                 </form>
                 <div className="social-login">
-                  <span className="social-label">Or login with</span>
+                <Divider className={styles.social-divider}>Hoặc đăng nhập bằng</Divider>
                   <ul className="socials">
                     <li>
                       <a href="#">
-                      <FontAwesomeIcon icon={faFacebookF} />
+                        {/* <FacebookOutlined
+                          className="cpp-facebook"
+                        /> */}
+                        <FontAwesomeIcon
+                          icon={faFacebook}
+                          style={{ color: "#4267B2" }}
+                          size="2xl"
+                          className="cpp-facebook"
+                          // beat
+                        />
                       </a>
                     </li>
                     <li>
                       <a href="#">
-                        <i className="display-flex-center zmdi zmdi-twitter"></i>
+                        <FontAwesomeIcon
+                          icon={faGoogle}
+                          size="2xl"
+                          style={{ color: "#DB4437" }}
+                          className="cpp-google"
+                        />
                       </a>
                     </li>
                     <li>
                       <a href="#">
-                        <i className="display-flex-center zmdi zmdi-google"></i>
+                        <FontAwesomeIcon
+                          icon={faTwitter}
+                          style={{ color: "#1DA1F2" }}
+                          size="2xl"
+                          className="cpp-twitter"
+                        />
                       </a>
                     </li>
                   </ul>
@@ -101,4 +114,4 @@ const LoginPage = () => {
   );
 };
 
-export default memo(LoginPage);
+export default LoginPage;
