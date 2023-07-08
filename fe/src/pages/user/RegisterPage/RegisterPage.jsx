@@ -1,9 +1,10 @@
 import clsx from "clsx";
 import { memo } from "react";
+import styles from "./Register.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import "./style.scss";
 import { Helmet } from "react-helmet";
+import { faUser, faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const RegisterPage = () => {
   return (
@@ -11,93 +12,98 @@ const RegisterPage = () => {
       <Helmet>
         <title>Đăng ký || CPP</title>
       </Helmet>
-      <div className="main">
-        <section className="register">
-          <div className="register-container">
-            <div className="register-content">
-              <div className="register-form">
-                <h2 className="form-title">Sign up</h2>
+      <div className={styles.main}>
+        <section className={styles.register}>
+          <div className={styles["register-container"]}>
+            <div className={styles["register-content"]}>
+              <div className={styles["register-form-container"]}>
+                <h2 className={styles["form-title"]}>Đăng ký</h2>
                 <form
                   method="POST"
-                  className="register-form"
+                  className={styles["register-form"]}
                   id="register-form"
                 >
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label for="name">
-                      <i className="cpp cpp-account material-icons-name"></i>
+                      <FontAwesomeIcon icon={faUser} />
                     </label>
                     <input
                       type="text"
                       name="name"
                       id="name"
-                      placeholder="Your Name"
+                      placeholder="Nhập họ và tên"
                     />
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label for="email">
-                      <i className="cpp cpp-email"></i>
+                      <FontAwesomeIcon icon={faEnvelope} />
                     </label>
                     <input
                       type="email"
                       name="email"
                       id="email"
-                      placeholder="Your Email"
+                      placeholder="Nhập địa chỉ email"
                     />
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label for="pass">
-                      <i className="cpp cpp-lock"></i>
+                      <FontAwesomeIcon icon={faLock} />
                     </label>
                     <input
                       type="password"
                       name="pass"
                       id="pass"
-                      placeholder="Password"
+                      placeholder="Nhập mật khẩu"
                     />
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label for="re-pass">
-                      <i className="cpp cpp-lock-outline"></i>
+                      <FontAwesomeIcon icon={faLock} />
                     </label>
                     <input
                       type="password"
                       name="re_pass"
                       id="re_pass"
-                      placeholder="Repeat your password"
+                      placeholder="Nhập lại mật khẩu"
                     />
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <input
                       type="checkbox"
                       name="agree-term"
                       id="agree-term"
-                      className="agree-term"
+                      className={styles["agree-term"]}
                     />
-                    <label for="agree-term" className="label-agree-term">
+                    <label
+                      for="agree-term"
+                      className={styles["label-agree-term"]}
+                    >
                       <span>
                         <span></span>
                       </span>
-                      I agree all statements in{" "}
-                      <a href="#" className="term-service">
-                        Terms of service
-                      </a>
+                      Tôi đồng ý với{" "}
+                      <Link to="/login" className={styles["term-service"]}>
+                        Điều khoản và điều kiện
+                      </Link>
                     </label>
                   </div>
-                  <div className="form-group form-button">
+                  <div
+                    className={`${styles["form-group"]} ${styles["form-button"]}`}
+                  >
                     <input
                       type="submit"
                       name="register"
                       id="register"
-                      className="form-submit"
-                      value="Register"
+                      className={styles["form-submit"]}
+                      value="Đăng ký"
                     />
                   </div>
                 </form>
               </div>
-              <div className="register-image">
-                <img src="images/register-image.jpg" alt="sing up" />
-                <Link to="/login" className="register-link">
-                  I am already member
+              <div className={styles["register-image"]}>
+                <img src="images/register.png" alt="sing up" />
+                <Link to="/login" className={styles["register-link"]}>
+                  Đã có tài khoản
                 </Link>
               </div>
             </div>
