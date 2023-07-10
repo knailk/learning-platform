@@ -10,16 +10,16 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: golang_gin_db; Type: DATABASE; Schema: -; Owner: postgres
+-- Name: cpp_db; Type: DATABASE; Schema: -; Owner: postgres
 --
-DROP DATABASE golang_gin_db;
+DROP DATABASE cpp_db;
 
-CREATE DATABASE golang_gin_db WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';
+CREATE DATABASE cpp_db WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';
 
 
-ALTER DATABASE golang_gin_db OWNER TO postgres;
+ALTER DATABASE cpp_db OWNER TO postgres;
 
-\connect golang_gin_db
+\connect cpp_db
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;

@@ -22,8 +22,8 @@ addons:
       - postgresql-9.6-postgis-2.3
 
 before_install:
-  - "psql -c 'create database golang_gin_db;' -U postgres"
-  - "psql golang_gin_db -c 'create extension postgis;' -U postgres"
+  - "psql -c 'create database cpp_db;' -U postgres"
+  - "psql cpp_db -c 'create extension postgis;' -U postgres"
   - "psql -U postgres < ./db/database.sql"
   - sleep 3
 

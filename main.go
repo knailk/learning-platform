@@ -43,13 +43,12 @@ func main() {
 
 	if os.Getenv("SSL") == "TRUE" {
 
-		//Generated using sh generate-certificate.sh
 		SSLKeys := &struct {
 			CERT string
 			KEY  string
 		}{
-			CERT: "./cert/myCA.cer",
-			KEY:  "./cert/myCA.key",
+			CERT: "./app/cert/CA/localhost/localhost.crt",
+			KEY:  "./app/cert/CA/localhost/localhost.decrypted.key",
 		}
 
 		r.RunTLS(":"+port, SSLKeys.CERT, SSLKeys.KEY)
