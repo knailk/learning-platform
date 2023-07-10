@@ -1,10 +1,8 @@
-import clsx from "clsx";
+// import clsx from "clsx";
 import { memo } from "react";
-// import "./style.css";
-import styles from './Login.module.css';
+import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import ReactDOM from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -41,7 +39,7 @@ const LoginPage = () => {
                   id="login-form"
                 >
                   <div className={styles["form-group"]}>
-                    <label for="your_name">
+                    <label htmlFor="your_name">
                       <FontAwesomeIcon icon={faUser} />
                     </label>
                     <input
@@ -52,7 +50,7 @@ const LoginPage = () => {
                     />
                   </div>
                   <div className={styles["form-group"]}>
-                    <label for="your_pass">
+                    <label htmlFor="your_pass">
                       <FontAwesomeIcon icon={faLock} />{" "}
                     </label>
                     <input
@@ -78,54 +76,54 @@ const LoginPage = () => {
                   <Divider>Hoặc đăng nhập bằng</Divider>
                   <ul className={styles.socials}>
                     <li>
-                      <a href="#">
+                      <Link to="fb.com">
                         <FontAwesomeIcon
                           icon={faFacebook}
                           style={{ color: "#4267B2" }}
                           size="2xl"
                           className={styles["cpp-facebook"]}
                         />
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link to="google.com">
                         <FontAwesomeIcon
                           icon={faGoogle}
                           size="2xl"
                           style={{ color: "#DB4437" }}
                           className={styles["cpp-google"]}
                         />
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link to="twitter.com">
                         <FontAwesomeIcon
                           icon={faTwitter}
                           style={{ color: "#1DA1F2" }}
                           size="2xl"
                           className={styles["cpp-twitter"]}
                         />
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link to="github.com">
                         <FontAwesomeIcon
                           icon={faGithub}
                           style={{ color: "#6cc644" }}
                           size="2xl"
                           className={styles["cpp-github"]}
                         />
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link to="http://apple.com">
                         <FontAwesomeIcon
                           icon={faApple}
                           style={{ color: "#555555" }}
                           size="2xl"
                           className={styles["cpp-apple"]}
                         />
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -138,4 +136,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default memo(LoginPage);
