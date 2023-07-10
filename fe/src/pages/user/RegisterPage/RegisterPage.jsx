@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import { memo } from "react";
+// import clsx from "clsx";
+// import { memo } from "react";
 import styles from "./Register.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
@@ -24,7 +24,7 @@ const RegisterPage = () => {
                   id="register-form"
                 >
                   <div className={styles["form-group"]}>
-                    <label for="name">
+                    <label htmlFor="name">
                       <FontAwesomeIcon icon={faUser} />
                     </label>
                     <input
@@ -35,7 +35,7 @@ const RegisterPage = () => {
                     />
                   </div>
                   <div className={styles["form-group"]}>
-                    <label for="email">
+                    <label htmlFor="email">
                       <FontAwesomeIcon icon={faEnvelope} />
                     </label>
                     <input
@@ -46,7 +46,7 @@ const RegisterPage = () => {
                     />
                   </div>
                   <div className={styles["form-group"]}>
-                    <label for="pass">
+                    <label htmlFor="pass">
                       <FontAwesomeIcon icon={faLock} />
                     </label>
                     <input
@@ -57,7 +57,7 @@ const RegisterPage = () => {
                     />
                   </div>
                   <div className={styles["form-group"]}>
-                    <label for="re-pass">
+                    <label htmlFor="re-pass">
                       <FontAwesomeIcon icon={faLock} />
                     </label>
                     <input
@@ -75,7 +75,7 @@ const RegisterPage = () => {
                       className={styles["agree-term"]}
                     />
                     <label
-                      for="agree-term"
+                      htmlFor="agree-term"
                       className={styles["label-agree-term"]}
                     >
                       <span>

@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/knailk/learning-platform/app/controllers/request"
 	"github.com/knailk/learning-platform/app/models"
+	"github.com/knailk/learning-platform/pkg/log"
 
 	"net/http"
 
@@ -33,6 +34,7 @@ func (ctrl UserController) Login(c *gin.Context) {
 
 	user, token, err := userModel.Login(loginRequest)
 	if err != nil {
+		log.Error("error login: ", err)
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid login details"})
 		return
 	}
