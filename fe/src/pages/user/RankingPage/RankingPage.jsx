@@ -1,9 +1,7 @@
-// import clsx from 'clsx';
 import { memo } from 'react';
-// import style from './style.module.scss';
-// import { Row, Col } from 'antd';
+import style from './style.module.scss';
 const RankingPage = () => {
-    return <div className="content">Ranking</div>;
+    return <div className={style.content}>RANKING</div>;
 };
 
 export default memo(RankingPage);

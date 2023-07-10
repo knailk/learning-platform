@@ -1,6 +1,8 @@
 import style from './Friend.module.scss';
 import { Tabs } from 'antd';
 import Follow from './Follow';
+import common_style from '../style.module.scss';
+
 const Friend = () => {
     const items = [
         {
@@ -36,7 +38,7 @@ const Friend = () => {
     return (
         <>
             <div classNames={style.friendWrapper}>
-                <div className="titleProfile" style={{ marginBottom: '16px' }}>
+                <div className={common_style.titleProfile} style={{ marginBottom: '16px' }}>
                     Bạn bè
                 </div>
                 <div className={style.tabWrapper}>
