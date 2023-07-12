@@ -1,4 +1,6 @@
 .container {
+    display: flex;
+    align-items: center;
     margin-left: calc(var(--web-ui_navbar-width-no-labels, 56px) + 32px);
     @media (min-width: 1160px) {
         margin-left: calc(var(--web-ui_navbar-width, 224px) + 32px);

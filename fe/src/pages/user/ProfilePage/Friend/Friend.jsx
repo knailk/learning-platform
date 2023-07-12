@@ -37,7 +37,7 @@ const Friend = ({ ...props }) => {
     };
     return (
         <>
-            <div classNames={style.friendWrapper}>
+            <div className={style.friendWrapper}>
                 {props.showTittle && (
                     <div className={common_style.titleProfile} style={{ marginBottom: '16px' }}>
                         Bạn bè

@@ -10,25 +10,25 @@ const LearningPath = () => {
     const [touch, setTouch] = useState(false);
     const pathItem = [1, 2, 3, 4, 5, 6, 7];
     const marginItem = [
-        { 'margin-left': '0px' },
-        { 'margin-left': '44.884px' },
-        { 'margin-left': '70px' },
-        { 'margin-left': '44.884px' },
-        { 'margin-left': '0px' },
-        { 'margin-left': '-44.884px' },
-        { 'margin-left': '-70px' },
-        { 'margin-left': '-44.884px' },
-        { 'margin-left': '0px' },
-        { 'margin-left': '44.884px' },
+        { marginLeft: '0px' },
+        { marginLeft: '44.884px' },
+        { marginLeft: '70px' },
+        { marginLeft: '44.884px' },
+        { marginLeft: '0px' },
+        { marginLeft: '-44.884px' },
+        { marginLeft: '-70px' },
+        { marginLeft: '-44.884px' },
+        { marginLeft: '0px' },
+        { marginLeft: '44.884px' },
     ];
     return (
         <>
-            <Row className={style.headerWrapper}>
-                <Col className={style.lessonNumber} span={18}>
+            <Row className={style.headerWrapper} justify={'space-between'}>
+                <Col className={style.lessonNumber} span={18} sm={10}>
                     <h1>Cửa 22</h1>
                     <span>Nhập môn lập trình</span>
                 </Col>
-                <Col span={6}>
+                <Col span={6} sm={8}>
                     <div
                         className={clsx([style.introduceBtn], { [style.btnClickEffect]: touch })}
                         onMouseDown={() => setTouch(true)}

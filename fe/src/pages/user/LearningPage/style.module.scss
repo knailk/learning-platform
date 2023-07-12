@@ -1,9 +1,9 @@
 .content {
-    height: 1600px;
-    padding: 50px 20%;
-    @media (max-width: 1366px) {
-        padding: 50px 5%;
-    }
+    height: 100%;
+    padding: 50px 20px;
+    width: 100%;
+    max-width: 1060px;
+    position: relative;
 }
 
 .learningPathWrapper {
@@ -121,15 +121,24 @@
 //END LEARNING PATH
 
 .boxWrapper {
-    // border: 1px solid;
-    // height: 1000px;
+    border: 1px solid;
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    .fixedBox {
+        position: sticky;
+        top: 12px;
+    }
+    @media (max-width: 992px) {
+        display: none;
+    }
 }
 
 // RANKING BOX
 .rankingBoxWrapper {
     min-width: 300px;
-    margin-top: 20px;
     width: 100%;
+    margin-top: 20px;
     height: 130px;
     border: 2px solid #e5e5e5;
     border-radius: 16px;
@@ -153,8 +162,8 @@
 
 .missionBoxWrapper {
     min-width: 300px;
-    margin-top: 10px;
     width: 100%;
+    margin-top: 10px;
     height: 150px;
     border: 2px solid #e5e5e5;
     border-radius: 16px;
@@ -171,6 +180,17 @@
     h1 {
         color: #4b4b4b;
         font-weight: bold;
+    }
+}
+.missionItem {
+    margin-top: 20px;
+    height: 70px;
+    align-items: center;
+    border: 1px solid;
+    .progressBar {
+        height: 20px;
+        width: 100%;
+        border: 1px solid;
     }
 }
 

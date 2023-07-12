@@ -11,13 +11,13 @@ const LearningPage = () => {
     return (
         <div className={clsx(style.content)}>
             <Row className={style.wrapper}>
-                <Col span={16} className={style.learningPathWrapper}>
+                <Col sm={24} lg={16} className={style.learningPathWrapper}>
                     <LearningPath />
                     <LearningPath />
                     <LearningPath />
                 </Col>
-                <Col span={8} className={style.boxWrapper}>
-                    <div>
+                <Col lg={8} className={style.boxWrapper}>
+                    <div className={style.fixedBox}>
                         <RankingBox />
                         <MissionBox />
                         <FriendBox />
