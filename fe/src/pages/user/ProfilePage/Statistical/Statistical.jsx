@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import style from './Statistical.module.scss';
 import { Row, Col } from 'antd';
+import common_style from '../style.module.scss';
 
 const Statistical = () => {
     return (
@@ -8,7 +9,7 @@ const Statistical = () => {
             <div className={style.statisticalWrapper}>
                 <Row gutter={[16, 16]}>
                     <Col span={24}>
-                        <span className="titleProfile">Thống kê</span>
+                        <span className={common_style.titleProfile}>Thống kê</span>
                     </Col>
                     <Col xs={24} sm={12} lg={12}>
                         <div className={style.detail}>
@@ -17,7 +18,7 @@ const Statistical = () => {
                                     <img alt="" src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg" />
                                 </Col>
                                 <Col span={18}>
-                                    <Row style={{ 'padding-top': '5px' }}>
+                                    <Row style={{ paddingTop: '5px' }}>
                                         <h1>Bài học</h1>
                                     </Row>
                                     <Row>
@@ -34,7 +35,7 @@ const Statistical = () => {
                                     <img alt="" src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg" />
                                 </Col>
                                 <Col span={18}>
-                                    <Row style={{ 'padding-top': '5px' }}>
+                                    <Row style={{ paddingTop: '5px' }}>
                                         <h1>Bài tập luyện:</h1>
                                     </Row>
                                     <Row>
@@ -52,7 +53,7 @@ const Statistical = () => {
                                     <img alt="" src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg" />
                                 </Col>
                                 <Col span={18}>
-                                    <Row style={{ 'padding-top': '5px' }}>
+                                    <Row style={{ paddingTop: '5px' }}>
                                         <h1>Số vàng:</h1>
                                     </Row>
                                     <Row>
@@ -70,7 +71,7 @@ const Statistical = () => {
                                     <img alt="" src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg" />
                                 </Col>
                                 <Col span={18}>
-                                    <Row style={{ 'padding-top': '5px' }}>
+                                    <Row style={{ paddingTop: '5px' }}>
                                         <h1>Xếp hạng</h1>
                                     </Row>
                                     <Row>

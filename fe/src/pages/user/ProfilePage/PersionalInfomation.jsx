@@ -1,5 +1,5 @@
 import style from './PersionalInfomation.module.scss';
-import './style.scss';
+import common_style from './style.module.scss';
 import { memo } from 'react';
 import { Row, Col, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,26 +17,26 @@ const PersionalInformation = () => {
                     </div>
                 </Col>
                 <Col className={style.inforWrapper} xl={14} lg={12} md={16}>
-                    <Row className="titleProfile">Minh Toàn</Row>
-                    <Row className="userInfo">
+                    <Row className={common_style.titleProfile}>Minh Toàn</Row>
+                    <Row className={common_style.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faUser} />
                         </span>
                         UserId
                     </Row>
-                    <Row className="userInfo">
+                    <Row className={common_style.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faCakeCandles} />
                         </span>
                         10/08/2001
                     </Row>
-                    <Row className="userInfo">
+                    <Row className={common_style.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faClock} />
                         </span>
                         Đã tham gia vào Tháng Năm 2023
                     </Row>
-                    <Row className="userInfo">
+                    <Row className={common_style.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faUserGroup}></FontAwesomeIcon>
                         </span>

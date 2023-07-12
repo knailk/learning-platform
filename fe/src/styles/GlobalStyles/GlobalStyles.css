@@ -2,11 +2,3 @@
     margin: 0;
     font-family: in-round, sans-serif;
 }
-.container {
-    margin-top: 70px;
-    width: 100%;
-    max-width: 1170px;
-    /* background-color: aqua; */
-    padding-left: 15%;
-    padding-right: 15%;
-}
