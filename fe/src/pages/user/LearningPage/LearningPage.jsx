@@ -3,6 +3,9 @@ import { memo } from 'react';
 import style from './style.module.scss';
 import { Row, Col } from 'antd';
 import LearningPath from './LearningPath';
+import RankingBox from './RankingBox';
+import MissionBox from './MissionBox';
+import FriendBox from './FriendBox';
 
 const LearningPage = () => {
     return (
@@ -13,7 +16,13 @@ const LearningPage = () => {
                     <LearningPath />
                     <LearningPath />
                 </Col>
-                <Col span={8}>Temp</Col>
+                <Col span={8} className={style.boxWrapper}>
+                    <div>
+                        <RankingBox />
+                        <MissionBox />
+                        <FriendBox />
+                    </div>
+                </Col>
             </Row>
         </div>
     );

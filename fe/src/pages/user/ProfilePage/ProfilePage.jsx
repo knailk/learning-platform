@@ -22,7 +22,7 @@ const Profile = () => {
                     </Row>
                 </Col>
                 <Col span={8}>
-                    <Friend />
+                    <Friend showTittle={true} />
                 </Col>
             </Row>
         </div>
