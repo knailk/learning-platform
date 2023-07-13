@@ -13,7 +13,7 @@ const PersionalInformation = () => {
                         <div className={style.editAvatarButton}>
                             <FontAwesomeIcon icon={faPen} />
                         </div>
-                        <img alt="Minh Toàn" src="//simg-ssl.duolingo.com/avatars/1164864020/I4X9TktOvb/xxlarge" />
+                        <img alt="Minh Toàn" src="images/avatar.png" />
                     </div>
                 </Col>
                 <Col className={style.inforWrapper} xl={14} lg={12} md={16}>

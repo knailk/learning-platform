@@ -5,7 +5,7 @@ import { Row, Col } from 'antd';
 import LearningPath from './LearningPath';
 import RankingBox from './RankingBox';
 import MissionBox from './MissionBox';
-import FriendBox from './FriendBox';
+// import FriendBox from './FriendBox';
 
 const LearningPage = () => {
     return (
