@@ -8,7 +8,7 @@ const TopThree = () => {
                 <Row>
                     <div className={style.topOneWrapper}>
                         <img className={style.topOneIcon} src="images/winner.png" alt="winner" />
-                        <img alt="Minh Toàn" src="images/avatar.png" />
+                        <img alt="Minh Toàn" src="images/avatar1.jpg" />
                     </div>
                 </Row>
                 <Row>
@@ -21,8 +21,8 @@ const TopThree = () => {
             <Col order={1} span={6}>
                 <Row align={'bottom'} style={{ height: '250px' }}>
                     <div className={style.topTwoWrapper}>
-                        <img className={style.topTwoIcon} src="images/winner.png" alt="winner" />
-                        <img alt="Minh Toàn" src="images/avatar.png" />
+                        <img className={style.topTwoIcon} src="images/second.png" alt="winner" />
+                        <img alt="Minh Toàn" src="images/avatar2.jpg" />
                     </div>
                 </Row>
                 <Row>
@@ -35,8 +35,8 @@ const TopThree = () => {
             <Col order={3} span={6}>
                 <Row align={'bottom'} style={{ height: '250px' }}>
                     <div className={style.topTwoWrapper}>
-                        <img className={style.topTwoIcon} src="images/winner.png" alt="winner" />
-                        <img alt="Minh Toàn" src="images/avatar.png" />
+                        <img className={style.topTwoIcon} src="images/third.png" alt="winner" />
+                        <img alt="Minh Toàn" src="images/avatar3.jpg" />
                     </div>
                 </Row>
                 <Row>

@@ -4,7 +4,6 @@
     width: 100%;
     max-width: 1060px;
     position: relative;
-    border: 1px solid red;
 }
 
 .rankingTitle {
@@ -31,6 +30,7 @@
         img {
             width: 200px;
             height: 200px;
+            box-shadow: 0px 0px 10px #4b4b4b;
             border-radius: 50%;
             -webkit-border-radius: 50%;
             -moz-border-radius: 50%;
@@ -42,9 +42,10 @@
             width: 70px;
             height: 70px;
             position: absolute;
-            right: 30px;
+            right: 10px;
             top: 10px;
-            //border: 2px solid rgb(255, 255, 255);
+            border: none;
+            box-shadow: none;
             -webkit-border-radius: 0;
             -moz-border-radius: 0;
             -ms-border-radius: 0;
@@ -59,6 +60,7 @@
         img {
             width: 130px;
             height: 130px;
+            box-shadow: 0px 0px 10px #4b4b4b;
             border-radius: 50%;
             -webkit-border-radius: 50%;
             -moz-border-radius: 50%;
@@ -72,6 +74,8 @@
             position: absolute;
             right: -5px;
             top: 7px;
+            box-shadow: none;
+            border: none;
             //border: 2px solid rgb(255, 255, 255);
             -webkit-border-radius: 0;
             -moz-border-radius: 0;
@@ -82,51 +86,138 @@
 }
 
 .otherTopWrapper {
-    padding: 40px;
-    .otherTop {
-        border: 1px solid;
-        height: 70px;
-        width: 100%;
+    padding: 10px 40px;
+    width: 100%;
+    // .otherTop {
+    //     height: 70px;
+    //     width: 100%;
+    //     display: flex;
+    //     align-items: center;
+    //     .topWrapper {
+    //         display: flex;
+    //         justify-content: center;
+    //         align-items: center;
+    //     }
+    //     .avatar {
+    //         // display: flex;
+    //         width: 100%;
+    //         position: relative;
+    //         z-index: 2;
+    //         img {
+    //             width: 60px;
+    //             height: 60px;
+    //             border-radius: 50%;
+    //             -webkit-border-radius: 50%;
+    //             -moz-border-radius: 50%;
+    //             -ms-border-radius: 50%;
+    //             -o-border-radius: 50%;
+    //         }
+    //         .information {
+    //             color: #4b4b4b;
+    //             font-size: 16px;
+    //             font-weight: bold;
+    //             background-color: #e7e5e5;
+    //             position: absolute;
+    //             width: 95%;
+    //             height: 52px;
+    //             display: flex;
+    //             align-items: center;
+    //             justify-content: space-between;
+    //             top: 50%;
+    //             right: 0;
+    //             z-index: -1;
+    //             transform: translateY(-50%);
+    //             -webkit-transform: translateY(-50%);
+    //             -moz-transform: translateY(-50%);
+    //             -ms-transform: translateY(-50%);
+    //             -o-transform: translateY(-50%);
+    //             border-radius: 16px;
+    //             -webkit-border-radius: 16px;
+    //             -moz-border-radius: 16px;
+    //             -ms-border-radius: 16px;
+    //             -o-border-radius: 16px;
+
+    //             .name {
+    //                 padding-left: 50px;
+    //                 width: 70%;
+    //             }
+    //             .score {
+    //                 width: 30%;
+    //             }
+    //         }
+    //     }
+    // }
+}
+
+.gameBoxWrapper {
+    margin-top: 8px;
+    min-width: 300px;
+    width: 100%;
+    height: 130px;
+    border: 2px solid #e5e5e5;
+    border-radius: 16px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    -ms-border-radius: 16px;
+    -o-border-radius: 16px;
+    padding: 20px;
+    * {
+        font-size: 16px;
+        font-weight: 500;
+        color: #5e5e5e;
+    }
+    h1 {
+        color: #4b4b4b;
+        font-weight: bold;
+    }
+    img {
+        width: 50px;
+    }
+}
+
+.userRankingWrapper {
+    margin-top: 8px;
+    min-width: 300px;
+    width: 100%;
+    border: 2px solid #e5e5e5;
+    border-radius: 16px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    -ms-border-radius: 16px;
+    -o-border-radius: 16px;
+    padding: 20px;
+    * {
+        font-size: 16px;
+        font-weight: 500;
+        color: #5e5e5e;
+    }
+    h1 {
+        color: #4b4b4b;
+        font-weight: bold;
+    }
+    img {
+        display: flex;
+        width: 60px;
+        height: 60px;
+        box-shadow: 0px 0px 5px #4b4b4b;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+    }
+    .information {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 10px;
+    }
+    .top {
         display: flex;
         align-items: center;
-        .avatar {
-            // display: flex;
-            width: 100%;
-            position: relative;
-            z-index: 2;
-            img {
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                -webkit-border-radius: 50%;
-                -moz-border-radius: 50%;
-                -ms-border-radius: 50%;
-                -o-border-radius: 50%;
-            }
-            .information {
-                position: absolute;
-                width: 95%;
-                height: 45px;
-                border: 1px solid;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                top: 50%;
-                right: 0;
-                z-index: -1;
-                transform: translateY(-50%);
-                -webkit-transform: translateY(-50%);
-                -moz-transform: translateY(-50%);
-                -ms-transform: translateY(-50%);
-                -o-transform: translateY(-50%);
-                .name {
-                    padding-left: 50px;
-                    width: 70%;
-                }
-                .score {
-                    width: 30%;
-                }
-            }
-        }
+        justify-content: center;
     }
+}
+.otherTop {
+    padding: 5px 10px;
 }
