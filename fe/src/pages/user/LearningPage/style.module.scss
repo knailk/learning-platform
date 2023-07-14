@@ -1,6 +1,6 @@
 .content {
     height: 100%;
-    padding: 50px 20px;
+    padding: 20px 20px;
     width: 100%;
     max-width: 1060px;
     position: relative;
@@ -121,7 +121,6 @@
 //END LEARNING PATH
 
 .boxWrapper {
-    border: 1px solid;
     height: 100%;
     position: absolute;
     right: 0px;
@@ -164,7 +163,6 @@
     min-width: 300px;
     width: 100%;
     margin-top: 10px;
-    height: 150px;
     border: 2px solid #e5e5e5;
     border-radius: 16px;
     -webkit-border-radius: 16px;
@@ -186,11 +184,30 @@
     margin-top: 20px;
     height: 70px;
     align-items: center;
-    border: 1px solid;
-    .progressBar {
-        height: 20px;
-        width: 100%;
-        border: 1px solid;
+    .missionIcon {
+        img {
+            width: 60px;
+            height: 60px;
+        }
+    }
+    .progressBarWrapper {
+        align-items: center;
+        .progressBar {
+            height: 20px;
+            width: 100%;
+            border-radius: 16px 0px 0px 16px;
+            -webkit-border-radius: 16px 0px 0px 16px;
+            -moz-border-radius: 16px 0px 0px 16px;
+            -ms-border-radius: 16px 0px 0px 16px;
+            -o-border-radius: 16px 0px 0px 16px;
+            background-color: #e5e5e5;
+            font-size: 14px;
+            font-weight: bold;
+            color: #5e5e5e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 }
 
