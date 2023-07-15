@@ -13,8 +13,10 @@ import (
 type User struct {
 	ID        int64  `db:"id, primarykey, autoincrement" json:"id"`
 	Email     string `db:"email" json:"email"`
-	Password  string `db:"password" json:"-"`
+	Phone     string `json:"phone"`
 	Name      string `db:"name" json:"name"`
+	Age       int    `json:"age"`
+	Password  string `db:"password" json:"-"`
 	UpdatedAt int64  `db:"updated_at" json:"-"`
 	CreatedAt int64  `db:"created_at" json:"-"`
 }

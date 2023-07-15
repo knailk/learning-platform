@@ -70,7 +70,6 @@ SET
 --
 --
 --
-
 CREATE TABLE "follow" (
   "following_user_id" integer,
   "followed_user_id" integer,
@@ -139,6 +138,7 @@ CREATE TABLE "question_answer" (
 
 CREATE TABLE "lession_answer" (
   "id" char(36) PRIMARY KEY,
+  "user_id" char(36),
   "lession_id" char(36),
   "total_score" integer,
   "created_at" timestamp NOT NULL DEFAULT (now()),
@@ -158,6 +158,8 @@ ALTER TABLE "question" ADD FOREIGN KEY ("lession_id") REFERENCES "lession" ("id"
 ALTER TABLE "question_answer" ADD FOREIGN KEY ("lession_answer_id") REFERENCES "lession_answer" ("id");
 
 ALTER TABLE "question_answer" ADD FOREIGN KEY ("question_id") REFERENCES "question" ("id");
+
+ALTER TABLE "lession_answer" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 
 ALTER TABLE "lession_answer" ADD FOREIGN KEY ("lession_id") REFERENCES "lession" ("id");
 
