@@ -6,9 +6,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/go-gorp/gorp"
 	_redis "github.com/go-redis/redis/v7"
 	_ "github.com/lib/pq" //import postgres
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 // DB ...
@@ -16,39 +18,43 @@ type DB struct {
 	*sql.DB
 }
 
-var db *gorp.DbMap
+var db *gorm.DB
 
 // Init ...
 func Init() {
 
-	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"))
+	dbInfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"))
 
 	var err error
-	db, err = ConnectDB(dbinfo)
+	db, err := ConnectDB(dbInfo)
 	if err != nil {
+		log.Fatal(err)
+	}
+
+	sqlDB, err := db.DB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := sqlDB.Ping(); err != nil {
 		log.Fatal(err)
 	}
 
 }
 
 // ConnectDB ...
-func ConnectDB(dataSourceName string) (*gorp.DbMap, error) {
-	db, err := sql.Open("postgres", dataSourceName)
+func ConnectDB(dataSourceName string) (*gorm.DB, error) {
+	gormDb, err := gorm.Open(postgres.Open(dataSourceName), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	if err = db.Ping(); err != nil {
-		return nil, err
-	}
-
-	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.PostgresDialect{}}
-	//dbmap.TraceOn("[gorp]", log.New(os.Stdout, "golang-gin:", log.Lmicroseconds)) //Trace database requests
-	return dbmap, nil
+	return gormDb, nil
 }
 
 // GetDB ...
-func GetDB() *gorp.DbMap {
+func GetDB() *gorm.DB {
 	return db
 }
 

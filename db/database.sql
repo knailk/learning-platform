@@ -71,8 +71,8 @@ SET
 --
 --
 CREATE TABLE "follow" (
-  "following_user_id" integer,
-  "followed_user_id" integer,
+  "following_user_id" char(36),
+  "followed_user_id" char(36),
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );
@@ -108,7 +108,7 @@ CREATE TABLE "lesson" (
   "id" char(36) PRIMARY KEY,
   "chapter_id" char(36),
   "name" text,
-  "tags" []text,
+  "tags" text [],
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );
@@ -117,9 +117,9 @@ CREATE TABLE "question" (
   "id" char(36) PRIMARY KEY,
   "lesson_id" char(36),
   "order" integer,
-  "score" []integer,
+  "score" integer [],
   "answer_type" text,
-  "answer_content" []text,
+  "answer_content" text [],
   "question_content" text,
   "required" bool,
   "created_at" timestamp NOT NULL DEFAULT (now()),
