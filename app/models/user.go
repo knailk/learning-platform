@@ -2,7 +2,9 @@ package models
 
 import (
 	"errors"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/knailk/learning-platform/app/controllers/request"
 	"github.com/knailk/learning-platform/db"
 
@@ -11,14 +13,14 @@ import (
 
 // User ...
 type User struct {
-	ID        int64  `db:"id, primarykey, autoincrement" json:"id"`
-	Email     string `db:"email" json:"email"`
-	Phone     string `json:"phone"`
-	Name      string `db:"name" json:"name"`
-	Age       int    `json:"age"`
-	Password  string `db:"password" json:"-"`
-	UpdatedAt int64  `db:"updated_at" json:"-"`
-	CreatedAt int64  `db:"created_at" json:"-"`
+	ID        uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
+	Email     string    `json:"email"`
+	Phone     string    `json:"phone"`
+	Name      string    `json:"name"`
+	Age       int       `json:"age"`
+	Password  string    `json:"-"`
+	UpdatedAt time.Time     `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
+	CreatedAt time.Time     `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 }
 
 // UserModel ...

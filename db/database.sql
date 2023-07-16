@@ -104,7 +104,7 @@ CREATE TABLE "chapter" (
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );
 
-CREATE TABLE "lession" (
+CREATE TABLE "lesson" (
   "id" char(36) PRIMARY KEY,
   "chapter_id" char(36),
   "name" text,
@@ -115,20 +115,20 @@ CREATE TABLE "lession" (
 
 CREATE TABLE "question" (
   "id" char(36) PRIMARY KEY,
-  "lession_id" char(36),
+  "lesson_id" char(36),
   "order" integer,
   "score" []integer,
   "answer_type" text,
   "answer_content" []text,
   "question_content" text,
-  "require" bool,
+  "required" bool,
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "question_answer" (
   "id" char(36) PRIMARY KEY,
-  "lession_answer_id" char(36),
+  "lesson_answer_id" char(36),
   "question_id" char(36),
   "score" integer,
   "answer" text,
@@ -136,10 +136,10 @@ CREATE TABLE "question_answer" (
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );
 
-CREATE TABLE "lession_answer" (
+CREATE TABLE "lesson_answer" (
   "id" char(36) PRIMARY KEY,
   "user_id" char(36),
-  "lession_id" char(36),
+  "lesson_id" char(36),
   "total_score" integer,
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
@@ -151,17 +151,17 @@ ALTER TABLE "follow" ADD FOREIGN KEY ("followed_user_id") REFERENCES "user" ("id
 
 ALTER TABLE "rank" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 
-ALTER TABLE "lession" ADD FOREIGN KEY ("chapter_id") REFERENCES "chapter" ("id");
+ALTER TABLE "lesson" ADD FOREIGN KEY ("chapter_id") REFERENCES "chapter" ("id");
 
-ALTER TABLE "question" ADD FOREIGN KEY ("lession_id") REFERENCES "lession" ("id");
+ALTER TABLE "question" ADD FOREIGN KEY ("lesson_id") REFERENCES "lesson" ("id");
 
-ALTER TABLE "question_answer" ADD FOREIGN KEY ("lession_answer_id") REFERENCES "lession_answer" ("id");
+ALTER TABLE "question_answer" ADD FOREIGN KEY ("lesson_answer_id") REFERENCES "lesson_answer" ("id");
 
 ALTER TABLE "question_answer" ADD FOREIGN KEY ("question_id") REFERENCES "question" ("id");
 
-ALTER TABLE "lession_answer" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "lesson_answer" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 
-ALTER TABLE "lession_answer" ADD FOREIGN KEY ("lession_id") REFERENCES "lession" ("id");
+ALTER TABLE "lesson_answer" ADD FOREIGN KEY ("lesson_id") REFERENCES "lesson" ("id");
 
 --
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
