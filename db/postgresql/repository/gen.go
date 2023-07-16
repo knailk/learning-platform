@@ -16,34 +16,69 @@ import (
 )
 
 var (
-	Q    = new(Query)
-	User *user
+	Q              = new(Query)
+	Chapter        *chapter
+	Follow         *follow
+	Lesson         *lesson
+	LessonAnswer   *lessonAnswer
+	Question       *question
+	QuestionAnswer *questionAnswer
+	Rank           *rank
+	User           *user
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	Chapter = &Q.Chapter
+	Follow = &Q.Follow
+	Lesson = &Q.Lesson
+	LessonAnswer = &Q.LessonAnswer
+	Question = &Q.Question
+	QuestionAnswer = &Q.QuestionAnswer
+	Rank = &Q.Rank
 	User = &Q.User
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:   db,
-		User: newUser(db, opts...),
+		db:             db,
+		Chapter:        newChapter(db, opts...),
+		Follow:         newFollow(db, opts...),
+		Lesson:         newLesson(db, opts...),
+		LessonAnswer:   newLessonAnswer(db, opts...),
+		Question:       newQuestion(db, opts...),
+		QuestionAnswer: newQuestionAnswer(db, opts...),
+		Rank:           newRank(db, opts...),
+		User:           newUser(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	User user
+	Chapter        chapter
+	Follow         follow
+	Lesson         lesson
+	LessonAnswer   lessonAnswer
+	Question       question
+	QuestionAnswer questionAnswer
+	Rank           rank
+	User           user
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:   db,
-		User: q.User.clone(db),
+		db:             db,
+		Chapter:        q.Chapter.clone(db),
+		Follow:         q.Follow.clone(db),
+		Lesson:         q.Lesson.clone(db),
+		LessonAnswer:   q.LessonAnswer.clone(db),
+		Question:       q.Question.clone(db),
+		QuestionAnswer: q.QuestionAnswer.clone(db),
+		Rank:           q.Rank.clone(db),
+		User:           q.User.clone(db),
 	}
 }
 
@@ -57,18 +92,39 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:   db,
-		User: q.User.replaceDB(db),
+		db:             db,
+		Chapter:        q.Chapter.replaceDB(db),
+		Follow:         q.Follow.replaceDB(db),
+		Lesson:         q.Lesson.replaceDB(db),
+		LessonAnswer:   q.LessonAnswer.replaceDB(db),
+		Question:       q.Question.replaceDB(db),
+		QuestionAnswer: q.QuestionAnswer.replaceDB(db),
+		Rank:           q.Rank.replaceDB(db),
+		User:           q.User.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	User IUserDo
+	Chapter        IChapterDo
+	Follow         IFollowDo
+	Lesson         ILessonDo
+	LessonAnswer   ILessonAnswerDo
+	Question       IQuestionDo
+	QuestionAnswer IQuestionAnswerDo
+	Rank           IRankDo
+	User           IUserDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		User: q.User.WithContext(ctx),
+		Chapter:        q.Chapter.WithContext(ctx),
+		Follow:         q.Follow.WithContext(ctx),
+		Lesson:         q.Lesson.WithContext(ctx),
+		LessonAnswer:   q.LessonAnswer.WithContext(ctx),
+		Question:       q.Question.WithContext(ctx),
+		QuestionAnswer: q.QuestionAnswer.WithContext(ctx),
+		Rank:           q.Rank.WithContext(ctx),
+		User:           q.User.WithContext(ctx),
 	}
 }
 

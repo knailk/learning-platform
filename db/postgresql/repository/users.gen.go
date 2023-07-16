@@ -27,14 +27,14 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 
 	tableName := _user.userDo.TableName()
 	_user.ALL = field.NewAsterisk(tableName)
-	_user.ID = field.NewInt64(tableName, "id")
+	_user.ID = field.NewField(tableName, "id")
 	_user.Email = field.NewString(tableName, "email")
 	_user.Phone = field.NewString(tableName, "phone")
 	_user.Name = field.NewString(tableName, "name")
 	_user.Age = field.NewInt(tableName, "age")
 	_user.Password = field.NewString(tableName, "password")
-	_user.UpdatedAt = field.NewInt64(tableName, "updated_at")
-	_user.CreatedAt = field.NewInt64(tableName, "created_at")
+	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_user.CreatedAt = field.NewTime(tableName, "created_at")
 
 	_user.fillFieldMap()
 
@@ -45,14 +45,14 @@ type user struct {
 	userDo userDo
 
 	ALL       field.Asterisk
-	ID        field.Int64
+	ID        field.Field
 	Email     field.String
 	Phone     field.String
 	Name      field.String
 	Age       field.Int
 	Password  field.String
-	UpdatedAt field.Int64
-	CreatedAt field.Int64
+	UpdatedAt field.Time
+	CreatedAt field.Time
 
 	fieldMap map[string]field.Expr
 }
@@ -69,14 +69,14 @@ func (u user) As(alias string) *user {
 
 func (u *user) updateTableName(table string) *user {
 	u.ALL = field.NewAsterisk(table)
-	u.ID = field.NewInt64(table, "id")
+	u.ID = field.NewField(table, "id")
 	u.Email = field.NewString(table, "email")
 	u.Phone = field.NewString(table, "phone")
 	u.Name = field.NewString(table, "name")
 	u.Age = field.NewInt(table, "age")
 	u.Password = field.NewString(table, "password")
-	u.UpdatedAt = field.NewInt64(table, "updated_at")
-	u.CreatedAt = field.NewInt64(table, "created_at")
+	u.UpdatedAt = field.NewTime(table, "updated_at")
+	u.CreatedAt = field.NewTime(table, "created_at")
 
 	u.fillFieldMap()
 

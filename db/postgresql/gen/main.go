@@ -14,6 +14,13 @@ func main() {
 	})
 	g.ApplyBasic(
 		models.User{},
+		models.Follow{},
+		models.Rank{},
+		models.Chapter{},
+		models.Lesson{},
+		models.Question{},
+		models.QuestionAnswer{},
+		models.LessonAnswer{},
 	)
 
 	// Execute the generator
