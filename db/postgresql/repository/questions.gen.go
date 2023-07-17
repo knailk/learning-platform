@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/knailk/learning-platform/app/models"
+	"github.com/knailk/learning-platform/app/entity"
 )
 
 func newQuestion(db *gorm.DB, opts ...gen.DOOption) question {
 	_question := question{}
 
 	_question.questionDo.UseDB(db, opts...)
-	_question.questionDo.UseModel(&models.Question{})
+	_question.questionDo.UseModel(&entity.Question{})
 
 	tableName := _question.questionDo.TableName()
 	_question.ALL = field.NewAsterisk(tableName)
@@ -157,17 +157,17 @@ type IQuestionDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IQuestionDo
 	Unscoped() IQuestionDo
-	Create(values ...*models.Question) error
-	CreateInBatches(values []*models.Question, batchSize int) error
-	Save(values ...*models.Question) error
-	First() (*models.Question, error)
-	Take() (*models.Question, error)
-	Last() (*models.Question, error)
-	Find() ([]*models.Question, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.Question, err error)
-	FindInBatches(result *[]*models.Question, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*entity.Question) error
+	CreateInBatches(values []*entity.Question, batchSize int) error
+	Save(values ...*entity.Question) error
+	First() (*entity.Question, error)
+	Take() (*entity.Question, error)
+	Last() (*entity.Question, error)
+	Find() ([]*entity.Question, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.Question, err error)
+	FindInBatches(result *[]*entity.Question, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*models.Question) (info gen.ResultInfo, err error)
+	Delete(...*entity.Question) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -179,9 +179,9 @@ type IQuestionDo interface {
 	Assign(attrs ...field.AssignExpr) IQuestionDo
 	Joins(fields ...field.RelationField) IQuestionDo
 	Preload(fields ...field.RelationField) IQuestionDo
-	FirstOrInit() (*models.Question, error)
-	FirstOrCreate() (*models.Question, error)
-	FindByPage(offset int, limit int) (result []*models.Question, count int64, err error)
+	FirstOrInit() (*entity.Question, error)
+	FirstOrCreate() (*entity.Question, error)
+	FindByPage(offset int, limit int) (result []*entity.Question, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IQuestionDo
@@ -281,57 +281,57 @@ func (q questionDo) Unscoped() IQuestionDo {
 	return q.withDO(q.DO.Unscoped())
 }
 
-func (q questionDo) Create(values ...*models.Question) error {
+func (q questionDo) Create(values ...*entity.Question) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return q.DO.Create(values)
 }
 
-func (q questionDo) CreateInBatches(values []*models.Question, batchSize int) error {
+func (q questionDo) CreateInBatches(values []*entity.Question, batchSize int) error {
 	return q.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (q questionDo) Save(values ...*models.Question) error {
+func (q questionDo) Save(values ...*entity.Question) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return q.DO.Save(values)
 }
 
-func (q questionDo) First() (*models.Question, error) {
+func (q questionDo) First() (*entity.Question, error) {
 	if result, err := q.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Question), nil
+		return result.(*entity.Question), nil
 	}
 }
 
-func (q questionDo) Take() (*models.Question, error) {
+func (q questionDo) Take() (*entity.Question, error) {
 	if result, err := q.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Question), nil
+		return result.(*entity.Question), nil
 	}
 }
 
-func (q questionDo) Last() (*models.Question, error) {
+func (q questionDo) Last() (*entity.Question, error) {
 	if result, err := q.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Question), nil
+		return result.(*entity.Question), nil
 	}
 }
 
-func (q questionDo) Find() ([]*models.Question, error) {
+func (q questionDo) Find() ([]*entity.Question, error) {
 	result, err := q.DO.Find()
-	return result.([]*models.Question), err
+	return result.([]*entity.Question), err
 }
 
-func (q questionDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.Question, err error) {
-	buf := make([]*models.Question, 0, batchSize)
+func (q questionDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.Question, err error) {
+	buf := make([]*entity.Question, 0, batchSize)
 	err = q.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -339,7 +339,7 @@ func (q questionDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) er
 	return results, err
 }
 
-func (q questionDo) FindInBatches(result *[]*models.Question, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (q questionDo) FindInBatches(result *[]*entity.Question, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return q.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -365,23 +365,23 @@ func (q questionDo) Preload(fields ...field.RelationField) IQuestionDo {
 	return &q
 }
 
-func (q questionDo) FirstOrInit() (*models.Question, error) {
+func (q questionDo) FirstOrInit() (*entity.Question, error) {
 	if result, err := q.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Question), nil
+		return result.(*entity.Question), nil
 	}
 }
 
-func (q questionDo) FirstOrCreate() (*models.Question, error) {
+func (q questionDo) FirstOrCreate() (*entity.Question, error) {
 	if result, err := q.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Question), nil
+		return result.(*entity.Question), nil
 	}
 }
 
-func (q questionDo) FindByPage(offset int, limit int) (result []*models.Question, count int64, err error) {
+func (q questionDo) FindByPage(offset int, limit int) (result []*entity.Question, count int64, err error) {
 	result, err = q.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -410,7 +410,7 @@ func (q questionDo) Scan(result interface{}) (err error) {
 	return q.DO.Scan(result)
 }
 
-func (q questionDo) Delete(models ...*models.Question) (result gen.ResultInfo, err error) {
+func (q questionDo) Delete(models ...*entity.Question) (result gen.ResultInfo, err error) {
 	return q.DO.Delete(models)
 }
 

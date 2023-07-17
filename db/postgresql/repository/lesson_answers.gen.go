@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/knailk/learning-platform/app/models"
+	"github.com/knailk/learning-platform/app/entity"
 )
 
 func newLessonAnswer(db *gorm.DB, opts ...gen.DOOption) lessonAnswer {
 	_lessonAnswer := lessonAnswer{}
 
 	_lessonAnswer.lessonAnswerDo.UseDB(db, opts...)
-	_lessonAnswer.lessonAnswerDo.UseModel(&models.LessonAnswer{})
+	_lessonAnswer.lessonAnswerDo.UseModel(&entity.LessonAnswer{})
 
 	tableName := _lessonAnswer.lessonAnswerDo.TableName()
 	_lessonAnswer.ALL = field.NewAsterisk(tableName)
@@ -153,17 +153,17 @@ type ILessonAnswerDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) ILessonAnswerDo
 	Unscoped() ILessonAnswerDo
-	Create(values ...*models.LessonAnswer) error
-	CreateInBatches(values []*models.LessonAnswer, batchSize int) error
-	Save(values ...*models.LessonAnswer) error
-	First() (*models.LessonAnswer, error)
-	Take() (*models.LessonAnswer, error)
-	Last() (*models.LessonAnswer, error)
-	Find() ([]*models.LessonAnswer, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.LessonAnswer, err error)
-	FindInBatches(result *[]*models.LessonAnswer, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*entity.LessonAnswer) error
+	CreateInBatches(values []*entity.LessonAnswer, batchSize int) error
+	Save(values ...*entity.LessonAnswer) error
+	First() (*entity.LessonAnswer, error)
+	Take() (*entity.LessonAnswer, error)
+	Last() (*entity.LessonAnswer, error)
+	Find() ([]*entity.LessonAnswer, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.LessonAnswer, err error)
+	FindInBatches(result *[]*entity.LessonAnswer, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*models.LessonAnswer) (info gen.ResultInfo, err error)
+	Delete(...*entity.LessonAnswer) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -175,9 +175,9 @@ type ILessonAnswerDo interface {
 	Assign(attrs ...field.AssignExpr) ILessonAnswerDo
 	Joins(fields ...field.RelationField) ILessonAnswerDo
 	Preload(fields ...field.RelationField) ILessonAnswerDo
-	FirstOrInit() (*models.LessonAnswer, error)
-	FirstOrCreate() (*models.LessonAnswer, error)
-	FindByPage(offset int, limit int) (result []*models.LessonAnswer, count int64, err error)
+	FirstOrInit() (*entity.LessonAnswer, error)
+	FirstOrCreate() (*entity.LessonAnswer, error)
+	FindByPage(offset int, limit int) (result []*entity.LessonAnswer, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) ILessonAnswerDo
@@ -277,57 +277,57 @@ func (l lessonAnswerDo) Unscoped() ILessonAnswerDo {
 	return l.withDO(l.DO.Unscoped())
 }
 
-func (l lessonAnswerDo) Create(values ...*models.LessonAnswer) error {
+func (l lessonAnswerDo) Create(values ...*entity.LessonAnswer) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Create(values)
 }
 
-func (l lessonAnswerDo) CreateInBatches(values []*models.LessonAnswer, batchSize int) error {
+func (l lessonAnswerDo) CreateInBatches(values []*entity.LessonAnswer, batchSize int) error {
 	return l.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (l lessonAnswerDo) Save(values ...*models.LessonAnswer) error {
+func (l lessonAnswerDo) Save(values ...*entity.LessonAnswer) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Save(values)
 }
 
-func (l lessonAnswerDo) First() (*models.LessonAnswer, error) {
+func (l lessonAnswerDo) First() (*entity.LessonAnswer, error) {
 	if result, err := l.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.LessonAnswer), nil
+		return result.(*entity.LessonAnswer), nil
 	}
 }
 
-func (l lessonAnswerDo) Take() (*models.LessonAnswer, error) {
+func (l lessonAnswerDo) Take() (*entity.LessonAnswer, error) {
 	if result, err := l.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.LessonAnswer), nil
+		return result.(*entity.LessonAnswer), nil
 	}
 }
 
-func (l lessonAnswerDo) Last() (*models.LessonAnswer, error) {
+func (l lessonAnswerDo) Last() (*entity.LessonAnswer, error) {
 	if result, err := l.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.LessonAnswer), nil
+		return result.(*entity.LessonAnswer), nil
 	}
 }
 
-func (l lessonAnswerDo) Find() ([]*models.LessonAnswer, error) {
+func (l lessonAnswerDo) Find() ([]*entity.LessonAnswer, error) {
 	result, err := l.DO.Find()
-	return result.([]*models.LessonAnswer), err
+	return result.([]*entity.LessonAnswer), err
 }
 
-func (l lessonAnswerDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.LessonAnswer, err error) {
-	buf := make([]*models.LessonAnswer, 0, batchSize)
+func (l lessonAnswerDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.LessonAnswer, err error) {
+	buf := make([]*entity.LessonAnswer, 0, batchSize)
 	err = l.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -335,7 +335,7 @@ func (l lessonAnswerDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int
 	return results, err
 }
 
-func (l lessonAnswerDo) FindInBatches(result *[]*models.LessonAnswer, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (l lessonAnswerDo) FindInBatches(result *[]*entity.LessonAnswer, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return l.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -361,23 +361,23 @@ func (l lessonAnswerDo) Preload(fields ...field.RelationField) ILessonAnswerDo {
 	return &l
 }
 
-func (l lessonAnswerDo) FirstOrInit() (*models.LessonAnswer, error) {
+func (l lessonAnswerDo) FirstOrInit() (*entity.LessonAnswer, error) {
 	if result, err := l.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.LessonAnswer), nil
+		return result.(*entity.LessonAnswer), nil
 	}
 }
 
-func (l lessonAnswerDo) FirstOrCreate() (*models.LessonAnswer, error) {
+func (l lessonAnswerDo) FirstOrCreate() (*entity.LessonAnswer, error) {
 	if result, err := l.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.LessonAnswer), nil
+		return result.(*entity.LessonAnswer), nil
 	}
 }
 
-func (l lessonAnswerDo) FindByPage(offset int, limit int) (result []*models.LessonAnswer, count int64, err error) {
+func (l lessonAnswerDo) FindByPage(offset int, limit int) (result []*entity.LessonAnswer, count int64, err error) {
 	result, err = l.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -406,7 +406,7 @@ func (l lessonAnswerDo) Scan(result interface{}) (err error) {
 	return l.DO.Scan(result)
 }
 
-func (l lessonAnswerDo) Delete(models ...*models.LessonAnswer) (result gen.ResultInfo, err error) {
+func (l lessonAnswerDo) Delete(models ...*entity.LessonAnswer) (result gen.ResultInfo, err error) {
 	return l.DO.Delete(models)
 }
 

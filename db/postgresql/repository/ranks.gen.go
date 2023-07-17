@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/knailk/learning-platform/app/models"
+	"github.com/knailk/learning-platform/app/entity"
 )
 
 func newRank(db *gorm.DB, opts ...gen.DOOption) rank {
 	_rank := rank{}
 
 	_rank.rankDo.UseDB(db, opts...)
-	_rank.rankDo.UseModel(&models.Rank{})
+	_rank.rankDo.UseModel(&entity.Rank{})
 
 	tableName := _rank.rankDo.TableName()
 	_rank.ALL = field.NewAsterisk(tableName)
@@ -141,17 +141,17 @@ type IRankDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IRankDo
 	Unscoped() IRankDo
-	Create(values ...*models.Rank) error
-	CreateInBatches(values []*models.Rank, batchSize int) error
-	Save(values ...*models.Rank) error
-	First() (*models.Rank, error)
-	Take() (*models.Rank, error)
-	Last() (*models.Rank, error)
-	Find() ([]*models.Rank, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.Rank, err error)
-	FindInBatches(result *[]*models.Rank, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*entity.Rank) error
+	CreateInBatches(values []*entity.Rank, batchSize int) error
+	Save(values ...*entity.Rank) error
+	First() (*entity.Rank, error)
+	Take() (*entity.Rank, error)
+	Last() (*entity.Rank, error)
+	Find() ([]*entity.Rank, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.Rank, err error)
+	FindInBatches(result *[]*entity.Rank, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*models.Rank) (info gen.ResultInfo, err error)
+	Delete(...*entity.Rank) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -163,9 +163,9 @@ type IRankDo interface {
 	Assign(attrs ...field.AssignExpr) IRankDo
 	Joins(fields ...field.RelationField) IRankDo
 	Preload(fields ...field.RelationField) IRankDo
-	FirstOrInit() (*models.Rank, error)
-	FirstOrCreate() (*models.Rank, error)
-	FindByPage(offset int, limit int) (result []*models.Rank, count int64, err error)
+	FirstOrInit() (*entity.Rank, error)
+	FirstOrCreate() (*entity.Rank, error)
+	FindByPage(offset int, limit int) (result []*entity.Rank, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IRankDo
@@ -265,57 +265,57 @@ func (r rankDo) Unscoped() IRankDo {
 	return r.withDO(r.DO.Unscoped())
 }
 
-func (r rankDo) Create(values ...*models.Rank) error {
+func (r rankDo) Create(values ...*entity.Rank) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return r.DO.Create(values)
 }
 
-func (r rankDo) CreateInBatches(values []*models.Rank, batchSize int) error {
+func (r rankDo) CreateInBatches(values []*entity.Rank, batchSize int) error {
 	return r.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (r rankDo) Save(values ...*models.Rank) error {
+func (r rankDo) Save(values ...*entity.Rank) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return r.DO.Save(values)
 }
 
-func (r rankDo) First() (*models.Rank, error) {
+func (r rankDo) First() (*entity.Rank, error) {
 	if result, err := r.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Rank), nil
+		return result.(*entity.Rank), nil
 	}
 }
 
-func (r rankDo) Take() (*models.Rank, error) {
+func (r rankDo) Take() (*entity.Rank, error) {
 	if result, err := r.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Rank), nil
+		return result.(*entity.Rank), nil
 	}
 }
 
-func (r rankDo) Last() (*models.Rank, error) {
+func (r rankDo) Last() (*entity.Rank, error) {
 	if result, err := r.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Rank), nil
+		return result.(*entity.Rank), nil
 	}
 }
 
-func (r rankDo) Find() ([]*models.Rank, error) {
+func (r rankDo) Find() ([]*entity.Rank, error) {
 	result, err := r.DO.Find()
-	return result.([]*models.Rank), err
+	return result.([]*entity.Rank), err
 }
 
-func (r rankDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.Rank, err error) {
-	buf := make([]*models.Rank, 0, batchSize)
+func (r rankDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.Rank, err error) {
+	buf := make([]*entity.Rank, 0, batchSize)
 	err = r.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -323,7 +323,7 @@ func (r rankDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error)
 	return results, err
 }
 
-func (r rankDo) FindInBatches(result *[]*models.Rank, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (r rankDo) FindInBatches(result *[]*entity.Rank, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return r.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -349,23 +349,23 @@ func (r rankDo) Preload(fields ...field.RelationField) IRankDo {
 	return &r
 }
 
-func (r rankDo) FirstOrInit() (*models.Rank, error) {
+func (r rankDo) FirstOrInit() (*entity.Rank, error) {
 	if result, err := r.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Rank), nil
+		return result.(*entity.Rank), nil
 	}
 }
 
-func (r rankDo) FirstOrCreate() (*models.Rank, error) {
+func (r rankDo) FirstOrCreate() (*entity.Rank, error) {
 	if result, err := r.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Rank), nil
+		return result.(*entity.Rank), nil
 	}
 }
 
-func (r rankDo) FindByPage(offset int, limit int) (result []*models.Rank, count int64, err error) {
+func (r rankDo) FindByPage(offset int, limit int) (result []*entity.Rank, count int64, err error) {
 	result, err = r.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -394,7 +394,7 @@ func (r rankDo) Scan(result interface{}) (err error) {
 	return r.DO.Scan(result)
 }
 
-func (r rankDo) Delete(models ...*models.Rank) (result gen.ResultInfo, err error) {
+func (r rankDo) Delete(models ...*entity.Rank) (result gen.ResultInfo, err error) {
 	return r.DO.Delete(models)
 }
 

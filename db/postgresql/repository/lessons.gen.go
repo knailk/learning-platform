@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/knailk/learning-platform/app/models"
+	"github.com/knailk/learning-platform/app/entity"
 )
 
 func newLesson(db *gorm.DB, opts ...gen.DOOption) lesson {
 	_lesson := lesson{}
 
 	_lesson.lessonDo.UseDB(db, opts...)
-	_lesson.lessonDo.UseModel(&models.Lesson{})
+	_lesson.lessonDo.UseModel(&entity.Lesson{})
 
 	tableName := _lesson.lessonDo.TableName()
 	_lesson.ALL = field.NewAsterisk(tableName)
@@ -145,17 +145,17 @@ type ILessonDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) ILessonDo
 	Unscoped() ILessonDo
-	Create(values ...*models.Lesson) error
-	CreateInBatches(values []*models.Lesson, batchSize int) error
-	Save(values ...*models.Lesson) error
-	First() (*models.Lesson, error)
-	Take() (*models.Lesson, error)
-	Last() (*models.Lesson, error)
-	Find() ([]*models.Lesson, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.Lesson, err error)
-	FindInBatches(result *[]*models.Lesson, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*entity.Lesson) error
+	CreateInBatches(values []*entity.Lesson, batchSize int) error
+	Save(values ...*entity.Lesson) error
+	First() (*entity.Lesson, error)
+	Take() (*entity.Lesson, error)
+	Last() (*entity.Lesson, error)
+	Find() ([]*entity.Lesson, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.Lesson, err error)
+	FindInBatches(result *[]*entity.Lesson, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*models.Lesson) (info gen.ResultInfo, err error)
+	Delete(...*entity.Lesson) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -167,9 +167,9 @@ type ILessonDo interface {
 	Assign(attrs ...field.AssignExpr) ILessonDo
 	Joins(fields ...field.RelationField) ILessonDo
 	Preload(fields ...field.RelationField) ILessonDo
-	FirstOrInit() (*models.Lesson, error)
-	FirstOrCreate() (*models.Lesson, error)
-	FindByPage(offset int, limit int) (result []*models.Lesson, count int64, err error)
+	FirstOrInit() (*entity.Lesson, error)
+	FirstOrCreate() (*entity.Lesson, error)
+	FindByPage(offset int, limit int) (result []*entity.Lesson, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) ILessonDo
@@ -269,57 +269,57 @@ func (l lessonDo) Unscoped() ILessonDo {
 	return l.withDO(l.DO.Unscoped())
 }
 
-func (l lessonDo) Create(values ...*models.Lesson) error {
+func (l lessonDo) Create(values ...*entity.Lesson) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Create(values)
 }
 
-func (l lessonDo) CreateInBatches(values []*models.Lesson, batchSize int) error {
+func (l lessonDo) CreateInBatches(values []*entity.Lesson, batchSize int) error {
 	return l.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (l lessonDo) Save(values ...*models.Lesson) error {
+func (l lessonDo) Save(values ...*entity.Lesson) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Save(values)
 }
 
-func (l lessonDo) First() (*models.Lesson, error) {
+func (l lessonDo) First() (*entity.Lesson, error) {
 	if result, err := l.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Lesson), nil
+		return result.(*entity.Lesson), nil
 	}
 }
 
-func (l lessonDo) Take() (*models.Lesson, error) {
+func (l lessonDo) Take() (*entity.Lesson, error) {
 	if result, err := l.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Lesson), nil
+		return result.(*entity.Lesson), nil
 	}
 }
 
-func (l lessonDo) Last() (*models.Lesson, error) {
+func (l lessonDo) Last() (*entity.Lesson, error) {
 	if result, err := l.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Lesson), nil
+		return result.(*entity.Lesson), nil
 	}
 }
 
-func (l lessonDo) Find() ([]*models.Lesson, error) {
+func (l lessonDo) Find() ([]*entity.Lesson, error) {
 	result, err := l.DO.Find()
-	return result.([]*models.Lesson), err
+	return result.([]*entity.Lesson), err
 }
 
-func (l lessonDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.Lesson, err error) {
-	buf := make([]*models.Lesson, 0, batchSize)
+func (l lessonDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.Lesson, err error) {
+	buf := make([]*entity.Lesson, 0, batchSize)
 	err = l.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -327,7 +327,7 @@ func (l lessonDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) erro
 	return results, err
 }
 
-func (l lessonDo) FindInBatches(result *[]*models.Lesson, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (l lessonDo) FindInBatches(result *[]*entity.Lesson, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return l.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -353,23 +353,23 @@ func (l lessonDo) Preload(fields ...field.RelationField) ILessonDo {
 	return &l
 }
 
-func (l lessonDo) FirstOrInit() (*models.Lesson, error) {
+func (l lessonDo) FirstOrInit() (*entity.Lesson, error) {
 	if result, err := l.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Lesson), nil
+		return result.(*entity.Lesson), nil
 	}
 }
 
-func (l lessonDo) FirstOrCreate() (*models.Lesson, error) {
+func (l lessonDo) FirstOrCreate() (*entity.Lesson, error) {
 	if result, err := l.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Lesson), nil
+		return result.(*entity.Lesson), nil
 	}
 }
 
-func (l lessonDo) FindByPage(offset int, limit int) (result []*models.Lesson, count int64, err error) {
+func (l lessonDo) FindByPage(offset int, limit int) (result []*entity.Lesson, count int64, err error) {
 	result, err = l.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -398,7 +398,7 @@ func (l lessonDo) Scan(result interface{}) (err error) {
 	return l.DO.Scan(result)
 }
 
-func (l lessonDo) Delete(models ...*models.Lesson) (result gen.ResultInfo, err error) {
+func (l lessonDo) Delete(models ...*entity.Lesson) (result gen.ResultInfo, err error) {
 	return l.DO.Delete(models)
 }
 

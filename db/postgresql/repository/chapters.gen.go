@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/knailk/learning-platform/app/models"
+	"github.com/knailk/learning-platform/app/entity"
 )
 
 func newChapter(db *gorm.DB, opts ...gen.DOOption) chapter {
 	_chapter := chapter{}
 
 	_chapter.chapterDo.UseDB(db, opts...)
-	_chapter.chapterDo.UseModel(&models.Chapter{})
+	_chapter.chapterDo.UseModel(&entity.Chapter{})
 
 	tableName := _chapter.chapterDo.TableName()
 	_chapter.ALL = field.NewAsterisk(tableName)
@@ -145,17 +145,17 @@ type IChapterDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IChapterDo
 	Unscoped() IChapterDo
-	Create(values ...*models.Chapter) error
-	CreateInBatches(values []*models.Chapter, batchSize int) error
-	Save(values ...*models.Chapter) error
-	First() (*models.Chapter, error)
-	Take() (*models.Chapter, error)
-	Last() (*models.Chapter, error)
-	Find() ([]*models.Chapter, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.Chapter, err error)
-	FindInBatches(result *[]*models.Chapter, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*entity.Chapter) error
+	CreateInBatches(values []*entity.Chapter, batchSize int) error
+	Save(values ...*entity.Chapter) error
+	First() (*entity.Chapter, error)
+	Take() (*entity.Chapter, error)
+	Last() (*entity.Chapter, error)
+	Find() ([]*entity.Chapter, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.Chapter, err error)
+	FindInBatches(result *[]*entity.Chapter, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*models.Chapter) (info gen.ResultInfo, err error)
+	Delete(...*entity.Chapter) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -167,9 +167,9 @@ type IChapterDo interface {
 	Assign(attrs ...field.AssignExpr) IChapterDo
 	Joins(fields ...field.RelationField) IChapterDo
 	Preload(fields ...field.RelationField) IChapterDo
-	FirstOrInit() (*models.Chapter, error)
-	FirstOrCreate() (*models.Chapter, error)
-	FindByPage(offset int, limit int) (result []*models.Chapter, count int64, err error)
+	FirstOrInit() (*entity.Chapter, error)
+	FirstOrCreate() (*entity.Chapter, error)
+	FindByPage(offset int, limit int) (result []*entity.Chapter, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IChapterDo
@@ -269,57 +269,57 @@ func (c chapterDo) Unscoped() IChapterDo {
 	return c.withDO(c.DO.Unscoped())
 }
 
-func (c chapterDo) Create(values ...*models.Chapter) error {
+func (c chapterDo) Create(values ...*entity.Chapter) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return c.DO.Create(values)
 }
 
-func (c chapterDo) CreateInBatches(values []*models.Chapter, batchSize int) error {
+func (c chapterDo) CreateInBatches(values []*entity.Chapter, batchSize int) error {
 	return c.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (c chapterDo) Save(values ...*models.Chapter) error {
+func (c chapterDo) Save(values ...*entity.Chapter) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return c.DO.Save(values)
 }
 
-func (c chapterDo) First() (*models.Chapter, error) {
+func (c chapterDo) First() (*entity.Chapter, error) {
 	if result, err := c.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Chapter), nil
+		return result.(*entity.Chapter), nil
 	}
 }
 
-func (c chapterDo) Take() (*models.Chapter, error) {
+func (c chapterDo) Take() (*entity.Chapter, error) {
 	if result, err := c.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Chapter), nil
+		return result.(*entity.Chapter), nil
 	}
 }
 
-func (c chapterDo) Last() (*models.Chapter, error) {
+func (c chapterDo) Last() (*entity.Chapter, error) {
 	if result, err := c.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Chapter), nil
+		return result.(*entity.Chapter), nil
 	}
 }
 
-func (c chapterDo) Find() ([]*models.Chapter, error) {
+func (c chapterDo) Find() ([]*entity.Chapter, error) {
 	result, err := c.DO.Find()
-	return result.([]*models.Chapter), err
+	return result.([]*entity.Chapter), err
 }
 
-func (c chapterDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.Chapter, err error) {
-	buf := make([]*models.Chapter, 0, batchSize)
+func (c chapterDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.Chapter, err error) {
+	buf := make([]*entity.Chapter, 0, batchSize)
 	err = c.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -327,7 +327,7 @@ func (c chapterDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) err
 	return results, err
 }
 
-func (c chapterDo) FindInBatches(result *[]*models.Chapter, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (c chapterDo) FindInBatches(result *[]*entity.Chapter, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return c.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -353,23 +353,23 @@ func (c chapterDo) Preload(fields ...field.RelationField) IChapterDo {
 	return &c
 }
 
-func (c chapterDo) FirstOrInit() (*models.Chapter, error) {
+func (c chapterDo) FirstOrInit() (*entity.Chapter, error) {
 	if result, err := c.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Chapter), nil
+		return result.(*entity.Chapter), nil
 	}
 }
 
-func (c chapterDo) FirstOrCreate() (*models.Chapter, error) {
+func (c chapterDo) FirstOrCreate() (*entity.Chapter, error) {
 	if result, err := c.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.Chapter), nil
+		return result.(*entity.Chapter), nil
 	}
 }
 
-func (c chapterDo) FindByPage(offset int, limit int) (result []*models.Chapter, count int64, err error) {
+func (c chapterDo) FindByPage(offset int, limit int) (result []*entity.Chapter, count int64, err error) {
 	result, err = c.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -398,7 +398,7 @@ func (c chapterDo) Scan(result interface{}) (err error) {
 	return c.DO.Scan(result)
 }
 
-func (c chapterDo) Delete(models ...*models.Chapter) (result gen.ResultInfo, err error) {
+func (c chapterDo) Delete(models ...*entity.Chapter) (result gen.ResultInfo, err error) {
 	return c.DO.Delete(models)
 }
 

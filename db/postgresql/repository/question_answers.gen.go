@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/knailk/learning-platform/app/models"
+	"github.com/knailk/learning-platform/app/entity"
 )
 
 func newQuestionAnswer(db *gorm.DB, opts ...gen.DOOption) questionAnswer {
 	_questionAnswer := questionAnswer{}
 
 	_questionAnswer.questionAnswerDo.UseDB(db, opts...)
-	_questionAnswer.questionAnswerDo.UseModel(&models.QuestionAnswer{})
+	_questionAnswer.questionAnswerDo.UseModel(&entity.QuestionAnswer{})
 
 	tableName := _questionAnswer.questionAnswerDo.TableName()
 	_questionAnswer.ALL = field.NewAsterisk(tableName)
@@ -153,17 +153,17 @@ type IQuestionAnswerDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IQuestionAnswerDo
 	Unscoped() IQuestionAnswerDo
-	Create(values ...*models.QuestionAnswer) error
-	CreateInBatches(values []*models.QuestionAnswer, batchSize int) error
-	Save(values ...*models.QuestionAnswer) error
-	First() (*models.QuestionAnswer, error)
-	Take() (*models.QuestionAnswer, error)
-	Last() (*models.QuestionAnswer, error)
-	Find() ([]*models.QuestionAnswer, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.QuestionAnswer, err error)
-	FindInBatches(result *[]*models.QuestionAnswer, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*entity.QuestionAnswer) error
+	CreateInBatches(values []*entity.QuestionAnswer, batchSize int) error
+	Save(values ...*entity.QuestionAnswer) error
+	First() (*entity.QuestionAnswer, error)
+	Take() (*entity.QuestionAnswer, error)
+	Last() (*entity.QuestionAnswer, error)
+	Find() ([]*entity.QuestionAnswer, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.QuestionAnswer, err error)
+	FindInBatches(result *[]*entity.QuestionAnswer, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*models.QuestionAnswer) (info gen.ResultInfo, err error)
+	Delete(...*entity.QuestionAnswer) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -175,9 +175,9 @@ type IQuestionAnswerDo interface {
 	Assign(attrs ...field.AssignExpr) IQuestionAnswerDo
 	Joins(fields ...field.RelationField) IQuestionAnswerDo
 	Preload(fields ...field.RelationField) IQuestionAnswerDo
-	FirstOrInit() (*models.QuestionAnswer, error)
-	FirstOrCreate() (*models.QuestionAnswer, error)
-	FindByPage(offset int, limit int) (result []*models.QuestionAnswer, count int64, err error)
+	FirstOrInit() (*entity.QuestionAnswer, error)
+	FirstOrCreate() (*entity.QuestionAnswer, error)
+	FindByPage(offset int, limit int) (result []*entity.QuestionAnswer, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IQuestionAnswerDo
@@ -277,57 +277,57 @@ func (q questionAnswerDo) Unscoped() IQuestionAnswerDo {
 	return q.withDO(q.DO.Unscoped())
 }
 
-func (q questionAnswerDo) Create(values ...*models.QuestionAnswer) error {
+func (q questionAnswerDo) Create(values ...*entity.QuestionAnswer) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return q.DO.Create(values)
 }
 
-func (q questionAnswerDo) CreateInBatches(values []*models.QuestionAnswer, batchSize int) error {
+func (q questionAnswerDo) CreateInBatches(values []*entity.QuestionAnswer, batchSize int) error {
 	return q.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (q questionAnswerDo) Save(values ...*models.QuestionAnswer) error {
+func (q questionAnswerDo) Save(values ...*entity.QuestionAnswer) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return q.DO.Save(values)
 }
 
-func (q questionAnswerDo) First() (*models.QuestionAnswer, error) {
+func (q questionAnswerDo) First() (*entity.QuestionAnswer, error) {
 	if result, err := q.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.QuestionAnswer), nil
+		return result.(*entity.QuestionAnswer), nil
 	}
 }
 
-func (q questionAnswerDo) Take() (*models.QuestionAnswer, error) {
+func (q questionAnswerDo) Take() (*entity.QuestionAnswer, error) {
 	if result, err := q.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.QuestionAnswer), nil
+		return result.(*entity.QuestionAnswer), nil
 	}
 }
 
-func (q questionAnswerDo) Last() (*models.QuestionAnswer, error) {
+func (q questionAnswerDo) Last() (*entity.QuestionAnswer, error) {
 	if result, err := q.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.QuestionAnswer), nil
+		return result.(*entity.QuestionAnswer), nil
 	}
 }
 
-func (q questionAnswerDo) Find() ([]*models.QuestionAnswer, error) {
+func (q questionAnswerDo) Find() ([]*entity.QuestionAnswer, error) {
 	result, err := q.DO.Find()
-	return result.([]*models.QuestionAnswer), err
+	return result.([]*entity.QuestionAnswer), err
 }
 
-func (q questionAnswerDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*models.QuestionAnswer, err error) {
-	buf := make([]*models.QuestionAnswer, 0, batchSize)
+func (q questionAnswerDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.QuestionAnswer, err error) {
+	buf := make([]*entity.QuestionAnswer, 0, batchSize)
 	err = q.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -335,7 +335,7 @@ func (q questionAnswerDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch i
 	return results, err
 }
 
-func (q questionAnswerDo) FindInBatches(result *[]*models.QuestionAnswer, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (q questionAnswerDo) FindInBatches(result *[]*entity.QuestionAnswer, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return q.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -361,23 +361,23 @@ func (q questionAnswerDo) Preload(fields ...field.RelationField) IQuestionAnswer
 	return &q
 }
 
-func (q questionAnswerDo) FirstOrInit() (*models.QuestionAnswer, error) {
+func (q questionAnswerDo) FirstOrInit() (*entity.QuestionAnswer, error) {
 	if result, err := q.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.QuestionAnswer), nil
+		return result.(*entity.QuestionAnswer), nil
 	}
 }
 
-func (q questionAnswerDo) FirstOrCreate() (*models.QuestionAnswer, error) {
+func (q questionAnswerDo) FirstOrCreate() (*entity.QuestionAnswer, error) {
 	if result, err := q.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*models.QuestionAnswer), nil
+		return result.(*entity.QuestionAnswer), nil
 	}
 }
 
-func (q questionAnswerDo) FindByPage(offset int, limit int) (result []*models.QuestionAnswer, count int64, err error) {
+func (q questionAnswerDo) FindByPage(offset int, limit int) (result []*entity.QuestionAnswer, count int64, err error) {
 	result, err = q.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -406,7 +406,7 @@ func (q questionAnswerDo) Scan(result interface{}) (err error) {
 	return q.DO.Scan(result)
 }
 
-func (q questionAnswerDo) Delete(models ...*models.QuestionAnswer) (result gen.ResultInfo, err error) {
+func (q questionAnswerDo) Delete(models ...*entity.QuestionAnswer) (result gen.ResultInfo, err error) {
 	return q.DO.Delete(models)
 }
 
