@@ -1,7 +1,6 @@
 package db
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"os"
@@ -13,11 +12,6 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-// DB ...
-type DB struct {
-	*sql.DB
-}
-
 var db *gorm.DB
 
 // Init ...
@@ -26,7 +20,7 @@ func Init() {
 	dbInfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"))
 
 	var err error
-	db, err := ConnectDB(dbInfo)
+	db, err = ConnectDB(dbInfo)
 	if err != nil {
 		log.Fatal(err)
 	}

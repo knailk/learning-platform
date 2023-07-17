@@ -35,13 +35,13 @@ func Handler(ctx context.Context) (*gin.Engine, error) {
 		v1.POST("/token/refresh", auth.Refresh)
 
 		/*** START Article ***/
-		article := new(controllers.ArticleController)
+		// article := new(controllers.ArticleController)
 
-		v1.POST("/article", middleware.TokenAuthMiddleware(), article.Create)
-		v1.GET("/articles", middleware.TokenAuthMiddleware(), article.All)
-		v1.GET("/article/:id", middleware.TokenAuthMiddleware(), article.One)
-		v1.PUT("/article/:id", middleware.TokenAuthMiddleware(), article.Update)
-		v1.DELETE("/article/:id", middleware.TokenAuthMiddleware(), article.Delete)
+		// v1.POST("/article", middleware.TokenAuthMiddleware(), article.Create)
+		// v1.GET("/articles", middleware.TokenAuthMiddleware(), article.All)
+		// v1.GET("/article/:id", middleware.TokenAuthMiddleware(), article.One)
+		// v1.PUT("/article/:id", middleware.TokenAuthMiddleware(), article.Update)
+		// v1.DELETE("/article/:id", middleware.TokenAuthMiddleware(), article.Delete)
 	}
 
 	// route not found

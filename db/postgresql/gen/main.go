@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/knailk/learning-platform/app/models"
+	"github.com/knailk/learning-platform/app/entity"
 	"gorm.io/gen"
 )
 
@@ -13,14 +13,14 @@ func main() {
 		FieldNullable: true,
 	})
 	g.ApplyBasic(
-		models.User{},
-		models.Follow{},
-		models.Rank{},
-		models.Chapter{},
-		models.Lesson{},
-		models.Question{},
-		models.QuestionAnswer{},
-		models.LessonAnswer{},
+		entity.User{},
+		entity.Follow{},
+		entity.Rank{},
+		entity.Chapter{},
+		entity.Lesson{},
+		entity.Question{},
+		entity.QuestionAnswer{},
+		entity.LessonAnswer{},
 	)
 
 	// Execute the generator
