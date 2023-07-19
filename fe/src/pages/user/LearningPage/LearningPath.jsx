@@ -28,7 +28,7 @@ const LearningPath = () => {
                     <h1>Cửa 22</h1>
                     <span>Nhập môn lập trình</span>
                 </Col>
-                <Col span={6} sm={8}>
+                <Col span={6} sm={6}>
                     <div
                         className={clsx([style.introduceBtn], { [style.btnClickEffect]: touch })}
                         onMouseDown={() => setTouch(true)}

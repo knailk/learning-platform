@@ -1,59 +1,62 @@
-import React from 'react';
+import { memo, useEffect, useState } from 'react';
 import { GridContextProvider, GridDropZone, GridItem, swap, move } from 'react-grid-dnd';
+import styles from './style.module.scss';
+import { Col, Row } from 'antd';
+import clsx from 'clsx';
 
-function App() {
-    const [items, setItems] = React.useState({
-        left: [
-            { position: 0, name: 'ben' },
-            { position: 1, name: 'joe' },
-            { position: 2, name: 'jason' },
-            { position: 3, name: 'chris' },
-            { position: 4, name: 'heather' },
-        ],
-        right: [
-            { position: 5, name: 'george' },
-            { position: 6, name: 'rupert' },
-            { position: 7, name: 'alice' },
-            { position: 8, name: 'katherine' },
-            { position: 8, name: 'pam' },
-            { position: 10, name: 'katie' },
-        ],
+function BoardControl({ ...props }) {
+    const [items, setItems] = useState({
+        left: [],
     });
-
-    function onChange(sourceId, sourceIndex, targetIndex, targetId) {
-        console.log(targetId, sourceId);
-        if (targetId) {
-            const result = move(items[sourceId], items[targetId], sourceIndex, targetIndex);
-            return setItems({
-                ...items,
-                [sourceId]: result[0],
-                [targetId]: result[1],
+    const [dragOverDelete, setDragOverDelete] = useState(false);
+    useEffect(() => {
+        if (props.item.hasOwnProperty('position')) {
+            setItems({
+                left: [...items.left, props.item],
             });
         }
+    }, [props.item]);
 
-        const result = swap(items[sourceId], sourceIndex, targetIndex);
-        return setItems({
-            ...items,
-            [sourceId]: result,
-        });
+    const handleDragOverDelete = () => {};
+
+    function onChange(sourceId, sourceIndex, targetIndex, targetId) {
+        console.log(sourceId, sourceIndex, targetIndex, targetId);
+        if (targetId) {
+            const result = items[sourceId].filter((val, index) => index != sourceIndex);
+            return setItems({
+                ...items,
+                [sourceId]: result,
+            });
+        }
+        if (sourceId !== undefined && sourceIndex !== undefined && targetIndex !== undefined) {
+            const result = swap(items[sourceId], sourceIndex, targetIndex);
+            return setItems({
+                ...items,
+                [sourceId]: result,
+            });
+        }
     }
 
     return (
         <GridContextProvider onChange={onChange}>
-            <div className="container">
-                <GridDropZone className="dropzone left" id="left" boxesPerRow={3} rowHeight={150}>
-                    {items.left.map((item) => (
-                        <GridItem key={item.position}>
-                            <div className="grid-item">
-                                <div className="grid-item-content">{item.name.toUpperCase()}</div>
-                            </div>
-                        </GridItem>
-                    ))}
-                </GridDropZone>
-            </div>
+            <Col>
+                <Row className={styles.boardControl}>
+                    <GridDropZone className={clsx([styles.dropzone, 'left'])} id="left" boxesPerRow={4} rowHeight={85}>
+                        {items.left.map((item) => (
+                            <GridItem key={item.position}>
+                                <div className={styles.itemControl}>
+                                    <div>{item.name.toUpperCase()}</div>
+                                </div>
+                            </GridItem>
+                        ))}
+                    </GridDropZone>
+                </Row>
+                <Row className={clsx([styles.boardDelete], { [styles.dragOver]: dragOverDelete })} onDragOver={console.log(123)}>
+                    <GridDropZone className={clsx([styles.dropzone, 'delete'])} id="delete" boxesPerRow={4} rowHeight={85}></GridDropZone>
+                </Row>
+            </Col>
         </GridContextProvider>
     );
 }
 
-const rootElement = document.getElementById('root');
-ReactDOM.render(<App />, rootElement);
+export default memo(BoardControl);

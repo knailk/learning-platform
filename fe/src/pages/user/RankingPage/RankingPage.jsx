@@ -21,6 +21,7 @@ const RankingPage = () => {
                         <OtherTop avatar="images/avatar2.jpg" />
                         <OtherTop avatar="images/avatar3.jpg" />
                         <OtherTop avatar="images/avatar4.jpg" />
+                        <OtherTop avatar="images/avatar4.jpg" />
                     </Col>
                     <Col span={11}>
                         <UserRanking />
