@@ -8,21 +8,26 @@ import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/knailk/learning-platform/app/models"
 	"github.com/knailk/learning-platform/app/controllers"
 	"github.com/knailk/learning-platform/app/middleware"
+	"github.com/knailk/learning-platform/db"
+	"github.com/knailk/learning-platform/db/postgresql/repository"
 	"github.com/knailk/learning-platform/pkg/log"
 )
 
 func Handler(ctx context.Context) (*gin.Engine, error) {
 	//Start the default gin server
 	r := gin.Default()
-
 	initMiddleware(r)
+
+	dbSQL := db.GetDB()
+	repo := repository.NewPostgresRepository(dbSQL)
 
 	v1 := r.Group("/v1")
 	{
 		/*** START USER ***/
-		user := new(controllers.UserController)
+		user := &controllers.UserController{UserModel: &models.UserModel{Repo: repo}}
 
 		v1.POST("/user/login", user.Login)
 		v1.POST("/user/register", user.Register)
