@@ -1,38 +1,29 @@
 package models
 
 import (
+	"context"
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/knailk/learning-platform/app/controllers/request"
-	"github.com/knailk/learning-platform/db"
+	"github.com/knailk/learning-platform/app/entity"
 
+	"github.com/knailk/learning-platform/db/postgresql/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 
-// User ...
-type User struct {
-	ID        uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
-	Email     string    `json:"email"`
-	Phone     string    `json:"phone"`
-	Name      string    `json:"name"`
-	Age       int       `json:"age"`
-	Password  string    `json:"-"`
-	UpdatedAt time.Time     `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
-	CreatedAt time.Time     `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
-}
-
 // UserModel ...
-type UserModel struct{}
+type UserModel struct {
+	Repo *repository.PostgresRepository
+}
 
 var authModel = new(AuthModel)
 
 // Login ...
-func (m UserModel) Login(request request.LoginRequest) (user User, token Token, err error) {
+func (m UserModel) Login(ctx context.Context, request request.LoginRequest) (user *entity.User, token Token, err error) {
+	// err = db.GetDB().SelectOne(&user, "SELECT id, email, password, name, updated_at, created_at FROM public.user WHERE email=LOWER($1) LIMIT 1", request.Email)
 
-	err = db.GetDB().SelectOne(&user, "SELECT id, email, password, name, updated_at, created_at FROM public.user WHERE email=LOWER($1) LIMIT 1", request.Email)
-
+	user, err = m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(request.Email)).First()
 	if err != nil {
 		return user, token, err
 	}
@@ -64,13 +55,11 @@ func (m UserModel) Login(request request.LoginRequest) (user User, token Token, 
 }
 
 // Register ...
-func (m UserModel) Register(request request.RegisterRequest) (user User, err error) {
-	getDb := db.GetDB()
-
+func (m UserModel) Register(ctx context.Context, request request.RegisterRequest) (user *entity.User, err error) {
 	//Check if the user exists in database
-	checkUser, err := getDb.SelectInt("SELECT count(id) FROM public.user WHERE email=LOWER($1) LIMIT 1", request.Email)
+	checkUser, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(request.Email)).Count()
 	if err != nil {
-		return user, errors.New("something went wrong, please try again later")
+		return user, err
 	}
 
 	if checkUser > 0 {
@@ -80,13 +69,19 @@ func (m UserModel) Register(request request.RegisterRequest) (user User, err err
 	bytePassword := []byte(request.Password)
 	hashedPassword, err := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
 	if err != nil {
-		return user, errors.New("something went wrong, please try again later")
+		return user, err
 	}
 
 	//Create the user and return back the user ID
-	err = getDb.QueryRow("INSERT INTO public.user(email, password, name) VALUES($1, $2, $3) RETURNING id", request.Email, string(hashedPassword), request.Name).Scan(&user.ID)
+	// err = getDb.QueryRow("INSERT INTO public.user(email, password, name) VALUES($1, $2, $3) RETURNING id", request.Email, string(hashedPassword), request.Name).Scan(&user.ID)
+	err = m.Repo.User.WithContext(ctx).Create(&entity.User{
+		ID:       uuid.New(),
+		Email:    request.Email,
+		Name:     request.Name,
+		Password: string(hashedPassword),
+	})
 	if err != nil {
-		return user, errors.New("something went wrong, please try again later")
+		return user, err
 	}
 
 	user.Name = request.Name
@@ -96,7 +91,7 @@ func (m UserModel) Register(request request.RegisterRequest) (user User, err err
 }
 
 // One ...
-func (m UserModel) One(userID int64) (user User, err error) {
-	err = db.GetDB().SelectOne(&user, "SELECT id, email, name FROM public.user WHERE id=$1 LIMIT 1", userID)
+func (m UserModel) One(ctx context.Context, userID uuid.UUID) (user *entity.User, err error) {
+	user, err = m.Repo.User.WithContext(ctx).Where(m.Repo.User.ID.Eq(userID)).First()
 	return user, err
 }

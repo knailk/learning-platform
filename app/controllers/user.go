@@ -11,54 +11,57 @@ import (
 )
 
 // UserController ...
-type UserController struct{}
-
-var userModel = new(models.UserModel)
-var userRequest = new(request.UserRequest)
-
-// getUserID ...
-func getUserID(c *gin.Context) (userID int64) {
-	//MustGet returns the value for the given key if it exists, otherwise it panics.
-	return c.MustGet("userID").(int64)
+type UserController struct {
+	UserModel *models.UserModel
 }
 
+var (
+	userRequest = new(request.UserRequest)
+)
+
+// // getUserID ...
+// func getUserID(c *gin.Context) (userID int64) {
+// 	//MustGet returns the value for the given key if it exists, otherwise it panics.
+// 	return c.MustGet("userID").(int64)
+// }
+
 // Login ...
-func (ctrl UserController) Login(c *gin.Context) {
+func (ctrl UserController) Login(ctx *gin.Context) {
 	var loginRequest request.LoginRequest
 
-	if validationErr := c.ShouldBindJSON(&loginRequest); validationErr != nil {
+	if validationErr := ctx.ShouldBindJSON(&loginRequest); validationErr != nil {
 		message := userRequest.Login(validationErr)
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
 		return
 	}
 
-	user, token, err := userModel.Login(loginRequest)
+	user, token, err := ctrl.UserModel.Login(ctx, loginRequest)
 	if err != nil {
 		log.Error("error login: ", err)
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid login details"})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid login details"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully logged in", "user": user, "token": token})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully logged in", "user": user, "token": token})
 }
 
 // Register ...
-func (ctrl UserController) Register(c *gin.Context) {
+func (ctrl UserController) Register(ctx *gin.Context) {
 	var registerRequest request.RegisterRequest
 
-	if validationErr := c.ShouldBindJSON(&registerRequest); validationErr != nil {
+	if validationErr := ctx.ShouldBindJSON(&registerRequest); validationErr != nil {
 		message := userRequest.Register(validationErr)
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
 		return
 	}
 
-	user, err := userModel.Register(registerRequest)
+	user, err := ctrl.UserModel.Register(ctx, registerRequest)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully registered", "user": user})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully registered", "user": user})
 }
 
 // Logout ...
