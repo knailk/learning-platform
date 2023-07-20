@@ -20,16 +20,14 @@ type UserModel struct {
 var authModel = new(AuthModel)
 
 // Login ...
-func (m UserModel) Login(ctx context.Context, request request.LoginRequest) (user *entity.User, token Token, err error) {
-	// err = db.GetDB().SelectOne(&user, "SELECT id, email, password, name, updated_at, created_at FROM public.user WHERE email=LOWER($1) LIMIT 1", request.Email)
-
-	user, err = m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(request.Email)).First()
+func (m *UserModel) Login(ctx context.Context, req request.LoginRequest) (user *entity.User, token Token, err error) {
+	user, err = m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(req.Email)).First()
 	if err != nil {
 		return user, token, err
 	}
 
 	//Compare the password request and database if match
-	bytePassword := []byte(request.Password)
+	bytePassword := []byte(req.Password)
 	byteHashedPassword := []byte(user.Password)
 
 	err = bcrypt.CompareHashAndPassword(byteHashedPassword, bytePassword)
@@ -55,9 +53,9 @@ func (m UserModel) Login(ctx context.Context, request request.LoginRequest) (use
 }
 
 // Register ...
-func (m UserModel) Register(ctx context.Context, request request.RegisterRequest) (user *entity.User, err error) {
+func (m *UserModel) Register(ctx context.Context, req request.RegisterRequest) (user *entity.User, err error) {
 	//Check if the user exists in database
-	checkUser, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(request.Email)).Count()
+	checkUser, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(req.Email)).Count()
 	if err != nil {
 		return user, err
 	}
@@ -66,32 +64,40 @@ func (m UserModel) Register(ctx context.Context, request request.RegisterRequest
 		return user, errors.New("email already exists")
 	}
 
-	bytePassword := []byte(request.Password)
+	bytePassword := []byte(req.Password)
 	hashedPassword, err := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
 	if err != nil {
 		return user, err
 	}
 
-	//Create the user and return back the user ID
-	// err = getDb.QueryRow("INSERT INTO public.user(email, password, name) VALUES($1, $2, $3) RETURNING id", request.Email, string(hashedPassword), request.Name).Scan(&user.ID)
-	err = m.Repo.User.WithContext(ctx).Create(&entity.User{
+	user = &entity.User{
 		ID:       uuid.New(),
-		Email:    request.Email,
-		Name:     request.Name,
+		Email:    req.Email,
+		Name:     req.Name,
 		Password: string(hashedPassword),
-	})
+		Age:      req.Age,
+		Phone:    req.Phone,
+	}
+
+	//Create the user and return back the user ID
+	err = m.Repo.User.WithContext(ctx).Create(user)
 	if err != nil {
 		return user, err
 	}
-
-	user.Name = request.Name
-	user.Email = request.Email
 
 	return user, err
 }
 
 // One ...
-func (m UserModel) One(ctx context.Context, userID uuid.UUID) (user *entity.User, err error) {
+func (m *UserModel) One(ctx context.Context, userID uuid.UUID) (user *entity.User, err error) {
 	user, err = m.Repo.User.WithContext(ctx).Where(m.Repo.User.ID.Eq(userID)).First()
 	return user, err
+}
+
+func (m *UserModel) Update(ctx context.Context, req request.ProfileRequest) (user *entity.User, err error) {
+	_, err = m.Repo.User.WithContext(ctx).Where(m.Repo.User.ID.Eq(req.UserID)).Updates(req)
+	if err != nil {
+		return nil, err
+	}
+	return
 }

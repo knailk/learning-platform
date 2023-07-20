@@ -30,6 +30,7 @@ func newLesson(db *gorm.DB, opts ...gen.DOOption) lesson {
 	_lesson.ID = field.NewField(tableName, "id")
 	_lesson.ChapterID = field.NewField(tableName, "chapter_id")
 	_lesson.Name = field.NewString(tableName, "name")
+	_lesson.Score = field.NewInt(tableName, "score")
 	_lesson.Tags = field.NewField(tableName, "tags")
 	_lesson.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_lesson.CreatedAt = field.NewTime(tableName, "created_at")
@@ -46,6 +47,7 @@ type lesson struct {
 	ID        field.Field
 	ChapterID field.Field
 	Name      field.String
+	Score     field.Int
 	Tags      field.Field
 	UpdatedAt field.Time
 	CreatedAt field.Time
@@ -68,6 +70,7 @@ func (l *lesson) updateTableName(table string) *lesson {
 	l.ID = field.NewField(table, "id")
 	l.ChapterID = field.NewField(table, "chapter_id")
 	l.Name = field.NewString(table, "name")
+	l.Score = field.NewInt(table, "score")
 	l.Tags = field.NewField(table, "tags")
 	l.UpdatedAt = field.NewTime(table, "updated_at")
 	l.CreatedAt = field.NewTime(table, "created_at")
@@ -95,10 +98,11 @@ func (l *lesson) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (l *lesson) fillFieldMap() {
-	l.fieldMap = make(map[string]field.Expr, 6)
+	l.fieldMap = make(map[string]field.Expr, 7)
 	l.fieldMap["id"] = l.ID
 	l.fieldMap["chapter_id"] = l.ChapterID
 	l.fieldMap["name"] = l.Name
+	l.fieldMap["score"] = l.Score
 	l.fieldMap["tags"] = l.Tags
 	l.fieldMap["updated_at"] = l.UpdatedAt
 	l.fieldMap["created_at"] = l.CreatedAt

@@ -28,9 +28,7 @@ CREATE DATABASE cpp_db WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 
 
 ALTER DATABASE cpp_db OWNER TO postgres;
 
-postgres=# \connect cpp_db
-
-
+postgres = # \connect cpp_db
 SET
     statement_timeout = 0;
 
@@ -86,14 +84,7 @@ CREATE TABLE "users" (
     "phone" text,
     "name" text,
     "age" integer,
-    "created_at" timestamp NOT NULL DEFAULT (now()),
-    "updated_at" timestamp NOT NULL DEFAULT (now())
-);
-
-CREATE TABLE "ranks" (
-    "id" char(36) PRIMARY KEY,
-    "user_id" char(36),
-    "before" integer,
+    "score" integer,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
 );
@@ -112,6 +103,7 @@ CREATE TABLE "lessons" (
     "chapter_id" char(36),
     "name" text,
     "tags" text [],
+    "score" integer,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
 );
@@ -157,11 +149,6 @@ ALTER TABLE
     "follows"
 ADD
     FOREIGN KEY ("followed_user_id") REFERENCES "users" ("id");
-
-ALTER TABLE
-    "ranks"
-ADD
-    FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE
     "lessons"

@@ -13,6 +13,7 @@ type User struct {
 	Phone     string    `json:"phone"`
 	Name      string    `json:"name"`
 	Age       int       `json:"age"`
+	Score     int       `json:"score"`
 	Password  string    `json:"-"`
 	UpdatedAt time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 	CreatedAt time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`

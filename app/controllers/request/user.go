@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/google/uuid"
 )
 
 // UserRequest ...
@@ -11,15 +12,25 @@ type UserRequest struct{}
 
 // LoginRequest ...
 type LoginRequest struct {
-	Email    string `form:"email" json:"email" binding:"required,email"`
-	Password string `form:"password" json:"password" binding:"required,min=3,max=50"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=3,max=50"`
 }
 
 // RegisterRequest ...
 type RegisterRequest struct {
-	Name     string `form:"name" json:"name" binding:"required,min=3,max=20,fullName"` //fullName rule is in validator.go
-	Email    string `form:"email" json:"email" binding:"required,email"`
-	Password string `form:"password" json:"password" binding:"required,min=3,max=50"`
+	Name     string `json:"name" binding:"required,min=3,max=20,fullName"` //fullName rule is in validator.go
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=3,max=50"`
+	Age      int    `json:"age" binding:"required,min=1,max=100"`
+	Phone    string `json:"phone"`
+}
+
+type ProfileRequest struct {
+	UserID   uuid.UUID `json:"user_id"`
+	Name     string    `json:"name" binding:"required,min=3,max=20,fullName"` //fullName rule is in validator.go
+	Password string    `json:"password" binding:"required,min=3,max=50"`
+	Age      int       `json:"age" binding:"required,min=1,max=100"`
+	Phone    string    `json:"phone"`
 }
 
 // Name ...
@@ -63,6 +74,18 @@ func (f UserRequest) Password(tag string) (message string) {
 		return "Your password should be between 3 and 50 characters"
 	case "eqfield":
 		return "Your passwords does not match"
+	default:
+		return "Something went wrong, please try again later"
+	}
+}
+
+// Age ...
+func (f UserRequest) Age(tag string) (message string) {
+	switch tag {
+	case "required":
+		return "Please enter your Age"
+	case "min", "max":
+		return "Your Age should be between 3 and 100 characters"
 	default:
 		return "Something went wrong, please try again later"
 	}
@@ -115,6 +138,9 @@ func (f UserRequest) Register(err error) string {
 				return f.Password(err.Tag())
 			}
 
+			if err.Field() == "Password" {
+				return f.Password(err.Tag())
+			}
 		}
 	default:
 		return "Invalid request"

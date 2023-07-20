@@ -32,6 +32,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.Phone = field.NewString(tableName, "phone")
 	_user.Name = field.NewString(tableName, "name")
 	_user.Age = field.NewInt(tableName, "age")
+	_user.Score = field.NewInt(tableName, "score")
 	_user.Password = field.NewString(tableName, "password")
 	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_user.CreatedAt = field.NewTime(tableName, "created_at")
@@ -50,6 +51,7 @@ type user struct {
 	Phone     field.String
 	Name      field.String
 	Age       field.Int
+	Score     field.Int
 	Password  field.String
 	UpdatedAt field.Time
 	CreatedAt field.Time
@@ -74,6 +76,7 @@ func (u *user) updateTableName(table string) *user {
 	u.Phone = field.NewString(table, "phone")
 	u.Name = field.NewString(table, "name")
 	u.Age = field.NewInt(table, "age")
+	u.Score = field.NewInt(table, "score")
 	u.Password = field.NewString(table, "password")
 	u.UpdatedAt = field.NewTime(table, "updated_at")
 	u.CreatedAt = field.NewTime(table, "created_at")
@@ -101,12 +104,13 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 8)
+	u.fieldMap = make(map[string]field.Expr, 9)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["email"] = u.Email
 	u.fieldMap["phone"] = u.Phone
 	u.fieldMap["name"] = u.Name
 	u.fieldMap["age"] = u.Age
+	u.fieldMap["score"] = u.Score
 	u.fieldMap["password"] = u.Password
 	u.fieldMap["updated_at"] = u.UpdatedAt
 	u.fieldMap["created_at"] = u.CreatedAt

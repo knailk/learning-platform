@@ -15,7 +15,6 @@ func main() {
 	g.ApplyBasic(
 		entity.User{},
 		entity.Follow{},
-		entity.Rank{},
 		entity.Chapter{},
 		entity.Lesson{},
 		entity.Question{},

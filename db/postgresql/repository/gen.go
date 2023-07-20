@@ -23,7 +23,6 @@ var (
 	LessonAnswer   *lessonAnswer
 	Question       *question
 	QuestionAnswer *questionAnswer
-	Rank           *rank
 	User           *user
 )
 
@@ -35,7 +34,6 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	LessonAnswer = &Q.LessonAnswer
 	Question = &Q.Question
 	QuestionAnswer = &Q.QuestionAnswer
-	Rank = &Q.Rank
 	User = &Q.User
 }
 
@@ -48,7 +46,6 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		LessonAnswer:   newLessonAnswer(db, opts...),
 		Question:       newQuestion(db, opts...),
 		QuestionAnswer: newQuestionAnswer(db, opts...),
-		Rank:           newRank(db, opts...),
 		User:           newUser(db, opts...),
 	}
 }
@@ -62,7 +59,6 @@ type Query struct {
 	LessonAnswer   lessonAnswer
 	Question       question
 	QuestionAnswer questionAnswer
-	Rank           rank
 	User           user
 }
 
@@ -77,7 +73,6 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		LessonAnswer:   q.LessonAnswer.clone(db),
 		Question:       q.Question.clone(db),
 		QuestionAnswer: q.QuestionAnswer.clone(db),
-		Rank:           q.Rank.clone(db),
 		User:           q.User.clone(db),
 	}
 }
@@ -99,7 +94,6 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		LessonAnswer:   q.LessonAnswer.replaceDB(db),
 		Question:       q.Question.replaceDB(db),
 		QuestionAnswer: q.QuestionAnswer.replaceDB(db),
-		Rank:           q.Rank.replaceDB(db),
 		User:           q.User.replaceDB(db),
 	}
 }
@@ -111,7 +105,6 @@ type queryCtx struct {
 	LessonAnswer   ILessonAnswerDo
 	Question       IQuestionDo
 	QuestionAnswer IQuestionAnswerDo
-	Rank           IRankDo
 	User           IUserDo
 }
 
@@ -123,7 +116,6 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		LessonAnswer:   q.LessonAnswer.WithContext(ctx),
 		Question:       q.Question.WithContext(ctx),
 		QuestionAnswer: q.QuestionAnswer.WithContext(ctx),
-		Rank:           q.Rank.WithContext(ctx),
 		User:           q.User.WithContext(ctx),
 	}
 }

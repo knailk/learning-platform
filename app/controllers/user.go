@@ -26,7 +26,7 @@ var (
 // }
 
 // Login ...
-func (ctrl UserController) Login(ctx *gin.Context) {
+func (ctrl *UserController) Login(ctx *gin.Context) {
 	var loginRequest request.LoginRequest
 
 	if validationErr := ctx.ShouldBindJSON(&loginRequest); validationErr != nil {
@@ -46,7 +46,7 @@ func (ctrl UserController) Login(ctx *gin.Context) {
 }
 
 // Register ...
-func (ctrl UserController) Register(ctx *gin.Context) {
+func (ctrl *UserController) Register(ctx *gin.Context) {
 	var registerRequest request.RegisterRequest
 
 	if validationErr := ctx.ShouldBindJSON(&registerRequest); validationErr != nil {
@@ -65,8 +65,7 @@ func (ctrl UserController) Register(ctx *gin.Context) {
 }
 
 // Logout ...
-func (ctrl UserController) Logout(c *gin.Context) {
-
+func (ctrl *UserController) Logout(c *gin.Context) {
 	au, err := authModel.ExtractTokenMetadata(c.Request)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in"})
@@ -81,3 +80,43 @@ func (ctrl UserController) Logout(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Successfully logged out"})
 }
+
+func (ctrl *UserController) GetProfile(c *gin.Context) {
+	au, err := authModel.ExtractTokenMetadata(c.Request)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in"})
+		return
+	}
+
+	user, err := ctrl.UserModel.One(c, au.UserID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get user", "err": err})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": user})
+}
+
+func (ctrl *UserController) UpdateProfile(ctx *gin.Context) {
+	au, err := authModel.ExtractTokenMetadata(ctx.Request)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in"})
+		return
+	}
+
+	var profileRequest request.ProfileRequest
+
+	if validationErr := ctx.ShouldBindJSON(&profileRequest); validationErr != nil {
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
+		return
+	}
+
+	profileRequest.UserID = au.UserID
+
+	user, err := ctrl.UserModel.One(ctx, au.UserID)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get user", "err": err})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": user})
+}
+

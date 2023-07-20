@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -26,7 +25,7 @@ type TokenDetails struct {
 // AccessDetails ...
 type AccessDetails struct {
 	AccessUUID string
-	UserID     int64
+	UserID     uuid.UUID
 }
 
 // Token ...
@@ -142,7 +141,7 @@ func (m AuthModel) ExtractTokenMetadata(r *http.Request) (*AccessDetails, error)
 		if !ok {
 			return nil, err
 		}
-		userID, err := strconv.ParseInt(fmt.Sprintf("%.f", claims["user_id"]), 10, 64)
+		userID, err := uuid.Parse(fmt.Sprintf("%.f", claims["user_id"]))
 		if err != nil {
 			return nil, err
 		}
@@ -155,12 +154,12 @@ func (m AuthModel) ExtractTokenMetadata(r *http.Request) (*AccessDetails, error)
 }
 
 // FetchAuth ...
-func (m AuthModel) FetchAuth(authD *AccessDetails) (int64, error) {
+func (m AuthModel) FetchAuth(authD *AccessDetails) (uuid.UUID, error) {
 	userid, err := db.GetRedis().Get(authD.AccessUUID).Result()
 	if err != nil {
-		return 0, err
+		return uuid.Nil, err
 	}
-	userID, _ := strconv.ParseInt(userid, 10, 64)
+	userID, _ := uuid.Parse(userid)
 	return userID, nil
 }
 
