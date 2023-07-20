@@ -2,7 +2,6 @@ import { memo, useState } from 'react';
 import styles from './style.module.scss';
 import { Row, Col, Button } from 'antd';
 import BoardControl from './BoardControl';
-import ListControl from './ListControl';
 
 const GameLayout = () => {
     const [itemNum, setItemNum] = useState(4);
@@ -15,17 +14,28 @@ const GameLayout = () => {
         <>
             <Row>
                 <Col>
-                    <Row className={styles.gameLayout}>
-                        Game content
-                        <ListControl />
-                    </Row>
-                    <Col className={styles.listControl}>
-                        <Button onClick={() => handleAddItem('left')}>Left</Button>
-                        <Button onClick={() => handleAddItem('right')}>Right</Button>
-                        <Button onClick={() => handleAddItem('bottom')}>Bottom</Button>
-                        <Button onClick={() => handleAddItem('top')}>Top</Button>
-                        <Button onClick={() => handleAddItem('jump')}>Jump</Button>
-                        <Button onClick={() => handleAddItem('go ahead')}>GoAhead</Button>
+                    <Row className={styles.gameLayout}></Row>
+                    <Col>
+                        <Row className={styles.listControl}>
+                            <div onClick={() => handleAddItem('left')} className={styles.itemList}>
+                                <div>Left</div>
+                            </div>
+                            <div onClick={() => handleAddItem('right')} className={styles.itemList}>
+                                <div>Right</div>
+                            </div>
+                            <div onClick={() => handleAddItem('top')} className={styles.itemList}>
+                                <div>Top</div>
+                            </div>
+                            <div onClick={() => handleAddItem('bottom')} className={styles.itemList}>
+                                <div>Bottom</div>
+                            </div>
+                            <div onClick={() => handleAddItem('jump')} className={styles.itemList}>
+                                <div>Jump</div>
+                            </div>
+                            <div onClick={() => handleAddItem('go ahead')} className={styles.itemList}>
+                                <div>GoAhead</div>
+                            </div>
+                        </Row>
                     </Col>
                 </Col>
                 <BoardControl item={item} />

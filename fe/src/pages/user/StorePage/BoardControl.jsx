@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { GridContextProvider, GridDropZone, GridItem, swap, move } from 'react-grid-dnd';
 import styles from './style.module.scss';
 import { Col, Row } from 'antd';
@@ -8,7 +8,7 @@ function BoardControl({ ...props }) {
     const [items, setItems] = useState({
         left: [],
     });
-    const [dragOverDelete, setDragOverDelete] = useState(false);
+    const dragOverDelete = useRef(false);
     useEffect(() => {
         if (props.item.hasOwnProperty('position')) {
             setItems({
@@ -17,12 +17,10 @@ function BoardControl({ ...props }) {
         }
     }, [props.item]);
 
-    const handleDragOverDelete = () => {};
-
     function onChange(sourceId, sourceIndex, targetIndex, targetId) {
         console.log(sourceId, sourceIndex, targetIndex, targetId);
         if (targetId) {
-            const result = items[sourceId].filter((val, index) => index != sourceIndex);
+            const result = items[sourceId].filter((val, index) => index !== sourceIndex);
             return setItems({
                 ...items,
                 [sourceId]: result,
@@ -36,7 +34,6 @@ function BoardControl({ ...props }) {
             });
         }
     }
-
     return (
         <GridContextProvider onChange={onChange}>
             <Col>
@@ -51,8 +48,15 @@ function BoardControl({ ...props }) {
                         ))}
                     </GridDropZone>
                 </Row>
-                <Row className={clsx([styles.boardDelete], { [styles.dragOver]: dragOverDelete })} onDragOver={console.log(123)}>
-                    <GridDropZone className={clsx([styles.dropzone, 'delete'])} id="delete" boxesPerRow={4} rowHeight={85}></GridDropZone>
+                <Row>
+                    <Col className={clsx([styles.boardDelete])}>
+                        <GridDropZone className={clsx([styles.dropzone, 'delete'])} id="delete" boxesPerRow={4} rowHeight={85}>
+                            <img src="images/recycle.png" alt="delete" onDrag={console.log(123)} />
+                        </GridDropZone>
+                    </Col>
+                    <Col className={clsx([styles.excuteButton])}>
+                        <img src="images/execute.png" alt="execute" onDrag={console.log(123)} />
+                    </Col>
                 </Row>
             </Col>
         </GridContextProvider>
