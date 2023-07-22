@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Row, Col } from 'antd';
 import PathItem from './PathItem';
 
-const LearningPath = () => {
+const LearningPath = ({ ...props }) => {
     const [touch, setTouch] = useState(false);
-    const pathItem = [1, 2, 3, 4, 5, 6, 7];
+    const pathItem = props.data.lesson;
     const marginItem = [
         { marginLeft: '0px' },
         { marginLeft: '44.884px' },
@@ -24,9 +24,9 @@ const LearningPath = () => {
     return (
         <>
             <Row className={style.headerWrapper} justify={'space-between'}>
-                <Col className={style.lessonNumber} span={18} sm={10}>
-                    <h1>Cửa 22</h1>
-                    <span>Nhập môn lập trình</span>
+                <Col className={style.lessonNumber} span={18} sm={18}>
+                    <h1>Cửa {props.data.level}</h1>
+                    <span>{props.data.name}</span>
                 </Col>
                 <Col span={6} sm={6}>
                     <div
@@ -42,10 +42,10 @@ const LearningPath = () => {
             </Row>
             <Row className={style.pathWrapper}>
                 <Col>
-                    {pathItem.map((element, idx) => {
+                    {pathItem.map((element) => {
                         return (
-                            <Row key={idx} style={marginItem[idx]}>
-                                <PathItem />
+                            <Row key={element.position} style={marginItem[element.position]}>
+                                <PathItem status={element.status} type={element.type} />
                             </Row>
                         );
                     })}

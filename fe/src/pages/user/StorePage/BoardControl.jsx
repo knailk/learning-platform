@@ -4,21 +4,16 @@ import styles from './style.module.scss';
 import { Col, Row } from 'antd';
 import clsx from 'clsx';
 
-function BoardControl({ ...props }) {
-    const [items, setItems] = useState({
-        left: [],
-    });
+function BoardControl() {
+    const [itemNum, setItemNum] = useState(4);
+    const [items, setItems] = useState({ left: [] });
+    const handleAddItem = (name) => {
+        setItemNum(itemNum + 1);
+        setItems({ left: [...items.left, { position: itemNum + 1, name }] });
+    };
     const [play, setPlay] = useState(false);
-    useEffect(() => {
-        if (props.item.hasOwnProperty('position')) {
-            setItems({
-                left: [...items.left, props.item],
-            });
-        }
-    }, [props.item]);
     console.log(play);
     function onChange(sourceId, sourceIndex, targetIndex, targetId) {
-        // console.log(sourceId, sourceIndex, targetIndex, targetId);
         if (targetId) {
             const result = items[sourceId].filter((val, index) => index !== sourceIndex);
             return setItems({
@@ -37,8 +32,20 @@ function BoardControl({ ...props }) {
     return (
         <GridContextProvider onChange={onChange}>
             <Col>
+                <Row className={styles.listControl}>
+                    <div onClick={() => handleAddItem('left')} className={styles.itemList}>
+                        <div>Left</div>
+                    </div>
+                    <div onClick={() => handleAddItem('right')} className={styles.itemList}>
+                        <div>Right</div>
+                    </div>
+
+                    <div onClick={() => handleAddItem('jump')} className={styles.itemList}>
+                        <div>Jump</div>
+                    </div>
+                </Row>
                 <Row className={styles.boardControl}>
-                    <GridDropZone className={clsx([styles.dropzone, 'left'])} id="left" boxesPerRow={4} rowHeight={85} disableDrag={play}>
+                    <GridDropZone className={clsx([styles.dropzone, 'left'])} id="left" boxesPerRow={4} rowHeight={70} disableDrag={play}>
                         {items.left.map((item) => (
                             <GridItem key={item.position}>
                                 <div className={styles.itemControl}>
