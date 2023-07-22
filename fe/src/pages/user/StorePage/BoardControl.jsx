@@ -1,5 +1,5 @@
-import { memo, useEffect, useRef, useState } from 'react';
-import { GridContextProvider, GridDropZone, GridItem, swap, move } from 'react-grid-dnd';
+import { memo, useEffect, useState } from 'react';
+import { GridContextProvider, GridDropZone, GridItem, swap } from 'react-grid-dnd';
 import styles from './style.module.scss';
 import { Col, Row } from 'antd';
 import clsx from 'clsx';
@@ -8,7 +8,7 @@ function BoardControl({ ...props }) {
     const [items, setItems] = useState({
         left: [],
     });
-    const dragOverDelete = useRef(false);
+    const [play, setPlay] = useState(false);
     useEffect(() => {
         if (props.item.hasOwnProperty('position')) {
             setItems({
@@ -16,9 +16,9 @@ function BoardControl({ ...props }) {
             });
         }
     }, [props.item]);
-
+    console.log(play);
     function onChange(sourceId, sourceIndex, targetIndex, targetId) {
-        console.log(sourceId, sourceIndex, targetIndex, targetId);
+        // console.log(sourceId, sourceIndex, targetIndex, targetId);
         if (targetId) {
             const result = items[sourceId].filter((val, index) => index !== sourceIndex);
             return setItems({
@@ -38,7 +38,7 @@ function BoardControl({ ...props }) {
         <GridContextProvider onChange={onChange}>
             <Col>
                 <Row className={styles.boardControl}>
-                    <GridDropZone className={clsx([styles.dropzone, 'left'])} id="left" boxesPerRow={4} rowHeight={85}>
+                    <GridDropZone className={clsx([styles.dropzone, 'left'])} id="left" boxesPerRow={4} rowHeight={85} disableDrag={play}>
                         {items.left.map((item) => (
                             <GridItem key={item.position}>
                                 <div className={styles.itemControl}>
@@ -48,14 +48,17 @@ function BoardControl({ ...props }) {
                         ))}
                     </GridDropZone>
                 </Row>
-                <Row>
-                    <Col className={clsx([styles.boardDelete])}>
-                        <GridDropZone className={clsx([styles.dropzone, 'delete'])} id="delete" boxesPerRow={4} rowHeight={85}>
-                            <img src="images/recycle.png" alt="delete" onDrag={console.log(123)} />
-                        </GridDropZone>
+                <Row className={styles.buttonControl}>
+                    <Col className={clsx([styles.excuteButton])}>
+                        <img src={play ? 'images/pause.png' : 'images/execute.png'} alt="execute" onClick={() => setPlay(true)} />
                     </Col>
                     <Col className={clsx([styles.excuteButton])}>
-                        <img src="images/execute.png" alt="execute" onDrag={console.log(123)} />
+                        <img src="images/stop.png" alt="stop" onClick={() => setPlay(false)} />
+                    </Col>
+                    <Col className={clsx([styles.boardDelete])}>
+                        <GridDropZone className={clsx([styles.dropzone, 'delete'])} id="delete" boxesPerRow={4} rowHeight={85}>
+                            <img src="images/recycle.png" alt="delete" />
+                        </GridDropZone>
                     </Col>
                 </Row>
             </Col>
