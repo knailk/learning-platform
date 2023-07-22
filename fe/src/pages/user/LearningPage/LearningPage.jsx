@@ -20,7 +20,6 @@ const LearningPage = () => {
                     <div className={style.fixedBox}>
                         <RankingBox />
                         <MissionBox />
-                        {/* <FriendBox /> */}
                     </div>
                 </Col>
             </Row>
