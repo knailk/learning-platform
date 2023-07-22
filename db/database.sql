@@ -105,7 +105,7 @@ CREATE TABLE "lessons" (
     "chapter_id" char(36),
     "name" text,
     "type" text,
-    "tags" text [],
+    "level" text,
     "score" integer,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
@@ -114,7 +114,7 @@ CREATE TABLE "lessons" (
 CREATE TABLE "questions" (
     "id" char(36) PRIMARY KEY,
     "lesson_id" char(36),
-    "order" integer,
+    "level" text,
     "score" integer [],
     "answer_type" text,
     "answer_content" text [],
