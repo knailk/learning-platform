@@ -52,6 +52,8 @@ SET
 --
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 --
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
@@ -102,6 +104,7 @@ CREATE TABLE "lessons" (
     "id" char(36) PRIMARY KEY,
     "chapter_id" char(36),
     "name" text,
+    "type" text,
     "tags" text [],
     "score" integer,
     "created_at" timestamp NOT NULL DEFAULT (now()),
