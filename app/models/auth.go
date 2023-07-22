@@ -141,10 +141,12 @@ func (m AuthModel) ExtractTokenMetadata(r *http.Request) (*AccessDetails, error)
 		if !ok {
 			return nil, err
 		}
-		userID, err := uuid.Parse(fmt.Sprintf("%.f", claims["user_id"]))
+		
+		userID, err := uuid.Parse(fmt.Sprintf("%v",claims["user_id"]))
 		if err != nil {
 			return nil, err
 		}
+
 		return &AccessDetails{
 			AccessUUID: accessUUID,
 			UserID:     userID,

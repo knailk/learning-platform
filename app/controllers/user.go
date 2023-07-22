@@ -81,19 +81,19 @@ func (ctrl *UserController) Logout(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Successfully logged out"})
 }
 
-func (ctrl *UserController) GetProfile(c *gin.Context) {
-	au, err := authModel.ExtractTokenMetadata(c.Request)
+func (ctrl *UserController) GetProfile(ctx *gin.Context) {
+	au, err := authModel.ExtractTokenMetadata(ctx.Request)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in"})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in"})
 		return
 	}
 
-	user, err := ctrl.UserModel.One(c, au.UserID)
+	user, err := ctrl.UserModel.One(ctx, au.UserID)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get user", "err": err})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get user", "err": err})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": user})
+	ctx.JSON(http.StatusOK, gin.H{"data": user})
 }
 
 func (ctrl *UserController) UpdateProfile(ctx *gin.Context) {
@@ -112,7 +112,7 @@ func (ctrl *UserController) UpdateProfile(ctx *gin.Context) {
 
 	profileRequest.UserID = au.UserID
 
-	user, err := ctrl.UserModel.One(ctx, au.UserID)
+	user, err := ctrl.UserModel.Update(ctx, profileRequest)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get user", "err": err})
 		return
@@ -120,3 +120,17 @@ func (ctrl *UserController) UpdateProfile(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"data": user})
 }
 
+func (ctrl *UserController) GetRank(ctx *gin.Context) {
+	_, err := authModel.ExtractTokenMetadata(ctx.Request)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in"})
+		return
+	}
+
+	rank, err := ctrl.UserModel.GetRank(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get rank", "err": err})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": rank})
+}

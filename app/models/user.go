@@ -5,7 +5,9 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
+	"github.com/jinzhu/copier"
 	"github.com/knailk/learning-platform/app/controllers/request"
+	"github.com/knailk/learning-platform/app/controllers/response"
 	"github.com/knailk/learning-platform/app/entity"
 
 	"github.com/knailk/learning-platform/db/postgresql/repository"
@@ -35,7 +37,6 @@ func (m *UserModel) Login(ctx context.Context, req request.LoginRequest) (user *
 	if err != nil {
 		return user, token, err
 	}
-
 	//Generate the JWT auth token
 	tokenDetails, err := authModel.CreateToken(user.ID)
 	if err != nil {
@@ -99,5 +100,14 @@ func (m *UserModel) Update(ctx context.Context, req request.ProfileRequest) (use
 	if err != nil {
 		return nil, err
 	}
+	return
+}
+
+func (m *UserModel) GetRank(ctx context.Context) (res response.Rank, err error) {
+	users, err := m.Repo.User.WithContext(ctx).Order(m.Repo.User.Score.Desc()).Limit(20).Find()
+	if err != nil {
+		return nil, err
+	}
+	copier.Copy(&res, &users)
 	return
 }
