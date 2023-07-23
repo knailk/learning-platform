@@ -15,8 +15,8 @@ Are you looking for a fun and engaging way to learn programming? Do you want to 
 - [go-redis](https://github.com/go-redis/redis): Redis support for Go
 - SSL Support
 
-### Installation
-
+# Installation
+### Back-end
 ```
 $ go get github.com/knailk/learning-platform
 ```
@@ -60,5 +60,10 @@ $ docker run -p 6380:6379 redis
 $ go run main.go
 ```
 
-
-
+### Front-end
+```
+cd fe && npm install
+```
+```
+npm start
+```
