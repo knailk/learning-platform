@@ -1,4 +1,4 @@
-Welcome to **Learning Platform**
+#Welcome to **Learning Platform**
 
 Are you looking for a fun and engaging way to learn programming? Do you want to create your own games, apps, and animations? If yes, then you should check out **Saint Giong**, the learning platform built by the cpp team!
 
