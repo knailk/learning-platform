@@ -33,6 +33,16 @@ func newChapter(db *gorm.DB, opts ...gen.DOOption) chapter {
 	_chapter.Level = field.NewInt(tableName, "level")
 	_chapter.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_chapter.CreatedAt = field.NewTime(tableName, "created_at")
+	_chapter.Lessons = chapterHasManyLessons{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Lessons", "entity.Lesson"),
+		Questions: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("Lessons.Questions", "entity.Question"),
+		},
+	}
 
 	_chapter.fillFieldMap()
 
@@ -49,6 +59,7 @@ type chapter struct {
 	Level       field.Int
 	UpdatedAt   field.Time
 	CreatedAt   field.Time
+	Lessons     chapterHasManyLessons
 
 	fieldMap map[string]field.Expr
 }
@@ -95,13 +106,14 @@ func (c *chapter) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *chapter) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 6)
+	c.fieldMap = make(map[string]field.Expr, 7)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["name"] = c.Name
 	c.fieldMap["description"] = c.Description
 	c.fieldMap["level"] = c.Level
 	c.fieldMap["updated_at"] = c.UpdatedAt
 	c.fieldMap["created_at"] = c.CreatedAt
+
 }
 
 func (c chapter) clone(db *gorm.DB) chapter {
@@ -112,6 +124,81 @@ func (c chapter) clone(db *gorm.DB) chapter {
 func (c chapter) replaceDB(db *gorm.DB) chapter {
 	c.chapterDo.ReplaceDB(db)
 	return c
+}
+
+type chapterHasManyLessons struct {
+	db *gorm.DB
+
+	field.RelationField
+
+	Questions struct {
+		field.RelationField
+	}
+}
+
+func (a chapterHasManyLessons) Where(conds ...field.Expr) *chapterHasManyLessons {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a chapterHasManyLessons) WithContext(ctx context.Context) *chapterHasManyLessons {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a chapterHasManyLessons) Session(session *gorm.Session) *chapterHasManyLessons {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a chapterHasManyLessons) Model(m *entity.Chapter) *chapterHasManyLessonsTx {
+	return &chapterHasManyLessonsTx{a.db.Model(m).Association(a.Name())}
+}
+
+type chapterHasManyLessonsTx struct{ tx *gorm.Association }
+
+func (a chapterHasManyLessonsTx) Find() (result []*entity.Lesson, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a chapterHasManyLessonsTx) Append(values ...*entity.Lesson) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a chapterHasManyLessonsTx) Replace(values ...*entity.Lesson) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a chapterHasManyLessonsTx) Delete(values ...*entity.Lesson) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a chapterHasManyLessonsTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a chapterHasManyLessonsTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type chapterDo struct{ gen.DO }

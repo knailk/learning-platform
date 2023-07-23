@@ -30,10 +30,17 @@ func newLesson(db *gorm.DB, opts ...gen.DOOption) lesson {
 	_lesson.ID = field.NewField(tableName, "id")
 	_lesson.ChapterID = field.NewField(tableName, "chapter_id")
 	_lesson.Name = field.NewString(tableName, "name")
+	_lesson.Type = field.NewString(tableName, "type")
+	_lesson.Level = field.NewInt(tableName, "level")
 	_lesson.Score = field.NewInt(tableName, "score")
 	_lesson.Tags = field.NewField(tableName, "tags")
 	_lesson.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_lesson.CreatedAt = field.NewTime(tableName, "created_at")
+	_lesson.Questions = lessonHasManyQuestions{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Questions", "entity.Question"),
+	}
 
 	_lesson.fillFieldMap()
 
@@ -47,10 +54,13 @@ type lesson struct {
 	ID        field.Field
 	ChapterID field.Field
 	Name      field.String
+	Type      field.String
+	Level     field.Int
 	Score     field.Int
 	Tags      field.Field
 	UpdatedAt field.Time
 	CreatedAt field.Time
+	Questions lessonHasManyQuestions
 
 	fieldMap map[string]field.Expr
 }
@@ -70,6 +80,8 @@ func (l *lesson) updateTableName(table string) *lesson {
 	l.ID = field.NewField(table, "id")
 	l.ChapterID = field.NewField(table, "chapter_id")
 	l.Name = field.NewString(table, "name")
+	l.Type = field.NewString(table, "type")
+	l.Level = field.NewInt(table, "level")
 	l.Score = field.NewInt(table, "score")
 	l.Tags = field.NewField(table, "tags")
 	l.UpdatedAt = field.NewTime(table, "updated_at")
@@ -98,14 +110,17 @@ func (l *lesson) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (l *lesson) fillFieldMap() {
-	l.fieldMap = make(map[string]field.Expr, 7)
+	l.fieldMap = make(map[string]field.Expr, 10)
 	l.fieldMap["id"] = l.ID
 	l.fieldMap["chapter_id"] = l.ChapterID
 	l.fieldMap["name"] = l.Name
+	l.fieldMap["type"] = l.Type
+	l.fieldMap["level"] = l.Level
 	l.fieldMap["score"] = l.Score
 	l.fieldMap["tags"] = l.Tags
 	l.fieldMap["updated_at"] = l.UpdatedAt
 	l.fieldMap["created_at"] = l.CreatedAt
+
 }
 
 func (l lesson) clone(db *gorm.DB) lesson {
@@ -116,6 +131,77 @@ func (l lesson) clone(db *gorm.DB) lesson {
 func (l lesson) replaceDB(db *gorm.DB) lesson {
 	l.lessonDo.ReplaceDB(db)
 	return l
+}
+
+type lessonHasManyQuestions struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a lessonHasManyQuestions) Where(conds ...field.Expr) *lessonHasManyQuestions {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a lessonHasManyQuestions) WithContext(ctx context.Context) *lessonHasManyQuestions {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a lessonHasManyQuestions) Session(session *gorm.Session) *lessonHasManyQuestions {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a lessonHasManyQuestions) Model(m *entity.Lesson) *lessonHasManyQuestionsTx {
+	return &lessonHasManyQuestionsTx{a.db.Model(m).Association(a.Name())}
+}
+
+type lessonHasManyQuestionsTx struct{ tx *gorm.Association }
+
+func (a lessonHasManyQuestionsTx) Find() (result []*entity.Question, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a lessonHasManyQuestionsTx) Append(values ...*entity.Question) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a lessonHasManyQuestionsTx) Replace(values ...*entity.Question) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a lessonHasManyQuestionsTx) Delete(values ...*entity.Question) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a lessonHasManyQuestionsTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a lessonHasManyQuestionsTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type lessonDo struct{ gen.DO }

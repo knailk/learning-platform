@@ -29,7 +29,7 @@ func newQuestion(db *gorm.DB, opts ...gen.DOOption) question {
 	_question.ALL = field.NewAsterisk(tableName)
 	_question.ID = field.NewField(tableName, "id")
 	_question.LessonID = field.NewField(tableName, "lesson_id")
-	_question.Order = field.NewInt(tableName, "order")
+	_question.Level = field.NewInt(tableName, "level")
 	_question.Score = field.NewField(tableName, "score")
 	_question.AnswerType = field.NewString(tableName, "answer_type")
 	_question.AnswerContent = field.NewField(tableName, "answer_content")
@@ -48,7 +48,7 @@ type question struct {
 	ALL           field.Asterisk
 	ID            field.Field
 	LessonID      field.Field
-	Order         field.Int
+	Level         field.Int
 	Score         field.Field
 	AnswerType    field.String
 	AnswerContent field.Field
@@ -73,7 +73,7 @@ func (q *question) updateTableName(table string) *question {
 	q.ALL = field.NewAsterisk(table)
 	q.ID = field.NewField(table, "id")
 	q.LessonID = field.NewField(table, "lesson_id")
-	q.Order = field.NewInt(table, "order")
+	q.Level = field.NewInt(table, "level")
 	q.Score = field.NewField(table, "score")
 	q.AnswerType = field.NewString(table, "answer_type")
 	q.AnswerContent = field.NewField(table, "answer_content")
@@ -107,7 +107,7 @@ func (q *question) fillFieldMap() {
 	q.fieldMap = make(map[string]field.Expr, 9)
 	q.fieldMap["id"] = q.ID
 	q.fieldMap["lesson_id"] = q.LessonID
-	q.fieldMap["order"] = q.Order
+	q.fieldMap["level"] = q.Level
 	q.fieldMap["score"] = q.Score
 	q.fieldMap["answer_type"] = q.AnswerType
 	q.fieldMap["answer_content"] = q.AnswerContent
