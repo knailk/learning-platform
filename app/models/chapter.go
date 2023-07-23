@@ -1,16 +1,29 @@
 package models
 
 import (
-	"time"
+	"context"
 
-	uuid "github.com/google/uuid"
+	"github.com/google/uuid"
+	"github.com/knailk/learning-platform/app/entity"
+
+	"github.com/knailk/learning-platform/db/postgresql/repository"
 )
 
-type Chapter struct {
-	ID          uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Level       int       `json:"level"`
-	UpdatedAt   time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
-	CreatedAt   time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
+type ChapterModel struct {
+	Repo *repository.PostgresRepository
+}
+
+func (m *ChapterModel) List(ctx context.Context) ([]*entity.Chapter, error) {
+	return m.Repo.Chapter.WithContext(ctx).
+		Order(m.Repo.Chapter.Level).
+		Preload(m.Repo.Chapter.Lessons.Order(m.Repo.Lesson.Level)).
+		// Preload(m.Repo.Chapter.Lessons.Questions).
+		Find()
+}
+
+func (m *ChapterModel) Get(ctx context.Context, id uuid.UUID) (*entity.Chapter, error) {
+	return m.Repo.Chapter.WithContext(ctx).Where(m.Repo.Chapter.ID.Eq(id)).
+		Preload(m.Repo.Chapter.Lessons).
+		// Preload(m.Repo.Chapter.Lessons.Questions).
+		First()
 }
