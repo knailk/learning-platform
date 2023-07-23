@@ -62,7 +62,7 @@ func (ctl AuthController) Refresh(c *gin.Context) {
 		return
 	}
 	//is token valid?
-	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
+	if !token.Valid {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid authorization, please login again"})
 		return
 	}
