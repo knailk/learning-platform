@@ -43,15 +43,15 @@ func Handler(ctx context.Context) (*gin.Engine, error) {
 		/*** START Chapter ***/
 		chapter := &controllers.ChapterController{ChapterModel: &models.ChapterModel{Repo: repo}}
 
-		v1.GET("/chapters", middleware.TokenAuthMiddleware(), chapter.List)
-		v1.GET("/chapters/:id", middleware.TokenAuthMiddleware(), chapter.Get)
+		v1.GET("/chapters", chapter.List)
+		v1.GET("/chapters/:id", chapter.Get)
 
 		/*** START Chapter ***/
 		lesson := &controllers.LessonController{LessonModel: &models.LessonModel{Repo: repo}}
 
-		v1.GET("/lessons", middleware.TokenAuthMiddleware(), lesson.List)
-		v1.GET("/lessons/:id", middleware.TokenAuthMiddleware(), lesson.Get)
-		v1.GET("/chapters/:id/lessons", middleware.TokenAuthMiddleware(), lesson.ListByChapterID)
+		v1.GET("/lessons", lesson.List)
+		v1.GET("/lessons/:id", lesson.Get)
+		v1.GET("/chapters/:id/lessons", lesson.ListByChapterID)
 	}
 
 	// route not found
