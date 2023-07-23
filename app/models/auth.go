@@ -120,10 +120,7 @@ func (m AuthModel) VerifyToken(r *http.Request) (*jwt.Token, error) {
 // TokenValid ...
 func (m AuthModel) TokenValid(r *http.Request) error {
 	token, err := m.VerifyToken(r)
-	if err != nil {
-		return err
-	}
-	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
+	if err != nil && !token.Valid {
 		return err
 	}
 	return nil
@@ -141,8 +138,8 @@ func (m AuthModel) ExtractTokenMetadata(r *http.Request) (*AccessDetails, error)
 		if !ok {
 			return nil, err
 		}
-		
-		userID, err := uuid.Parse(fmt.Sprintf("%v",claims["user_id"]))
+
+		userID, err := uuid.Parse(fmt.Sprintf("%v", claims["user_id"]))
 		if err != nil {
 			return nil, err
 		}

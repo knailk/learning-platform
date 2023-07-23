@@ -19,12 +19,6 @@ var (
 	userRequest = new(request.UserRequest)
 )
 
-// // getUserID ...
-// func getUserID(c *gin.Context) (userID int64) {
-// 	//MustGet returns the value for the given key if it exists, otherwise it panics.
-// 	return c.MustGet("userID").(int64)
-// }
-
 // Login ...
 func (ctrl *UserController) Login(ctx *gin.Context) {
 	var loginRequest request.LoginRequest
@@ -121,12 +115,6 @@ func (ctrl *UserController) UpdateProfile(ctx *gin.Context) {
 }
 
 func (ctrl *UserController) GetRank(ctx *gin.Context) {
-	_, err := authModel.ExtractTokenMetadata(ctx.Request)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in"})
-		return
-	}
-
 	rank, err := ctrl.UserModel.GetRank(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get rank", "err": err})
