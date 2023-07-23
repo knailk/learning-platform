@@ -1,6 +1,6 @@
 .content {
     height: 100%;
-    padding: 20px 20px;
+    padding: 20px 20px 20px 20px;
     width: 100%;
     max-width: 1200px;
     position: relative;
@@ -8,22 +8,26 @@
 
 .learningPathWrapper {
     padding-right: 70px;
+    padding-left: 70px;
     z-index: 1;
 }
 
 .headerWrapper {
-    padding: 20px;
+    padding: 30px 20px;
     border-radius: 16px;
     -webkit-border-radius: 16px;
     -moz-border-radius: 16px;
     -ms-border-radius: 16px;
     -o-border-radius: 16px;
-    background-color: #58cc02;
+    background-color: #57c2dc;
     color: white;
     * {
-        font-size: 16px;
+        font-size: 17px;
     }
     margin-top: 20px;
+    h1 {
+        font-size: 25px;
+    }
 }
 
 .titleWrapper {
@@ -31,32 +35,37 @@
 }
 
 .introduceBtn {
+    user-select: none;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
     border-radius: 16px;
     color: white;
-    background-color: #58cc02;
+    background-color: #57c2dc;
     height: 40px;
     width: 140px;
-    border: 1.5px solid #46a302;
-    box-shadow: 0 2px 0 #46a302;
+    border: 1.5px solid #49a7bc;
+    box-shadow: 0 2px 0 #49a7bc;
+    font-size: 16px;
     cursor: pointer;
     * {
         font-size: 15px;
         padding: 0px 5px;
     }
     &:hover {
-        background-color: #58cc02 !important;
-        box-shadow: 0 2px 0 #4aab02 !important;
-        border: 1.5px solid #4aab02 !important;
+        background-color: #57c2dc !important;
+        box-shadow: 0 2px 0 #49a7bc !important;
+        border: 1.5px solid #49a7bc !important;
         /* background-color: none;
         border: none;*/
-        color: #def5cc !important;
+        color: #ccedf5 !important;
     }
 }
-
+.desciption {
+    width: 250px;
+    font-size: 16px;
+}
 .btnClickEffect {
     box-shadow: none;
     &:hover {
@@ -72,12 +81,14 @@
 }
 
 .pathItemWrapper {
+    user-select: none;
     position: relative;
     color: white;
     width: 70px;
     height: 65px;
     margin-top: 20px;
     cursor: pointer;
+
     * {
         font-size: 30px;
     }
@@ -88,13 +99,54 @@
         height: 57px;
         width: 100%;
         top: 0px;
-        background-color: #58cc02;
-        box-shadow: 0 8px 0 #4aab02;
         border-radius: 50%/50%;
         -webkit-border-radius: 50%/50%;
         -moz-border-radius: 50%/50%;
         -ms-border-radius: 50%/50%;
         -o-border-radius: 50%/50%;
+    }
+}
+
+.pathItemDisabled {
+    &:after {
+        background-color: #e5e5e5;
+        box-shadow: 0 8px 0 #b7b7b7;
+    }
+}
+.pathItemCurrent {
+    &::after {
+        background-color: #57c2dc;
+        box-shadow: 0 8px 0 #49a7bc;
+    }
+    &::before {
+        position: absolute;
+        content: '';
+        z-index: 5;
+        height: 95px;
+        width: 100px;
+        top: -15px;
+        left: -15px;
+        border: 7.5px solid #e5e5e5;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+    }
+}
+.pathItemFinished {
+    .finishedBackground {
+        position: absolute;
+        z-index: 1;
+        top: 5.2px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    &::after {
+        background-color: #ffc800;
+        box-shadow: 0 8px 0 #e6a100;
     }
 }
 
@@ -109,14 +161,23 @@
         top: auto;
         bottom: 11.5px;
     }
+    .finishedBackground {
+        top: auto;
+        bottom: 5.2px;
+    }
 }
 
 .pathIcon {
     position: absolute;
+    z-index: 2;
     height: 34px;
-    left: 18px;
     top: 11.5px;
     width: 42px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
 }
 //END LEARNING PATH
 
