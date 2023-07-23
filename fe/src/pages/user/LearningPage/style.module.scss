@@ -19,7 +19,7 @@
     -moz-border-radius: 16px;
     -ms-border-radius: 16px;
     -o-border-radius: 16px;
-    background-color: #58cc02;
+    background-color: #57c2dc;
     color: white;
     * {
         font-size: 17px;
@@ -35,17 +35,18 @@
 }
 
 .introduceBtn {
+    user-select: none;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
     border-radius: 16px;
     color: white;
-    background-color: #58cc02;
+    background-color: #57c2dc;
     height: 40px;
     width: 140px;
-    border: 1.5px solid #46a302;
-    box-shadow: 0 2px 0 #46a302;
+    border: 1.5px solid #49a7bc;
+    box-shadow: 0 2px 0 #49a7bc;
     font-size: 16px;
     cursor: pointer;
     * {
@@ -53,15 +54,18 @@
         padding: 0px 5px;
     }
     &:hover {
-        background-color: #58cc02 !important;
-        box-shadow: 0 2px 0 #4aab02 !important;
-        border: 1.5px solid #4aab02 !important;
+        background-color: #57c2dc !important;
+        box-shadow: 0 2px 0 #49a7bc !important;
+        border: 1.5px solid #49a7bc !important;
         /* background-color: none;
         border: none;*/
-        color: #def5cc !important;
+        color: #ccedf5 !important;
     }
 }
-
+.desciption {
+    width: 250px;
+    font-size: 16px;
+}
 .btnClickEffect {
     box-shadow: none;
     &:hover {
@@ -77,6 +81,7 @@
 }
 
 .pathItemWrapper {
+    user-select: none;
     position: relative;
     color: white;
     width: 70px;
@@ -110,8 +115,8 @@
 }
 .pathItemCurrent {
     &::after {
-        background-color: #58cc02;
-        box-shadow: 0 8px 0 #4aab02;
+        background-color: #57c2dc;
+        box-shadow: 0 8px 0 #49a7bc;
     }
     &::before {
         position: absolute;

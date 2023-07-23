@@ -51,7 +51,6 @@ const PathItem = ({ ...props }) => {
                     </Col>
                 </>
             );
-
         default:
             break;
     }

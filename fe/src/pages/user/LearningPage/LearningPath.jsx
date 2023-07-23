@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import style from './style.module.scss';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Row, Col } from 'antd';
+import { Row, Col, Popover } from 'antd';
 import PathItem from './PathItem';
 
 const LearningPath = ({ ...props }) => {
@@ -29,15 +29,23 @@ const LearningPath = ({ ...props }) => {
                     <span>{props.data.name}</span>
                 </Col>
                 <Col span={6} sm={6}>
-                    <div
-                        className={clsx([style.introduceBtn], { [style.btnClickEffect]: touch })}
-                        onMouseDown={() => setTouch(true)}
-                        onMouseUp={() => setTouch(false)}>
-                        <span>
-                            <FontAwesomeIcon icon={faBook} />
-                        </span>
-                        GIỚI THIỆU
-                    </div>
+                    <Popover
+                        content={
+                            <div className={style.desciption}>
+                                <span>{props.data.name}</span>
+                            </div>
+                        }
+                        trigger="click">
+                        <div
+                            className={clsx([style.introduceBtn], { [style.btnClickEffect]: touch })}
+                            onMouseDown={() => setTouch(true)}
+                            onMouseUp={() => setTouch(false)}>
+                            <span>
+                                <FontAwesomeIcon icon={faBook} />
+                            </span>
+                            GIỚI THIỆU
+                        </div>
+                    </Popover>
                 </Col>
             </Row>
             <Row className={style.pathWrapper}>
