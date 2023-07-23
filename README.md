@@ -13,7 +13,6 @@ Are you looking for a fun and engaging way to learn programming? Do you want to 
 - [PostgreSQL](https://www.postgresql.org/): The World's Most Advanced Open Source Relational Database
 - [jwt-go](https://github.com/golang-jwt/jwt): JSON Web Tokens (JWT) as middleware
 - [go-redis](https://github.com/go-redis/redis): Redis support for Go
-- Feature **PostgreSQL 12** with JSON/JSONB queries & trigger functions
 - SSL Support
 
 ### Installation
