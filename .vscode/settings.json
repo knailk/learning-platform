@@ -4,5 +4,6 @@
         "godotenv",
         "gorm",
         "knailk"
-    ]
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
