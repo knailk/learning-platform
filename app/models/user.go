@@ -54,21 +54,21 @@ func (m *UserModel) Login(ctx context.Context, req request.LoginRequest) (user *
 }
 
 // Register ...
-func (m *UserModel) Register(ctx context.Context, req request.RegisterRequest) (user *entity.User, err error) {
+func (m *UserModel) Register(ctx context.Context, req request.RegisterRequest) (user *entity.User, token Token, err error) {
 	//Check if the user exists in database
 	checkUser, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(req.Email)).Count()
 	if err != nil {
-		return user, err
+		return user, token, err
 	}
 
 	if checkUser > 0 {
-		return user, errors.New("email already exists")
+		return user, token, errors.New("email already exists")
 	}
 
 	bytePassword := []byte(req.Password)
 	hashedPassword, err := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
 	if err != nil {
-		return user, err
+		return user, token, err
 	}
 
 	user = &entity.User{
@@ -83,10 +83,23 @@ func (m *UserModel) Register(ctx context.Context, req request.RegisterRequest) (
 	//Create the user and return back the user ID
 	err = m.Repo.User.WithContext(ctx).Create(user)
 	if err != nil {
-		return user, err
+		return user, token, err
 	}
 
-	return user, err
+	//Generate the JWT auth token
+	tokenDetails, err := authModel.CreateToken(user.ID)
+	if err != nil {
+		return user, token, err
+	}
+
+	saveErr := authModel.CreateAuth(user.ID, tokenDetails)
+	if saveErr != nil {
+		return user, token, saveErr
+	}
+	token.AccessToken = tokenDetails.AccessToken
+	token.RefreshToken = tokenDetails.RefreshToken
+
+	return user, token, err
 }
 
 // One ...

@@ -49,13 +49,13 @@ func (ctrl *UserController) Register(ctx *gin.Context) {
 		return
 	}
 
-	user, err := ctrl.UserModel.Register(ctx, registerRequest)
+	user, token, err := ctrl.UserModel.Register(ctx, registerRequest)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully registered", "user": user})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully registered", "user": user, "token": token})
 }
 
 // Logout ...
