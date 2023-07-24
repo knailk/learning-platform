@@ -1,9 +1,8 @@
-import clsx from 'clsx';
 import { memo, useState } from 'react';
 import styles from './style.module.scss';
 import { Button, Drawer, Space } from 'antd';
 import GameLayout from './GameLayout';
-const StorePage = () => {
+const GamePage = () => {
     const [open, setOpen] = useState(false);
     const [size, setSize] = useState();
     const showDefaultDrawer = () => {
@@ -28,4 +27,4 @@ const StorePage = () => {
     );
 };
 
-export default memo(StorePage);
+export default memo(GamePage);
