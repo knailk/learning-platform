@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import React,{ memo, useEffect, useState } from 'react';
 import { GridContextProvider, GridDropZone, GridItem, swap, move } from 'react-grid-dnd';
 import styles from './style.module.scss';
 import { Col } from 'antd';

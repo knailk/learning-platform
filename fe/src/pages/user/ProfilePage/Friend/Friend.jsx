@@ -1,3 +1,4 @@
+import React from 'react';
 import style from './Friend.module.scss';
 import { Tabs } from 'antd';
 import Follow from './Follow';

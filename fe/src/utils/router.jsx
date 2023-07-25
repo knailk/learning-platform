@@ -1,3 +1,4 @@
+import React from "react";
 import LearningPage from "../pages/user/LearningPage";
 import PracticePage from "../pages/user/PracticePage";
 import RankingPage from "../pages/user/RankingPage";

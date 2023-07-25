@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { Row, Col } from 'antd';
 import style from './style.module.scss';
 

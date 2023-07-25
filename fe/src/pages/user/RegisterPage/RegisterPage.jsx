@@ -1,5 +1,5 @@
 // import clsx from "clsx";
-// import { memo } from "react";
+import React from "react";
 import styles from "./Register.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";

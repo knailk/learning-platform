@@ -1,5 +1,5 @@
 import SideBar from '../SideBar';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { Layout } from 'antd';
 import style from './style.module.css';
 const MasterLayout = ({ children, ...props }) => {

@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import clsx from 'clsx';
 import style from './style.module.scss';
 import { faBook } from '@fortawesome/free-solid-svg-icons';

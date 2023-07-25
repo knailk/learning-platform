@@ -3,7 +3,7 @@ import style from './style.module.scss';
 import { faStar, faLock, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Col } from 'antd';
-import { memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { LESSON_STATUS, LESSON_TYPE } from '../../../utils/constant';
 
 const PathItem = ({ ...props }) => {
