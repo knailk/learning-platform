@@ -102,13 +102,13 @@ h2 {
 }
 
 .main {
-  background: radial-gradient(#2193b0 , #6dd5ed);
+  background: radial-gradient(#2193b0, #6dd5ed);
   /* padding: 50px 0; */
   min-height: 100vh;
 }
 
-.login{
-    padding-top: 100px;
+.login {
+  padding-top: 100px;
 }
 
 .clear {
@@ -217,7 +217,7 @@ figure {
   margin-bottom: 0px;
 }
 
-input {
+.form-group input {
   width: 100%;
   display: block;
   border: none;
@@ -225,41 +225,42 @@ input {
   padding: 6px 30px;
   font-family: Poppins;
   box-sizing: border-box;
+  font-size: 16px;
 }
 
-input::-webkit-input-placeholder {
+.form-group input::-webkit-input-placeholder {
   color: #999;
 }
 
-input::-moz-placeholder {
+.form-group input::-moz-placeholder {
   color: #999;
 }
 
-input:-ms-input-placeholder {
+.form-group input:-ms-input-placeholder {
   color: #999;
 }
 
-input:-moz-placeholder {
+.form-group input:-moz-placeholder {
   color: #999;
 }
 
-input:focus {
+.form-group input:focus {
   border-bottom: 1px solid #222;
 }
 
-input:focus::-webkit-input-placeholder {
+.form-group input:focus::-webkit-input-placeholder {
   color: #222;
 }
 
-input:focus::-moz-placeholder {
+.form-group input:focus::-moz-placeholder {
   color: #222;
 }
 
-input:focus:-ms-input-placeholder {
+.form-group input:focus:-ms-input-placeholder {
   color: #222;
 }
 
-input:focus:-moz-placeholder {
+.form-group input:focus:-moz-placeholder {
   color: #222;
 }
 

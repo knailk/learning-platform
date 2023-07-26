@@ -1,12 +1,62 @@
-// import clsx from "clsx";
 import React from "react";
-import styles from "./Register.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { faUser, faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faLock,
+  faEnvelope,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
+import { notification } from "antd";
+
+import { useAuth } from "contexts/AuthContext";
+import request, { setAuthToken } from "utils/http";
+import styles from "./Register.module.css";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  const { setAuthUser, setIsLogin } = useAuth();
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    const password = event.target.password.value;
+    const rePassword = event.target.confirmpassword.value;
+
+    if (password !== rePassword) {
+      notification.error({
+        message: "Đăng ký thất bại",
+        description: "Mật khẩu nhập lại không khớp.",
+      });
+      return;
+    }
+    try {
+      const response = await request.post("user/register", {
+        email: event.target.email.value,
+        password: password,
+        name: event.target.name.value,
+        phone: event.target.phone.value,
+        age: 1,
+      });
+
+      notification.success({
+        message: "Đăng ký thành công",
+        // description: "Đợi một chút...",
+      });
+
+      setAuthUser(response.data.user);
+      setIsLogin(true);
+      setAuthToken(response.data.token.access_token);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      notification.error({
+        message: "Đăng ký thất bại",
+        description: error.response.data.message,
+      });
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -19,7 +69,7 @@ const RegisterPage = () => {
               <div className={styles["register-form-container"]}>
                 <h2 className={styles["form-title"]}>Đăng ký</h2>
                 <form
-                  method="POST"
+                  onSubmit={handleRegister}
                   className={styles["register-form"]}
                   id="register-form"
                 >
@@ -46,46 +96,37 @@ const RegisterPage = () => {
                     />
                   </div>
                   <div className={styles["form-group"]}>
+                    <label htmlFor="phone">
+                      <FontAwesomeIcon icon={faPhone} />
+                    </label>
+                    <input
+                      type="phone"
+                      name="phone"
+                      id="phone"
+                      placeholder="Nhập số điện thoại"
+                    />
+                  </div>
+                  <div className={styles["form-group"]}>
                     <label htmlFor="pass">
                       <FontAwesomeIcon icon={faLock} />
                     </label>
                     <input
                       type="password"
-                      name="pass"
-                      id="pass"
+                      name="password"
+                      id="password"
                       placeholder="Nhập mật khẩu"
                     />
                   </div>
                   <div className={styles["form-group"]}>
-                    <label htmlFor="re-pass">
+                    <label htmlFor="confirmpassword">
                       <FontAwesomeIcon icon={faLock} />
                     </label>
                     <input
                       type="password"
-                      name="re_pass"
-                      id="re_pass"
+                      name="confirmpassword"
+                      id="confirmpassword"
                       placeholder="Nhập lại mật khẩu"
                     />
-                  </div>
-                  <div className={styles["form-group"]}>
-                    <input
-                      type="checkbox"
-                      name="agree-term"
-                      id="agree-term"
-                      className={styles["agree-term"]}
-                    />
-                    <label
-                      htmlFor="agree-term"
-                      className={styles["label-agree-term"]}
-                    >
-                      <span>
-                        <span></span>
-                      </span>
-                      Tôi đồng ý với{" "}
-                      <Link to="/login" className={styles["term-service"]}>
-                        Điều khoản và điều kiện
-                      </Link>
-                    </label>
                   </div>
                   <div
                     className={`${styles["form-group"]} ${styles["form-button"]}`}
