@@ -19,6 +19,7 @@ var (
 	Q              = new(Query)
 	Chapter        *chapter
 	Follow         *follow
+	Lecture        *lecture
 	Lesson         *lesson
 	LessonAnswer   *lessonAnswer
 	Question       *question
@@ -30,6 +31,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	Chapter = &Q.Chapter
 	Follow = &Q.Follow
+	Lecture = &Q.Lecture
 	Lesson = &Q.Lesson
 	LessonAnswer = &Q.LessonAnswer
 	Question = &Q.Question
@@ -42,6 +44,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		db:             db,
 		Chapter:        newChapter(db, opts...),
 		Follow:         newFollow(db, opts...),
+		Lecture:        newLecture(db, opts...),
 		Lesson:         newLesson(db, opts...),
 		LessonAnswer:   newLessonAnswer(db, opts...),
 		Question:       newQuestion(db, opts...),
@@ -55,6 +58,7 @@ type Query struct {
 
 	Chapter        chapter
 	Follow         follow
+	Lecture        lecture
 	Lesson         lesson
 	LessonAnswer   lessonAnswer
 	Question       question
@@ -69,6 +73,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		db:             db,
 		Chapter:        q.Chapter.clone(db),
 		Follow:         q.Follow.clone(db),
+		Lecture:        q.Lecture.clone(db),
 		Lesson:         q.Lesson.clone(db),
 		LessonAnswer:   q.LessonAnswer.clone(db),
 		Question:       q.Question.clone(db),
@@ -90,6 +95,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		db:             db,
 		Chapter:        q.Chapter.replaceDB(db),
 		Follow:         q.Follow.replaceDB(db),
+		Lecture:        q.Lecture.replaceDB(db),
 		Lesson:         q.Lesson.replaceDB(db),
 		LessonAnswer:   q.LessonAnswer.replaceDB(db),
 		Question:       q.Question.replaceDB(db),
@@ -101,6 +107,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 type queryCtx struct {
 	Chapter        IChapterDo
 	Follow         IFollowDo
+	Lecture        ILectureDo
 	Lesson         ILessonDo
 	LessonAnswer   ILessonAnswerDo
 	Question       IQuestionDo
@@ -112,6 +119,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
 		Chapter:        q.Chapter.WithContext(ctx),
 		Follow:         q.Follow.WithContext(ctx),
+		Lecture:        q.Lecture.WithContext(ctx),
 		Lesson:         q.Lesson.WithContext(ctx),
 		LessonAnswer:   q.LessonAnswer.WithContext(ctx),
 		Question:       q.Question.WithContext(ctx),

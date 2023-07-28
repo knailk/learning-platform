@@ -18,6 +18,7 @@ func main() {
 		entity.Chapter{},
 		entity.Lesson{},
 		entity.Question{},
+		entity.Lecture{},
 		entity.QuestionAnswer{},
 		entity.LessonAnswer{},
 	)

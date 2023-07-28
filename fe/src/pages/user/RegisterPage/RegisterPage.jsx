@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import Cookies from "universal-cookie";
 import {
   faUser,
   faLock,
@@ -13,6 +14,8 @@ import { notification } from "antd";
 import { useAuth } from "contexts/AuthContext";
 import request, { setAuthToken } from "utils/http";
 import styles from "./Register.module.css";
+
+const cookies = new Cookies();
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -46,7 +49,11 @@ const RegisterPage = () => {
 
       setAuthUser(response.data.user);
       setIsLogin(true);
-      setAuthToken(response.data.token.access_token);
+
+      cookies.set("access_token", response.data.token.access_token, {
+        path: "/",
+      });
+
       navigate("/");
     } catch (error) {
       console.log(error);

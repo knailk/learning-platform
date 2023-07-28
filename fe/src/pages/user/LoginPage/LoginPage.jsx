@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "universal-cookie";
 import {
   faFacebook,
   faTwitter,
@@ -11,10 +12,12 @@ import {
   faGithub,
   faApple,
 } from "@fortawesome/free-brands-svg-icons";
-import request, { setAuthToken } from "utils/http";
+import request from "utils/http";
 import { Divider, notification } from "antd";
 import { useAuth } from "contexts/AuthContext";
 import styles from "./Login.module.css";
+
+const cookies = new Cookies();
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -35,7 +38,11 @@ const LoginPage = () => {
       console.log(response);
       setAuthUser(response.data.user);
       setIsLogin(true);
-      setAuthToken(response.data.token.access_token);
+
+      cookies.set("access_token", response.data.token.access_token, {
+        path: "/",
+      });
+
       navigate("/");
     } catch (error) {
       notification.error({

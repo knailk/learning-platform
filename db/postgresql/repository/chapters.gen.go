@@ -42,6 +42,11 @@ func newChapter(db *gorm.DB, opts ...gen.DOOption) chapter {
 		}{
 			RelationField: field.NewRelation("Lessons.Questions", "entity.Question"),
 		},
+		Lectures: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("Lessons.Lectures", "entity.Lecture"),
+		},
 	}
 
 	_chapter.fillFieldMap()
@@ -132,6 +137,9 @@ type chapterHasManyLessons struct {
 	field.RelationField
 
 	Questions struct {
+		field.RelationField
+	}
+	Lectures struct {
 		field.RelationField
 	}
 }
