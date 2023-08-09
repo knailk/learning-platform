@@ -1,12 +1,11 @@
 import clsx from 'clsx';
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import style from './style.module.scss';
 import { Row, Col } from 'antd';
 import LearningPath from './LearningPath';
 import RankingBox from './RankingBox';
 import MissionBox from './MissionBox';
 import { LESSON_TYPE, LESSON_STATUS } from '../../../utils/constant';
-
 const LearningPage = () => {
     const lesson_data = [
         {
@@ -21,6 +20,7 @@ const LearningPage = () => {
                 { position: 5, status: LESSON_STATUS.DISABLED, type: LESSON_TYPE.LEARNING },
                 { position: 6, status: LESSON_STATUS.DISABLED, type: LESSON_TYPE.PRACTICE },
                 { position: 7, status: LESSON_STATUS.DISABLED, type: LESSON_TYPE.PRACTICE },
+                { position: 8, status: 'game', type: 'game' },
             ],
         },
         {
@@ -66,6 +66,7 @@ const LearningPage = () => {
             ],
         },
     ];
+
     return (
         <div className={clsx(style.content)}>
             <Row className={style.wrapper}>

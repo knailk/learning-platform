@@ -30,15 +30,14 @@ const LoginPage = () => {
       body: JSON.stringify({ email: username, password: password }),
     };
 
-    const response = await fetch(
-      "http://localhost:9000/v1/user/login",
-      requestOptions,
-    );
-    const data = await response.json();
-    setAuthUser(data.user);
-    setIsLogin(true);
-    console.log(data);
+    // const response = await fetch(
+    //   "http://localhost:9000/v1/user/login",
+    //   requestOptions,
+    // );
+    // const data = await response.json();
 
+    // setAuthUser(data.user);
+    setIsLogin(true);
     navigate("/");
   };
 
