@@ -11,9 +11,9 @@ function PrivateRoute({ children }) {
   console.log("isLogin", isLogin);
   console.log("children", children);
 
-  if (!isLogin) {
-    return <Navigate to="/login" />;
-  }
+  // if (!isLogin) {
+  //   return <Navigate to="/login" />;
+  // }
   return children;
 }
 const RouterCustom = () => {

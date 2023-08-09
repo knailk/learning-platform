@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './Friend.module.scss';
+import style from './style.module.scss';
 import { Tabs } from 'antd';
 import Follow from './Follow';
 import common_style from '../style.module.scss';

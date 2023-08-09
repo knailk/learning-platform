@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'antd';
-import style from './Friend.module.scss';
+import style from './style.module.scss';
+import FindFriend from './FindFriend';
 const Follow = ({ ...props }) => {
     return (
         <>
