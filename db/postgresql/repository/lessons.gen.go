@@ -33,13 +33,18 @@ func newLesson(db *gorm.DB, opts ...gen.DOOption) lesson {
 	_lesson.Type = field.NewString(tableName, "type")
 	_lesson.Level = field.NewInt(tableName, "level")
 	_lesson.Score = field.NewInt(tableName, "score")
-	_lesson.Tags = field.NewField(tableName, "tags")
 	_lesson.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_lesson.CreatedAt = field.NewTime(tableName, "created_at")
 	_lesson.Questions = lessonHasManyQuestions{
 		db: db.Session(&gorm.Session{}),
 
 		RelationField: field.NewRelation("Questions", "entity.Question"),
+	}
+
+	_lesson.Lectures = lessonHasManyLectures{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Lectures", "entity.Lecture"),
 	}
 
 	_lesson.fillFieldMap()
@@ -57,10 +62,11 @@ type lesson struct {
 	Type      field.String
 	Level     field.Int
 	Score     field.Int
-	Tags      field.Field
 	UpdatedAt field.Time
 	CreatedAt field.Time
 	Questions lessonHasManyQuestions
+
+	Lectures lessonHasManyLectures
 
 	fieldMap map[string]field.Expr
 }
@@ -83,7 +89,6 @@ func (l *lesson) updateTableName(table string) *lesson {
 	l.Type = field.NewString(table, "type")
 	l.Level = field.NewInt(table, "level")
 	l.Score = field.NewInt(table, "score")
-	l.Tags = field.NewField(table, "tags")
 	l.UpdatedAt = field.NewTime(table, "updated_at")
 	l.CreatedAt = field.NewTime(table, "created_at")
 
@@ -117,7 +122,6 @@ func (l *lesson) fillFieldMap() {
 	l.fieldMap["type"] = l.Type
 	l.fieldMap["level"] = l.Level
 	l.fieldMap["score"] = l.Score
-	l.fieldMap["tags"] = l.Tags
 	l.fieldMap["updated_at"] = l.UpdatedAt
 	l.fieldMap["created_at"] = l.CreatedAt
 
@@ -201,6 +205,77 @@ func (a lessonHasManyQuestionsTx) Clear() error {
 }
 
 func (a lessonHasManyQuestionsTx) Count() int64 {
+	return a.tx.Count()
+}
+
+type lessonHasManyLectures struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a lessonHasManyLectures) Where(conds ...field.Expr) *lessonHasManyLectures {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a lessonHasManyLectures) WithContext(ctx context.Context) *lessonHasManyLectures {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a lessonHasManyLectures) Session(session *gorm.Session) *lessonHasManyLectures {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a lessonHasManyLectures) Model(m *entity.Lesson) *lessonHasManyLecturesTx {
+	return &lessonHasManyLecturesTx{a.db.Model(m).Association(a.Name())}
+}
+
+type lessonHasManyLecturesTx struct{ tx *gorm.Association }
+
+func (a lessonHasManyLecturesTx) Find() (result []*entity.Lecture, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a lessonHasManyLecturesTx) Append(values ...*entity.Lecture) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a lessonHasManyLecturesTx) Replace(values ...*entity.Lecture) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a lessonHasManyLecturesTx) Delete(values ...*entity.Lecture) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a lessonHasManyLecturesTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a lessonHasManyLecturesTx) Count() int64 {
 	return a.tx.Count()
 }
 

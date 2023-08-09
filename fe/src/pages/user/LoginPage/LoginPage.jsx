@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
 import React, { memo } from "react";
-import styles from "./Login.module.css";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "universal-cookie";
 import {
   faFacebook,
   faTwitter,
@@ -12,33 +12,44 @@ import {
   faGithub,
   faApple,
 } from "@fortawesome/free-brands-svg-icons";
-import { Divider } from "antd";
-import { useAuth } from "../../../contexts/AuthContext";
+import request from "utils/http";
+import { Divider, notification } from "antd";
+import { useAuth } from "contexts/AuthContext";
+import styles from "./Login.module.css";
+
+const cookies = new Cookies();
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { authUser, setAuthUser, isLogin, setIsLogin } = useAuth();
+  const { setAuthUser, setIsLogin } = useAuth();
 
-  const login = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    const username = event.target.username.value;
-    const password = event.target.password.value;
+    try {
+      const response = await request.post("user/login", {
+        email: event.target.username.value,
+        password: event.target.password.value,
+      });
 
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: username, password: password }),
-    };
+      notification.success({
+        message: "Đăng nhập thành công",
+        // description: "Đợi một chút...",
+      });
+      console.log(response);
+      setAuthUser(response.data.user);
+      setIsLogin(true);
 
-    // const response = await fetch(
-    //   "http://localhost:9000/v1/user/login",
-    //   requestOptions,
-    // );
-    // const data = await response.json();
+      cookies.set("access_token", response.data.token.access_token, {
+        path: "/",
+      });
 
-    // setAuthUser(data.user);
-    setIsLogin(true);
-    navigate("/");
+      navigate("/");
+    } catch (error) {
+      notification.error({
+        message: "Đăng nhập thất bại",
+        description: "Tên đăng nhập hoặc mật khẩu không hợp lệ",
+      });
+    }
   };
 
   return (
@@ -62,7 +73,7 @@ const LoginPage = () => {
                 <form
                   className={styles["login-form"]}
                   id="login-form"
-                  onSubmit={login}
+                  onSubmit={handleLogin}
                 >
                   <div className={styles["form-group"]}>
                     <label htmlFor="username">

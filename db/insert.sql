@@ -230,7 +230,7 @@ ALL
 SELECT
     UUID_GENERATE_V4(),
     CHAPTER1.ID,
-    'Cùng ôn lại nào!',
+    'Cùng ôn lại về biến nhé!',
     'practice',
     6,
     10,
@@ -288,7 +288,7 @@ ALL
 SELECT
     UUID_GENERATE_V4(),
     CHAPTER2.ID,
-    'Thứ tự tính toán?',
+    'Ghép giá trị trong chuỗi!',
     'lecture',
     2,
     10,
@@ -301,22 +301,9 @@ ALL
 SELECT
     UUID_GENERATE_V4(),
     CHAPTER2.ID,
-    'Ghép giá trị trong chuỗi!',
-    'lecture',
-    3,
-    10,
-    NOW(),
-    NOW()
-FROM
-    CHAPTER2
-UNION
-ALL
-SELECT
-    UUID_GENERATE_V4(),
-    CHAPTER2.ID,
     'Bạn đã hiểu rõ về chuỗi chưa!',
     'practice',
-    4,
+    3,
     10,
     NOW(),
     NOW()
@@ -329,7 +316,7 @@ SELECT
     CHAPTER2.ID,
     'Theo sau chuỗi là mảng!',
     'lecture',
-    5,
+    4,
     10,
     NOW(),
     NOW()
@@ -342,7 +329,7 @@ SELECT
     CHAPTER2.ID,
     'Thêm và xóa phần tử trong mảng!',
     'lecture',
-    6,
+    5,
     10,
     NOW(),
     NOW()
@@ -355,7 +342,7 @@ SELECT
     CHAPTER2.ID,
     'Các phép toán với mảng!',
     'lecture',
-    7,
+    6,
     10,
     NOW(),
     NOW()
@@ -368,7 +355,7 @@ SELECT
     CHAPTER2.ID,
     'Kiểm tra kiến thức về mảng nhé!',
     'practice',
-    8,
+    7,
     10,
     NOW(),
     NOW()
@@ -381,7 +368,7 @@ SELECT
     CHAPTER2.ID,
     'Tuble cũng chỉ là mảng!',
     'lecture',
-    9,
+    8,
     10,
     NOW(),
     NOW()
@@ -394,7 +381,7 @@ SELECT
     CHAPTER2.ID,
     'Python maps không phải bản đồ cho em đâu!',
     'lecture',
-    10,
+    9,
     10,
     NOW(),
     NOW()
@@ -405,9 +392,9 @@ ALL
 SELECT
     UUID_GENERATE_V4(),
     CHAPTER2.ID,
-    'Cùng ôn lại nào!',
+    'Cùng ôn lại các kiểu dữ liệu nào!',
     'practice',
-    11,
+    10,
     10,
     NOW(),
     NOW()
@@ -528,22 +515,9 @@ ALL
 SELECT
     UUID_GENERATE_V4(),
     CHAPTER3.ID,
-    'TKhác biệt giữa chuỗi và số!',
+    'Khác biệt giữa chuỗi và số!',
     'lecture',
     7,
-    10,
-    NOW(),
-    NOW()
-FROM
-    CHAPTER3
-UNION
-ALL
-SELECT
-    UUID_GENERATE_V4(),
-    CHAPTER3.ID,
-    'Python maps không phải bản đồ cho em đâu!',
-    'lecture',
-    8,
     10,
     NOW(),
     NOW()

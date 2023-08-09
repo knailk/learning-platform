@@ -10,10 +10,11 @@ import (
 type Question struct {
 	ID            uuid.UUID      `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
 	LessonID      uuid.UUID      `json:"lesson_id"`
-	Level         int            `json:"level"`
+	QuestionContent string         `json:"question_content"`
+	AnswerContent pq.StringArray `json:"answer_content" gorm:"type:text[]"`
 	Score         pq.Int64Array  `json:"score" gorm:"type:integer[]"`
 	AnswerType    string         `json:"answer_type"`
-	AnswerContent pq.StringArray `json:"answer_content" gorm:"type:text[]"`
+	Level         int            `json:"level"`
 	Required      bool           `json:"required"`
 	UpdatedAt     time.Time      `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 	CreatedAt     time.Time      `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`

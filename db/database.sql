@@ -28,7 +28,7 @@ CREATE DATABASE cpp_db WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 
 
 ALTER DATABASE cpp_db OWNER TO postgres;
 
-postgres = # \connect cpp_db
+\ connect cpp_db
 SET
     statement_timeout = 0;
 
@@ -104,8 +104,9 @@ CREATE TABLE "lessons" (
     "id" char(36) PRIMARY KEY,
     "chapter_id" char(36),
     "name" text,
+    --practice or lecture
     "type" text,
-    "level" text,
+    "level" integer,
     "score" integer,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
@@ -114,11 +115,23 @@ CREATE TABLE "lessons" (
 CREATE TABLE "questions" (
     "id" char(36) PRIMARY KEY,
     "lesson_id" char(36),
-    "level" text,
+    "question_content" text,
+    "answer_content" text [],
     "score" integer [],
     "answer_type" text,
-    "answer_content" text [],
-    "question_content" text,
+    "level" integer,
+    "required" bool,
+    "created_at" timestamp NOT NULL DEFAULT (now()),
+    "updated_at" timestamp NOT NULL DEFAULT (now())
+);
+
+CREATE TABLE "lectures" (
+    "id" char(36) PRIMARY KEY,
+    "lesson_id" char(36),
+    "level" integer,
+    "type" text,
+    --text/code/image
+    "content" text,
     "required" bool,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
@@ -160,6 +173,11 @@ ADD
 
 ALTER TABLE
     "questions"
+ADD
+    FOREIGN KEY ("lesson_id") REFERENCES "lessons" ("id");
+
+ALTER TABLE
+    "lectures"
 ADD
     FOREIGN KEY ("lesson_id") REFERENCES "lessons" ("id");
 
