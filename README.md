@@ -57,6 +57,9 @@ $ docker run -p 6380:6379 redis
 ```
 > Make sure to change the values in .env for your databases
 ```
+cp .env_rename .env
+```
+```
 $ go run main.go
 ```
 
