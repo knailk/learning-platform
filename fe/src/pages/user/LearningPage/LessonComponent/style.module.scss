@@ -32,7 +32,7 @@
             -ms-border-radius: 16px;
             -o-border-radius: 16px;
             &::after {
-                content: '';
+                content: "";
                 position: absolute;
                 width: calc(100% - 20px);
                 left: 10px;
@@ -54,8 +54,8 @@
     }
 }
 
-.lectureContent {
-    padding: 70px 300px;
+.lessonContent {
+    // padding: 70px 300px;
     color: #4b4b4b;
     margin-bottom: 120px;
     .answer {
@@ -92,8 +92,10 @@
                 font-size: 18px;
                 font-weight: 500;
                 input {
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
-                        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                        Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+                        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+                        "Noto Color Emoji";
                 }
             }
         }
@@ -106,21 +108,116 @@
     width: 100%;
     bottom: 0px;
     left: 0;
+    overflow: hidden;
+    background-color: white;
+    * {
+        font-family: din-round, sans-serif;
+    }
     .actionButton {
         cursor: pointer;
         height: 50px;
+        width: 185px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4b4b4b;
         font-size: 17px;
-        font-weight: 500;
+        font-weight: 600;
         border: 2px solid #e5e5e5;
-        box-shadow: 1px 2px 0px #e5e5e5;
+        // box-shadow: 1px 2px 0px #e5e5e5;
         border-radius: 10px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
         -ms-border-radius: 10px;
         -o-border-radius: 10px;
+        background-color: white;
     }
+    .checkButton {
+        background-color: #57c2dc;
+        color: white !important;
+        border: 1.5px solid #49a7bc;
+        box-shadow: 0 2px 0 #49a7bc;
+    }
+}
+
+.lectureWrapper {
+    padding: 30px 200px;
+    margin-bottom: 120px;
+    width: 100%;
+    position: relative;
+    .lectureTitle {
+        margin-top: 30px;
+    }
+    .lectureContent {
+        color: #4b4b4b;
+        font-size: 18px;
+        font-weight: 500;
+        width: 100%;
+        margin-top: 30px;
+        padding: 0;
+    }
+}
+
+.lessonContentPractice {
+    padding: 30px 300px;
+}
+
+.disableButton {
+    cursor: default !important;
+    background-color: #e5e5e5;
+    color: #a1a1a1 !important;
+}
+.iconResult {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    img {
+        width: 30px;
+        height: 30px;
+    }
+}
+.inCorrectBg {
+    background-color: #ffdfe0;
+    border: #ffdfe0;
+    color: #ea2b2b;
+}
+.correctBg {
+    background-color: #d7ffb8;
+    border: #d7ffb8;
+    color: #58a700;
+}
+
+.resultTitle {
+    font-size: 24px;
+    font-weight: 600 !important;
+    margin-bottom: 5px;
+}
+
+.reportButton {
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.inCorrectAnswer {
+    background-color: #ff4b05 !important;
+    color: white !important;
+    border: 1.5px solid #ea2b2b !important;
+    box-shadow: 0 2px 0 #ea2b2b !important;
+}
+
+.correctAnswer {
+    background-color: #58cc02 !important;
+    color: white !important;
+    border: 1.5px solid #58a700 !important;
+    box-shadow: 0 2px 0 #58a700 !important;
 }
