@@ -21,3 +21,5 @@ cert/
 
 # GAME
 game/Library
+
+node_modules

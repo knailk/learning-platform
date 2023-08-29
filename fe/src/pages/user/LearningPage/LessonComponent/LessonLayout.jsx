@@ -5,8 +5,11 @@ import { Col, Row, Carousel } from "antd";
 import Lecture from "./Lecture";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
+import Total from "./Total";
+import { redirect } from "react-router-dom";
 
 const LectureLayout = ({ ...props }) => {
+    const [lengthSlide, setLengthSlide] = useState(0);
     const CHOOSE_ONE = "single_choice";
     const FILL = "text_input";
     const CHOOSE_MULTI = "multiple_choice";
@@ -23,13 +26,13 @@ const LectureLayout = ({ ...props }) => {
     const [showCorrect, setShowCorrect] = useState(false);
     const [showInCorrect, setShowInCorrect] = useState(false);
     const [correctAnswer, setCorrectAnswer] = useState("");
+    const [totalScore, setTotalScore] = useState(0);
     const areEqual = (array1, array2) => {
         if (array1.length === array2.length) {
             return array1.every((element) => {
                 if (array2.includes(element)) {
                     return true;
                 }
-
                 return false;
             });
         }
@@ -51,15 +54,14 @@ const LectureLayout = ({ ...props }) => {
         setShowInCorrect(false);
         setTypeButtonNext(false);
         setTextInput("");
-        const lengthSlide =
-            props.data.type === "lecture"
-                ? lesson.lectures.length
-                : questions.length;
         if (slideNumber < lengthSlide - 1) {
             carousel.current.next();
             if (widthStyle < 700) {
                 setWidthStyle(widthStyle + 700 / lengthSlide);
             }
+        } else if (slideNumber === lengthSlide - 1) {
+            carousel.current.next();
+            setWidthStyle(700);
         }
     };
     const handleCheckButton = () => {
@@ -76,6 +78,7 @@ const LectureLayout = ({ ...props }) => {
                     setShowCorrect(true);
                     setShowInCorrect(false);
                     setTypeButtonNext(true);
+                    setTotalScore(totalScore + score);
                 } else {
                     setShowCorrect(false);
                     setShowInCorrect(true);
@@ -87,6 +90,7 @@ const LectureLayout = ({ ...props }) => {
                     setShowCorrect(true);
                     setShowInCorrect(false);
                     setTypeButtonNext(true);
+                    setTotalScore(totalScore + currentQuestion.score[0]);
                 } else {
                     setShowCorrect(false);
                     setShowInCorrect(true);
@@ -96,9 +100,11 @@ const LectureLayout = ({ ...props }) => {
                 break;
             case CHOOSE_MULTI:
                 let correctAnswers = [];
+                let tempTotalScore = 0;
                 currentQuestion.score.forEach((score, idx) => {
                     if (score > 0) {
                         correctAnswers.push(idx);
+                        tempTotalScore += score;
                     }
                 });
                 let temp = "";
@@ -116,6 +122,7 @@ const LectureLayout = ({ ...props }) => {
                     setShowCorrect(true);
                     setShowInCorrect(false);
                     setTypeButtonNext(true);
+                    setTotalScore(tempTotalScore + totalScore);
                 } else {
                     setShowCorrect(false);
                     setShowInCorrect(true);
@@ -137,6 +144,12 @@ const LectureLayout = ({ ...props }) => {
                 props.data.type === "lecture"
                     ? setLesson(json.data)
                     : setQuestions(json.data.questions);
+                console.log(json.data);
+                setLengthSlide(
+                    props.data.type === "lecture"
+                        ? json.data.lectures.length
+                        : json.data.questions.length,
+                );
             })
             .catch((error) => console.error(error));
     }, []);
@@ -187,6 +200,7 @@ const LectureLayout = ({ ...props }) => {
                                 <Row className={clsx(styles.itemFill)}>
                                     <Col>
                                         <input
+                                            className={clsx(styles.inputText)}
                                             type="text"
                                             width={"auto"}
                                             // ref={inputFill}
@@ -273,6 +287,9 @@ const LectureLayout = ({ ...props }) => {
                             dots={false}
                         >
                             {render()}
+                            <div>
+                                <Total data={totalScore} />
+                            </div>
                         </Carousel>
                     </Col>
                 </div>
@@ -282,97 +299,139 @@ const LectureLayout = ({ ...props }) => {
                         [styles.correctBg]: showCorrect,
                     })}
                 >
-                    <Row
-                        justify={"space-around"}
-                        align={"middle"}
-                        style={{ height: "100%" }}
-                    >
-                        {!showCorrect && !showInCorrect && (
-                            <Col className={styles.actionButton} span={5}>
-                                BỎ QUA
-                            </Col>
-                        )}
-                        {(showCorrect || showInCorrect) && (
-                            <Col span={5}>
-                                <Row>
-                                    <Col className={clsx(styles.iconResult)}>
-                                        {showInCorrect && (
-                                            <img
-                                                src="images/close.svg"
-                                                alt="close"
-                                            />
-                                        )}
-                                        {showCorrect && (
-                                            <img
-                                                src="images/correct.svg"
-                                                alt="correct"
-                                            />
-                                        )}
-                                    </Col>
+                    {slideNumber != lengthSlide &&
+                        props.data.type == "practice" && (
+                            <Row
+                                justify={"space-around"}
+                                align={"middle"}
+                                style={{ height: "100%" }}
+                            >
+                                {!showCorrect && !showInCorrect && (
                                     <Col
-                                        style={{
-                                            marginLeft: 10,
-                                        }}
+                                        className={styles.actionButton}
+                                        span={5}
+                                        onClick={() => handleContinueButton()}
                                     >
-                                        <Row className={styles.resultTitle}>
-                                            {showInCorrect && "Đáp án đúng"}
-                                            {showCorrect && "Chính xác"}
-                                        </Row>
-                                        {showInCorrect && (
-                                            <Row style={{ fontSize: 16 }}>
-                                                {correctAnswer}
-                                            </Row>
-                                        )}
-                                        <Row
-                                            className={clsx(
-                                                styles.reportButton,
-                                            )}
-                                        >
-                                            <span
+                                        BỎ QUA
+                                    </Col>
+                                )}
+                                {(showCorrect || showInCorrect) && (
+                                    <Col span={5}>
+                                        <Row>
+                                            <Col
+                                                className={clsx(
+                                                    styles.iconResult,
+                                                )}
+                                            >
+                                                {showInCorrect && (
+                                                    <img
+                                                        src="images/close.svg"
+                                                        alt="close"
+                                                    />
+                                                )}
+                                                {showCorrect && (
+                                                    <img
+                                                        src="images/correct.svg"
+                                                        alt="correct"
+                                                    />
+                                                )}
+                                            </Col>
+                                            <Col
                                                 style={{
-                                                    marginRight: 5,
-                                                    marginTop: 2,
+                                                    marginLeft: 10,
                                                 }}
                                             >
-                                                <FontAwesomeIcon
-                                                    icon={faFlag}
-                                                />
-                                            </span>
-                                            <span>Báo cáo</span>
+                                                <Row
+                                                    className={
+                                                        styles.resultTitle
+                                                    }
+                                                >
+                                                    {showInCorrect &&
+                                                        "Đáp án đúng"}
+                                                    {showCorrect && "Chính xác"}
+                                                </Row>
+                                                {showInCorrect && (
+                                                    <Row
+                                                        style={{ fontSize: 16 }}
+                                                    >
+                                                        {correctAnswer}
+                                                    </Row>
+                                                )}
+                                                <Row
+                                                    className={clsx(
+                                                        styles.reportButton,
+                                                    )}
+                                                >
+                                                    <span
+                                                        style={{
+                                                            marginRight: 5,
+                                                            marginTop: 2,
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            icon={faFlag}
+                                                        />
+                                                    </span>
+                                                    <span>Báo cáo</span>
+                                                </Row>
+                                            </Col>
                                         </Row>
                                     </Col>
-                                </Row>
-                            </Col>
+                                )}
+                                <button
+                                    className={clsx(
+                                        styles.actionButton,
+                                        {
+                                            [styles.disableButton]:
+                                                !enableButton,
+                                        },
+                                        {
+                                            [styles.checkButton]: enableButton,
+                                        },
+                                        {
+                                            [styles.correctAnswer]: showCorrect,
+                                        },
+                                        {
+                                            [styles.inCorrectAnswer]:
+                                                showInCorrect,
+                                        },
+                                    )}
+                                    span={5}
+                                    onClick={() => {
+                                        if (typeButtonNext) {
+                                            handleContinueButton();
+                                        } else {
+                                            handleCheckButton();
+                                        }
+                                    }}
+                                    disabled={!enableButton}
+                                >
+                                    {typeButtonNext ? "TIẾP TỤC" : "KIỂM TRA"}
+                                </button>
+                            </Row>
                         )}
-                        <button
-                            className={clsx(
-                                styles.actionButton,
-                                {
-                                    [styles.disableButton]: !enableButton,
-                                },
-                                {
-                                    [styles.checkButton]: enableButton,
-                                },
-                                {
-                                    [styles.correctAnswer]: showCorrect,
-                                },
-                                {
-                                    [styles.inCorrectAnswer]: showInCorrect,
-                                },
-                            )}
-                            span={5}
-                            onClick={() => {
-                                if (typeButtonNext) {
-                                    handleContinueButton();
-                                } else {
-                                    handleCheckButton();
-                                }
-                            }}
-                            disabled={!enableButton}
+
+                    {(slideNumber == lengthSlide ||
+                        props.data.type == "lecture") && (
+                        <Row
+                            justify={"space-around"}
+                            align={"middle"}
+                            style={{ height: "100%" }}
                         >
-                            {typeButtonNext ? "TIẾP TỤC" : "KIỂM TRA"}
-                        </button>
-                    </Row>
+                            <button
+                                className={clsx(
+                                    styles.actionButton,
+                                    styles.inCorrectAnswer,
+                                )}
+                                span={5}
+                                onClick={() => {
+                                    redirect("http://localhost:3000/");
+                                }}
+                            >
+                                ĐÓNG
+                            </button>
+                        </Row>
+                    )}
                 </div>
             </div>
         </>
