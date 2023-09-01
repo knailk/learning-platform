@@ -25,6 +25,7 @@ var (
 	Question       *question
 	QuestionAnswer *questionAnswer
 	User           *user
+	UserToken      *userToken
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
@@ -37,6 +38,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Question = &Q.Question
 	QuestionAnswer = &Q.QuestionAnswer
 	User = &Q.User
+	UserToken = &Q.UserToken
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
@@ -50,6 +52,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Question:       newQuestion(db, opts...),
 		QuestionAnswer: newQuestionAnswer(db, opts...),
 		User:           newUser(db, opts...),
+		UserToken:      newUserToken(db, opts...),
 	}
 }
 
@@ -64,6 +67,7 @@ type Query struct {
 	Question       question
 	QuestionAnswer questionAnswer
 	User           user
+	UserToken      userToken
 }
 
 func (q *Query) Available() bool { return q.db != nil }
@@ -79,6 +83,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Question:       q.Question.clone(db),
 		QuestionAnswer: q.QuestionAnswer.clone(db),
 		User:           q.User.clone(db),
+		UserToken:      q.UserToken.clone(db),
 	}
 }
 
@@ -101,6 +106,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Question:       q.Question.replaceDB(db),
 		QuestionAnswer: q.QuestionAnswer.replaceDB(db),
 		User:           q.User.replaceDB(db),
+		UserToken:      q.UserToken.replaceDB(db),
 	}
 }
 
@@ -113,6 +119,7 @@ type queryCtx struct {
 	Question       IQuestionDo
 	QuestionAnswer IQuestionAnswerDo
 	User           IUserDo
+	UserToken      IUserTokenDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
@@ -125,6 +132,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Question:       q.Question.WithContext(ctx),
 		QuestionAnswer: q.QuestionAnswer.WithContext(ctx),
 		User:           q.User.WithContext(ctx),
+		UserToken:      q.UserToken.WithContext(ctx),
 	}
 }
 

@@ -82,13 +82,22 @@ CREATE TABLE "follows" (
 CREATE TABLE "users" (
     "id" char(36) PRIMARY KEY,
     "email" text,
-    "password" text,
     "phone" text,
     "name" text,
     "age" integer,
     "score" integer,
+    "verified" bool,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
+);
+
+CREATE TABLE "user_tokens" (
+    "user_id" char(36) PRIMARY KEY,
+    "access_token" text,
+    "access_token_expires_in" integer,
+    "refresh_token" text,
+    "refresh_token_expires_in" integer,
+    "verified_at" timestamp,
 );
 
 CREATE TABLE "chapters" (
@@ -155,6 +164,11 @@ CREATE TABLE "lesson_answers" (
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
 );
+
+ALTER TABLE
+    "user_tokens"
+ADD
+    FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE
     "follows"

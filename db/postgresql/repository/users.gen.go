@@ -33,7 +33,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.Name = field.NewString(tableName, "name")
 	_user.Age = field.NewInt(tableName, "age")
 	_user.Score = field.NewInt(tableName, "score")
-	_user.Password = field.NewString(tableName, "password")
+	_user.Verified = field.NewBool(tableName, "verified")
 	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_user.CreatedAt = field.NewTime(tableName, "created_at")
 
@@ -52,7 +52,7 @@ type user struct {
 	Name      field.String
 	Age       field.Int
 	Score     field.Int
-	Password  field.String
+	Verified  field.Bool
 	UpdatedAt field.Time
 	CreatedAt field.Time
 
@@ -77,7 +77,7 @@ func (u *user) updateTableName(table string) *user {
 	u.Name = field.NewString(table, "name")
 	u.Age = field.NewInt(table, "age")
 	u.Score = field.NewInt(table, "score")
-	u.Password = field.NewString(table, "password")
+	u.Verified = field.NewBool(table, "verified")
 	u.UpdatedAt = field.NewTime(table, "updated_at")
 	u.CreatedAt = field.NewTime(table, "created_at")
 
@@ -111,7 +111,7 @@ func (u *user) fillFieldMap() {
 	u.fieldMap["name"] = u.Name
 	u.fieldMap["age"] = u.Age
 	u.fieldMap["score"] = u.Score
-	u.fieldMap["password"] = u.Password
+	u.fieldMap["verified"] = u.Verified
 	u.fieldMap["updated_at"] = u.UpdatedAt
 	u.fieldMap["created_at"] = u.CreatedAt
 }
