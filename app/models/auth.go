@@ -1,172 +1,230 @@
 package models
 
 import (
-	"fmt"
-	"net/http"
-	"os"
+	"context"
+	"errors"
 	"strings"
-	"time"
 
-	jwt "github.com/golang-jwt/jwt/v4"
-	uuid "github.com/google/uuid"
-	"github.com/knailk/learning-platform/db"
+	"github.com/google/uuid"
+	"github.com/knailk/learning-platform/app/controllers/request"
+	"github.com/knailk/learning-platform/app/domain/entity"
+	cognitoRepo "github.com/knailk/learning-platform/app/domain/repository"
+	cognitoRepoIn "github.com/knailk/learning-platform/app/domain/repository/in/cognito"
+	postgresRepo "github.com/knailk/learning-platform/db/postgresql/repository"
+	"github.com/knailk/learning-platform/pkg/authjwt"
+	"gorm.io/gorm/clause"
 )
 
-// TokenDetails ...
-type TokenDetails struct {
-	AccessToken  string
-	RefreshToken string
-	AccessUUID   string
-	RefreshUUID  string
-	AtExpires    int64
-	RtExpires    int64
-}
-
-// AccessDetails ...
-type AccessDetails struct {
-	AccessUUID string
-	UserID     uuid.UUID
-}
-
-// Token ...
-type Token struct {
-	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
-}
-
 // AuthModel ...
-type AuthModel struct{}
+type AuthModel struct {
+	Repo        *postgresRepo.PostgresRepository
+	CognitoRepo cognitoRepo.CognitoRepository
+}
 
-// CreateToken ...
-func (m AuthModel) CreateToken(userID uuid.UUID) (*TokenDetails, error) {
+func (m *AuthModel) GetCurrentAuth(ctx context.Context, jwt string) (*entity.User, error) {
+	claims, err := m.verifyJWTToken(jwt)
+	if err != nil {
+		return nil, errors.New("Error Unauthorize")
+	}
 
-	td := &TokenDetails{}
-	td.AtExpires = time.Now().Add(time.Minute * 15).Unix()
-	td.AccessUUID = uuid.New().String()
-
-	td.RtExpires = time.Now().Add(time.Hour * 24 * 7).Unix()
-	td.RefreshUUID = uuid.New().String()
-
-	var err error
-	//Creating Access Token
-	atClaims := jwt.MapClaims{}
-	atClaims["authorized"] = true
-	atClaims["access_uuid"] = td.AccessUUID
-	atClaims["user_id"] = userID
-	atClaims["exp"] = td.AtExpires
-
-	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
-	td.AccessToken, err = at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))
+	existedUser, err := m.Repo.User.WithContext(ctx).
+		Where(m.Repo.User.ID.Eq(uuid.MustParse(claims.UserID))).
+		First()
 	if err != nil {
 		return nil, err
 	}
-	//Creating Refresh Token
-	rtClaims := jwt.MapClaims{}
-	rtClaims["refresh_uuid"] = td.RefreshUUID
-	rtClaims["user_id"] = userID
-	rtClaims["exp"] = td.RtExpires
-	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
-	td.RefreshToken, err = rt.SignedString([]byte(os.Getenv("REFRESH_SECRET")))
+
+	return existedUser, nil
+}
+
+// Login ...
+func (m *AuthModel) Login(ctx context.Context, req request.LoginRequest) (token *authjwt.TokenPair, user *entity.User, err error) {
+	normalizeEmail := strings.ToLower(req.Email)
+
+	user, err = m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
+	if err != nil {
+		return token, user, err
+	}
+
+	res, err := m.CognitoRepo.SignIn(ctx, cognitoRepoIn.SignIn{
+		Username: normalizeEmail, Password: req.Password,
+	})
+	if err != nil {
+		return token, user, err
+	}
+
+	if res != nil {
+		err = m.Repo.UserToken.WithContext(ctx).Clauses(clause.OnConflict{
+			Columns:   []clause.Column{{Name: "user_id"}},
+			DoUpdates: clause.AssignmentColumns([]string{"access_token", "access_token_expires_in", "refresh_token", "refresh_token_expires_in"}),
+		}).Create(&entity.UserToken{
+			UserID:                user.ID,
+			AccessToken:           *res.AuthenticationResult.AccessToken,
+			AccessTokenExpiresIn:  *res.AuthenticationResult.ExpiresIn,
+			RefreshToken:          *res.AuthenticationResult.RefreshToken,
+			RefreshTokenExpiresIn: *res.AuthenticationResult.ExpiresIn,
+		})
+		if err != nil {
+			return token, user, err
+	}
+
+	token, err = m.generateToken(user.ID)
+	if err != nil {
+		return token, user, err
+	}
+
+	return token, user, nil
+}
+
+// Register ...
+func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (user *entity.User, token *authjwt.TokenPair, err error) {
+	normalizeEmail := strings.ToLower(req.Email)
+	//Check if the user exists in database
+	checkUser, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).Count()
+	if err != nil {
+		return user, token, err
+	}
+
+	if checkUser > 0 {
+		return user, token, errors.New("email already exists")
+	}
+
+	user = &entity.User{
+		ID:    uuid.New(),
+		Email: req.Email,
+		Name:  req.Name,
+		Age:   req.Age,
+		Phone: req.Phone,
+	}
+
+	//Create the user and return back the user ID
+	err = m.Repo.User.WithContext(ctx).Create(user)
+	if err != nil {
+		return user, token, err
+	}
+
+	_, err = m.CognitoRepo.SignUp(ctx, cognitoRepoIn.SignUp{
+		Username: normalizeEmail,
+		Password: req.Password,
+	})
+	if err != nil {
+		return user, token, err
+	}
+
+	token, err = m.generateToken(user.ID)
+	if err != nil {
+		return user, token, err
+	}
+
+	return user, token, err
+}
+
+func (m *AuthModel) ConfirmRegister(ctx context.Context, req request.ConfirmSignUp) (user *entity.User, token *authjwt.TokenPair, err error) {
+	normalizeEmail := strings.ToLower(req.Email)
+
+	existedUser, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
+	if err != nil {
+		return user, token, err
+	}
+
+	_, err = m.CognitoRepo.ConfirmSignUp(ctx, cognitoRepoIn.ConfirmSignUp{
+		Username:         normalizeEmail,
+		ConfirmationCode: req.ConfirmationCode,
+	})
+	if err != nil {
+		return user, token, err
+	}
+
+	_, err = m.Repo.User.WithContext(ctx).
+		Where(m.Repo.User.ID.Eq(existedUser.ID)).
+		Updates(entity.User{
+			Verified: true,
+		})
+	if err != nil {
+		return user, token, err
+	}
+
+	existedUser.Verified = true
+
+	token, err = m.generateToken(user.ID)
+	if err != nil {
+		return user, token, err
+	}
+
+	return user, token, nil
+}
+
+func (m *AuthModel) ForgotPassword(ctx context.Context, req request.ForgotPassword) (*authjwt.TokenPair, error) {
+	normalizeEmail := strings.ToLower(req.Email)
+
+	user, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
 	if err != nil {
 		return nil, err
 	}
-	return td, nil
+
+	_, err = m.CognitoRepo.ForgotPassword(ctx, cognitoRepoIn.ForgotPassword{Username: normalizeEmail})
+	if err != nil {
+		return nil, err
+	}
+
+	token, err := m.generateToken(user.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return token, nil
 }
 
-// CreateAuth ...
-func (m AuthModel) CreateAuth(userID uuid.UUID, td *TokenDetails) error {
-	at := time.Unix(td.AtExpires, 0) //converting Unix to UTC(to Time object)
-	rt := time.Unix(td.RtExpires, 0)
-	now := time.Now()
-
-	errAccess := db.GetRedis().Set(td.AccessUUID, userID, at.Sub(now)).Err()
-	if errAccess != nil {
-		return errAccess
+func (m *AuthModel) ChangePassword(ctx context.Context, req request.ChangePassword) (*authjwt.TokenPair, error) {
+	user, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.ID.Eq(req.UserID)).First()
+	if err != nil {
+		return nil, err
 	}
-	errRefresh := db.GetRedis().Set(td.RefreshUUID, userID, rt.Sub(now)).Err()
-	if errRefresh != nil {
-		return errRefresh
-	}
-	return nil
-}
 
-// ExtractToken ...
-func (m AuthModel) ExtractToken(r *http.Request) string {
-	bearToken := r.Header.Get("Authorization")
-	//normally Authorization the_token_xxx
-	strArr := strings.Split(bearToken, " ")
-	if len(strArr) == 2 {
-		return strArr[1]
+	userToken, err := m.Repo.UserToken.WithContext(ctx).Where(m.Repo.UserToken.UserID.Eq(req.UserID)).First()
+	if err != nil {
+		return nil, err
 	}
-	return ""
-}
 
-// VerifyToken ...
-func (m AuthModel) VerifyToken(r *http.Request) (*jwt.Token, error) {
-	tokenString := m.ExtractToken(r)
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		//Make sure that the token method conform to "SigningMethodHMAC"
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(os.Getenv("ACCESS_SECRET")), nil
+	_, err = m.CognitoRepo.ChangePassword(ctx, cognitoRepoIn.ChangePassword{
+		AccessToken:      userToken.AccessToken,
+		PreviousPassword: req.PreviousPassword,
+		ProposedPassword: req.ProposedPassword,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return token, nil
-}
 
-// TokenValid ...
-func (m AuthModel) TokenValid(r *http.Request) error {
-	token, err := m.VerifyToken(r)
-	if err != nil && !token.Valid {
-		return err
-	}
-	return nil
-}
-
-// ExtractTokenMetadata ...
-func (m AuthModel) ExtractTokenMetadata(r *http.Request) (*AccessDetails, error) {
-	token, err := m.VerifyToken(r)
+	token, err := m.generateToken(user.ID)
 	if err != nil {
 		return nil, err
 	}
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if ok && token.Valid {
-		accessUUID, ok := claims["access_uuid"].(string)
-		if !ok {
-			return nil, err
-		}
 
-		userID, err := uuid.Parse(fmt.Sprintf("%v", claims["user_id"]))
-		if err != nil {
-			return nil, err
-		}
-
-		return &AccessDetails{
-			AccessUUID: accessUUID,
-			UserID:     userID,
-		}, nil
-	}
-	return nil, err
+	return token, nil
 }
 
-// FetchAuth ...
-func (m AuthModel) FetchAuth(authD *AccessDetails) (uuid.UUID, error) {
-	userid, err := db.GetRedis().Get(authD.AccessUUID).Result()
-	if err != nil {
-		return uuid.Nil, err
-	}
-	userID, _ := uuid.Parse(userid)
-	return userID, nil
+func (m *AuthModel) generateToken(userID uuid.UUID) (tokenPair *authjwt.TokenPair, err error) {
+	return m.generateJWTTokenPair(uuid.New(), userID)
 }
 
-// DeleteAuth ...
-func (m AuthModel) DeleteAuth(givenUUID string) (int64, error) {
-	deleted, err := db.GetRedis().Del(givenUUID).Result()
-	if err != nil {
-		return 0, err
+func (m *AuthModel) generateJWTTokenPair(uID uuid.UUID, userID uuid.UUID) (*authjwt.TokenPair, error) {
+	claims := authjwt.AuthClaims{
+		UID:    uID.String(),
+		UserID: userID.String(),
 	}
-	return deleted, nil
+
+	tokenPair, err := authjwt.GenerateTokenPair(&claims)
+	if err != nil {
+		return nil, errors.New("failed to generate token pair")
+	}
+
+	return tokenPair, nil
+}
+
+func (m *AuthModel) verifyJWTToken(token string) (*authjwt.AuthClaims, error) {
+	claims, err := authjwt.VerifyToken(token)
+	if err != nil {
+		return nil, err
+	}
+	return claims, nil
 }

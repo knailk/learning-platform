@@ -14,7 +14,7 @@ type User struct {
 	Name      string    `json:"name"`
 	Age       int       `json:"age"`
 	Score     int       `json:"score"`
-	Password  string    `json:"-"`
+	Verified  bool      `json:"-"`
 	UpdatedAt time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 	CreatedAt time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 }

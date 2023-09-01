@@ -14,6 +14,7 @@ func main() {
 	})
 	g.ApplyBasic(
 		entity.User{},
+		entity.UserToken{},
 		entity.Follow{},
 		entity.Chapter{},
 		entity.Lesson{},

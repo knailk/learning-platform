@@ -10,6 +10,7 @@ import (
 // UserRequest ...
 type UserRequest struct{}
 
+// ------------------------------------------------------//
 // LoginRequest ...
 type LoginRequest struct {
 	Email    string `json:"email" binding:"required,email"`
@@ -25,12 +26,39 @@ type RegisterRequest struct {
 	Phone    string `json:"phone"`
 }
 
+// --------------------------------------------------------------------//
+type ConfirmSignUp struct {
+	Email         string `json:"email"`
+	ConfirmationCode string `json:"confirmation_code"`
+}
+
+type ForgotPassword struct {
+	Email string `json:"email"`
+}
+
+type ChangePassword struct {
+	UserID           uuid.UUID `json:"-"`
+	PreviousPassword string    `json:"previous_password"`
+	ProposedPassword string    `json:"proposed_password"`
+}
+
+type ResendConfirmationCode struct {
+	Email string `json:"email"`
+}
+type ConfirmForgotPassword struct {
+	Email             string `json:"email"`
+	ConfirmationCode     string `json:"confirmation_code"`
+	ConfirmationPassword string `json:"confirmation_password"`
+}
+
+// --------------------------------------------------------------------//
+
 type ProfileRequest struct {
-	UserID   uuid.UUID `json:"user_id"`
-	Name     string    `json:"name" binding:"required,min=3,max=20,fullName"` //fullName rule is in validator.go
+	UserID uuid.UUID `json:"user_id"`
+	Name   string    `json:"name" binding:"required,min=3,max=20,fullName"` //fullName rule is in validator.go
 	// Password string    `json:"password" binding:"required,min=3,max=50"` // can't update password
-	Age      int       `json:"age" binding:"required,min=1,max=100"`
-	Phone    string    `json:"phone"`
+	Age   int    `json:"age" binding:"required,min=1,max=100"`
+	Phone string `json:"phone"`
 }
 
 // Name ...
