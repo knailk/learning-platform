@@ -8,7 +8,7 @@ import (
 	"github.com/jinzhu/copier"
 	"github.com/knailk/learning-platform/app/controllers/request"
 	"github.com/knailk/learning-platform/app/controllers/response"
-	"github.com/knailk/learning-platform/app/entity"
+	"github.com/knailk/learning-platform/app/domain/entity"
 
 	"github.com/knailk/learning-platform/db/postgresql/repository"
 	"golang.org/x/crypto/bcrypt"

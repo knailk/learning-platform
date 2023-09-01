@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/knailk/learning-platform/app/entity"
+	"github.com/knailk/learning-platform/app/domain/entity"
 	"gorm.io/gen"
 )
 

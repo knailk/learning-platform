@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/knailk/learning-platform/app/entity"
+	"github.com/knailk/learning-platform/app/domain/entity"
 )
 
 func newQuestion(db *gorm.DB, opts ...gen.DOOption) question {

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/knailk/learning-platform/app/entity"
+	"github.com/knailk/learning-platform/app/domain/entity"
 
 	"github.com/knailk/learning-platform/db/postgresql/repository"
 )
