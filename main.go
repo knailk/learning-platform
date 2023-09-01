@@ -3,10 +3,11 @@ package main
 import (
 	"context"
 	"log"
-	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/knailk/learning-platform/app/api"
+	"github.com/knailk/learning-platform/app/config"
+	"github.com/knailk/learning-platform/app/infra/provider"
+	"github.com/knailk/learning-platform/cmd/aws"
 	"github.com/knailk/learning-platform/db"
 
 	"github.com/gin-gonic/gin"
@@ -14,34 +15,41 @@ import (
 
 func main() {
 	ctx := context.Background()
-	//Load the .env file
-	err := godotenv.Load(".env")
+
+	cfg, err := config.LoadConfig("development/config.development.yaml")
 	if err != nil {
-		log.Fatal("error: failed to load the env file")
+		log.Fatal("error: failed to load config")
 	}
 
-	if os.Getenv("ENV") == "PRODUCTION" {
+	if cfg.Env == "PRODUCTION" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
+	provider := &provider.Provider{Config: cfg}
+
 	//Start PostgreSQL database
-	//Example: db.GetDB() - More info in the models folder
-	db.Init()
+	provider.DB = db.Init(cfg)
 
 	//Start Redis on database 1 - it's used to store the JWT but you can use it for anything else
 	//Example: db.GetRedis().Set(KEY, VALUE, at.Sub(now)).Err()
-	db.InitRedis(1)
+	provider.Redis = db.InitRedis(1)
 
-	r, err := api.Handler(ctx)
+	provider.CognitoClient, provider.S3Client, provider.SesClient, err = aws.Init(ctx, cfg)
+	if err != nil {
+		log.Fatal(err, "initialize aws auth")
+		return
+	}
+
+	r, err := api.Handler(ctx, provider)
 	if err != nil {
 		return
 	}
 
-	port := os.Getenv("PORT")
+	port := cfg.Port
 
-	log.Printf("\n\n PORT: %s \n ENV: %s \n SSL: %s \n Version: %s \n\n", port, os.Getenv("ENV"), os.Getenv("SSL"), os.Getenv("API_VERSION"))
+	log.Printf("\n\n PORT: %s \n ENV: %s \n SSL: %v \n Version: %s \n\n", port, cfg.Env, cfg.SSL, cfg.APIVersion)
 
-	if os.Getenv("SSL") == "TRUE" {
+	if cfg.SSL {
 
 		SSLKeys := &struct {
 			CERT string

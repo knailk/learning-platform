@@ -6,21 +6,22 @@ import (
 	"os"
 
 	_redis "github.com/go-redis/redis/v7"
+	"github.com/knailk/learning-platform/app/config"
 	_ "github.com/lib/pq" //import postgres
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-var db *gorm.DB
+// var db *gorm.DB
 
 // Init ...
-func Init() {
+func Init(cfg *config.Config) *gorm.DB {
 
-	dbInfo := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"))
+	dbInfo := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", cfg.DB.Host, cfg.DB.User, cfg.DB.Password, cfg.DB.DBName)
 
 	var err error
-	db, err = ConnectDB(dbInfo)
+	db, err := ConnectDB(dbInfo)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,6 +33,8 @@ func Init() {
 	if err := sqlDB.Ping(); err != nil {
 		log.Fatal(err)
 	}
+
+	return db
 
 }
 
@@ -47,16 +50,16 @@ func ConnectDB(dataSourceName string) (*gorm.DB, error) {
 	return gormDb, nil
 }
 
-// GetDB ...
-func GetDB() *gorm.DB {
-	return db
-}
+// // GetDB ...
+// func GetDB() *gorm.DB {
+// 	return db
+// }
 
 // RedisClient ...
 var RedisClient *_redis.Client
 
 // InitRedis ...
-func InitRedis(selectDB ...int) {
+func InitRedis(selectDB ...int) *_redis.Client {
 
 	var redisHost = os.Getenv("REDIS_HOST")
 	var redisPassword = os.Getenv("REDIS_PASSWORD")
@@ -77,6 +80,7 @@ func InitRedis(selectDB ...int) {
 		// },
 	})
 
+	return RedisClient
 }
 
 // GetRedis ...

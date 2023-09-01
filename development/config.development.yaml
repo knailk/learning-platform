@@ -1,0 +1,28 @@
+env: PRODUCTION
+ssl: false
+api_version: 2.0
+port: 8080
+db:
+  host: learning-platform.coociopk8atc.ap-southeast-1.rds.amazonaws.com
+  db_name: cpp_db
+  user: postgres
+  password: ndtd1234
+redis:
+  host: cpp-redis.g6floh.ng.0001.apse1.cache.amazonaws.com:6380
+  password:
+  secret: cppredissecret123
+aws:
+  access_key_id: AKIAQKDIMRXRUPSEGQ36
+  secret_access_key: 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
+  region: ap-southeast-1
+  cognito:
+    cognito_user_pool_id: ap-southeast-1_7VCM3tWTS
+    cognito_app_client_id: 3l10b3plunkimig2g75k42r9u8
+    cognito_app_client_secret: # khong co
+  s3:
+    bucket_user_assets: learning-platform-bucket
+jwt:
+  access_secret: cppaccesssecret123
+  refresh_secret: cpprefershsecret123
+  access_token_exp: 43200
+  refresh_token_exp: 86400
