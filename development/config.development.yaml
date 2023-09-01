@@ -12,8 +12,8 @@ redis:
   password:
   secret: cppredissecret123
 aws:
-  access_key_id: AKIAQKDIMRXRUPSEGQ36
-  secret_access_key: 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
+  access_key_id: 
+  secret_access_key:
   region: ap-southeast-1
   cognito:
     cognito_user_pool_id: ap-southeast-1_7VCM3tWTS

@@ -3,13 +3,14 @@ module github.com/knailk/learning-platform
 go 1.18
 
 require (
+	github.com/aws/aws-sdk-go v1.44.333
 	github.com/gin-contrib/gzip v0.0.6
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-playground/validator/v10 v10.14.1
 	github.com/go-redis/redis/v7 v7.4.1
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.3.0
-	github.com/joho/godotenv v1.5.1
+	github.com/jinzhu/configor v1.2.1
 	github.com/lib/pq v1.10.9
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/crypto v0.11.0
@@ -21,8 +22,6 @@ require (
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
-	github.com/aws/aws-sdk-go v1.44.333 // indirect
-	github.com/jinzhu/configor v1.2.1 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
