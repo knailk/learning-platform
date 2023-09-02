@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/knailk/learning-platform/app/controllers"
+	cognitoClient "github.com/knailk/learning-platform/app/external/adaptor/cognitoclient"
 	"github.com/knailk/learning-platform/app/infra/provider"
 	"github.com/knailk/learning-platform/app/middleware"
 	"github.com/knailk/learning-platform/app/models"
@@ -22,25 +23,26 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 
 	dbSQL := provider.DB
 	repo := repository.NewPostgresRepository(dbSQL)
+	cognitoRepo := cognitoClient.NewCognitoRepository(provider.CognitoClient, provider.Config)
 
 	v1 := r.Group("/v1")
 	{
 		/*** START USER ***/
 		user := &controllers.UserController{UserModel: &models.UserModel{Repo: repo}}
-		v1.POST("/user/login", user.Login)
-		v1.POST("/user/register", user.Register)
-		// v1.POST("/user/register/confirm", user.RegisterConfirm)
-		v1.GET("/user/logout", user.Logout)
-		v1.PUT("/user/profile", middleware.TokenAuthMiddleware(), user.UpdateProfile)
-		v1.GET("/user/rank", middleware.TokenAuthMiddleware(), user.GetRank)
+		v1.PUT("/user/profile", user.UpdateProfile)
+		v1.GET("/user/rank", user.GetRank)
 
 		/*** START AUTH ***/
-		auth := new(controllers.AuthController)
+		auth := &controllers.AuthController{AuthModel: &models.AuthModel{Repo: repo, CognitoRepo: cognitoRepo}}
+		v1.POST("/user/login", auth.Login)
+		v1.POST("/user/register", auth.Register)
+		v1.POST("/user/register/confirm", auth.RegisterConfirm)
+		v1.GET("/user/logout", auth.Logout)
+		v1.POST("/auth/forgot-password", auth.ForgotPassword)
+		v1.POST("/auth/forgot-password/confirm", auth.ConfirmForgotPassword)
+		v1.POST("/auth/resend-confirmation-code", auth.ResendConfirmationCode)
+		v1.POST("/auth/change-password", auth.ChangePassword)
 		v1.POST("/auth/refresh", auth.Refresh)
-		// v1.POST("/auth/forgot-password", auth.ForgotPassword)
-		// v1.POST("/auth/forgot-password/confirm", auth.ConfirmForgotPassword)
-		// v1.POST("/auth/change-password", auth.ChangePassword)
-		// v1.POST("/auth/resend-confirmation-code", auth.ResendConfirmationCode)
 
 		/*** START Chapter ***/
 		chapter := &controllers.ChapterController{ChapterModel: &models.ChapterModel{Repo: repo}}

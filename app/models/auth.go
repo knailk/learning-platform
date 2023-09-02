@@ -21,22 +21,6 @@ type AuthModel struct {
 	CognitoRepo cognitoRepo.CognitoRepository
 }
 
-func (m *AuthModel) GetCurrentAuth(ctx context.Context, jwt string) (*entity.User, error) {
-	claims, err := m.verifyJWTToken(jwt)
-	if err != nil {
-		return nil, errors.New("Error Unauthorize")
-	}
-
-	existedUser, err := m.Repo.User.WithContext(ctx).
-		Where(m.Repo.User.ID.Eq(uuid.MustParse(claims.UserID))).
-		First()
-	if err != nil {
-		return nil, err
-	}
-
-	return existedUser, nil
-}
-
 // Login ...
 func (m *AuthModel) Login(ctx context.Context, req request.LoginRequest) (token *authjwt.TokenPair, user *entity.User, err error) {
 	normalizeEmail := strings.ToLower(req.Email)
@@ -66,6 +50,7 @@ func (m *AuthModel) Login(ctx context.Context, req request.LoginRequest) (token 
 		})
 		if err != nil {
 			return token, user, err
+		}
 	}
 
 	token, err = m.generateToken(user.ID)
@@ -119,7 +104,7 @@ func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (
 	return user, token, err
 }
 
-func (m *AuthModel) ConfirmRegister(ctx context.Context, req request.ConfirmSignUp) (user *entity.User, token *authjwt.TokenPair, err error) {
+func (m *AuthModel) ConfirmRegister(ctx context.Context, req request.ConfirmRegister) (user *entity.User, token *authjwt.TokenPair, err error) {
 	normalizeEmail := strings.ToLower(req.Email)
 
 	existedUser, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
@@ -127,7 +112,7 @@ func (m *AuthModel) ConfirmRegister(ctx context.Context, req request.ConfirmSign
 		return user, token, err
 	}
 
-	_, err = m.CognitoRepo.ConfirmSignUp(ctx, cognitoRepoIn.ConfirmSignUp{
+	_, err = m.CognitoRepo.ConfirmRegister(ctx, cognitoRepoIn.ConfirmRegister{
 		Username:         normalizeEmail,
 		ConfirmationCode: req.ConfirmationCode,
 	})
@@ -201,6 +186,75 @@ func (m *AuthModel) ChangePassword(ctx context.Context, req request.ChangePasswo
 	}
 
 	return token, nil
+}
+
+func (m *AuthModel) ResendConfirmationCode(ctx context.Context, req request.ResendConfirmationCode) error {
+	_, err := m.CognitoRepo.ResendConfirmationCode(ctx, cognitoRepoIn.ResendConfirmationCode{
+		Username: strings.ToLower(req.Email),
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *AuthModel) ConfirmForgotPassword(ctx context.Context, req request.ConfirmForgotPassword) (*authjwt.TokenPair, error) {
+	normalizeEmail := strings.ToLower(req.Email)
+
+	user, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = m.CognitoRepo.ConfirmForgotPassword(ctx, cognitoRepoIn.ConfirmForgotPassword{
+		Username:         normalizeEmail,
+		ConfirmationCode: req.ConfirmationCode, ConfirmationPassword: req.ConfirmationPassword,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	token, err := m.generateToken(user.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return token, nil
+}
+
+func (m *AuthModel) Refresh(ctx context.Context, refreshToken string) (*authjwt.TokenPair, error) {
+	claims, err := m.verifyJWTToken(refreshToken)
+	if err != nil {
+		return nil, errors.New("error unauthorize")
+	}
+
+	user, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.ID.Eq(uuid.MustParse(claims.UserID))).First()
+	if err != nil {
+		return nil, err
+	}
+
+	token, err := m.generateToken(user.ID)
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
+}
+
+func (m *AuthModel) GetCurrentAuth(ctx context.Context, jwt string) (*entity.User, error) {
+	claims, err := m.verifyJWTToken(jwt)
+	if err != nil {
+		return nil, errors.New("error unauthorize")
+	}
+
+	existedUser, err := m.Repo.User.WithContext(ctx).
+		Where(m.Repo.User.ID.Eq(uuid.MustParse(claims.UserID))).
+		First()
+	if err != nil {
+		return nil, err
+	}
+
+	return existedUser, nil
 }
 
 func (m *AuthModel) generateToken(userID uuid.UUID) (tokenPair *authjwt.TokenPair, err error) {

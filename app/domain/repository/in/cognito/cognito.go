@@ -12,8 +12,8 @@ type SignUp struct {
 	Password string
 }
 
-// ConfirmSignUp holds the information required for user confirmation sign up
-type ConfirmSignUp struct {
+// ConfirmRegister holds the information required for user confirmation sign up
+type ConfirmRegister struct {
 	Username         string
 	ConfirmationCode string
 }

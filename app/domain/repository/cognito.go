@@ -10,7 +10,7 @@ import (
 type CognitoRepository interface {
 	SignIn(ctx context.Context, in repoIn.SignIn) (*cognito.AdminInitiateAuthOutput, error)
 	SignUp(ctx context.Context, in repoIn.SignUp) (*cognito.SignUpOutput, error)
-	ConfirmSignUp(ctx context.Context, in repoIn.ConfirmSignUp) (*cognito.ConfirmSignUpOutput, error)
+	ConfirmRegister(ctx context.Context, in repoIn.ConfirmRegister) (*cognito.ConfirmSignUpOutput, error)
 	ForgotPassword(ctx context.Context, in repoIn.ForgotPassword) (*cognito.ForgotPasswordOutput, error)
 	ChangePassword(ctx context.Context, in repoIn.ChangePassword) (*cognito.ChangePasswordOutput, error)
 	ResendConfirmationCode(ctx context.Context, in repoIn.ResendConfirmationCode) (res *cognito.ResendConfirmationCodeOutput, err error)

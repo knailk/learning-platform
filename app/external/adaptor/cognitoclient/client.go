@@ -50,7 +50,7 @@ func (r cognitoRepository) SignUp(ctx context.Context, in repoIn.SignUp) (res *c
 	return res, nil
 }
 
-func (r cognitoRepository) ConfirmSignUp(ctx context.Context, in repoIn.ConfirmSignUp) (res *cognito.ConfirmSignUpOutput, err error) {
+func (r cognitoRepository) ConfirmRegister(ctx context.Context, in repoIn.ConfirmRegister) (res *cognito.ConfirmSignUpOutput, err error) {
 	input := &cognito.ConfirmSignUpInput{
 		ClientId:         aws.String(r.AppClientID),
 		Username:         aws.String(in.Username),
