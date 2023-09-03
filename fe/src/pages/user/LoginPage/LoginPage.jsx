@@ -27,9 +27,7 @@ const LoginPage = () => {
                 password: password,
             });
 
-            notification.success({
-                message: 'Đăng nhập thành công',
-            });
+            notification.success({message: 'Đăng nhập thành công'});
             setAuthUser(response.data.user);
             setIsLogin(true);
 
@@ -59,9 +57,6 @@ const LoginPage = () => {
                         <div className={styles['login-content']}>
                             <div className={styles['login-image']}>
                                 <img src="/images/login.png" alt="sign in" />
-                                <Link to="/register" className={styles['login-link']}>
-                                    Đăng ký tài khoản mới
-                                </Link>
                             </div>
 
                             <div className={styles['login-form-container']}>
@@ -83,18 +78,36 @@ const LoginPage = () => {
                                         name="password"
                                         rules={[{ required: true, message: 'Bạn phải nhập mật khẩu!' }]}
                                     >
-                                        <Input
+                                        <Input.Password
                                             size="large"
                                             placeholder="Nhập mật khẩu của bạn"
                                             prefix={<FontAwesomeIcon icon={faLock} />}
                                         />
                                     </Form.Item>
                                     <Form.Item className={`${styles['form-group']} ${styles['form-button']}`}>
-                                        <Button style={{ width: '100%' }} size="large" type="primary" htmlType="submit">
+                                        <Button
+                                            style={{
+                                                width: '100%',
+                                                borderRadius: '40px',
+                                                padding: '8px 24px',
+                                                height: '40px',
+                                            }}
+                                            size="large"
+                                            type="primary"
+                                            htmlType="submit"
+                                        >
                                             <b>Đăng nhập</b>
                                         </Button>
                                     </Form.Item>
                                 </Form>
+                                <div className={styles['card__footer']}>
+                                    <Link to="/forgot-password" className={styles['card__footer--left']}>
+                                        Quên mật khẩu?
+                                    </Link>
+                                    <Link to="/register" className={styles['card__footer--right']}>
+                                        Chưa có tài khoản?
+                                    </Link>
+                                </div>
                                 <div className={styles['social-login']}>
                                     <Divider>Hoặc đăng nhập bằng</Divider>
                                     <ul className={styles.socials}>

@@ -125,7 +125,16 @@ const RegisterPage = () => {
                                         />
                                     </Form.Item>
                                     <Form.Item className={`${styles['form-group']} ${styles['form-button']}`}>
-                                        <Button style={{ width: '100%' }} type="primary" htmlType="submit">
+                                        <Button
+                                            style={{
+                                                width: '100%',
+                                                borderRadius: '40px',
+                                                padding: '8px 24px',
+                                                height: '40px',
+                                            }}
+                                            type="primary"
+                                            htmlType="submit"
+                                        >
                                             <b>Đăng ký</b>
                                         </Button>
                                     </Form.Item>

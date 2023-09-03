@@ -46,67 +46,72 @@ const ConfirmRegisterPage = () => {
                 <title>Xác nhận đăng ký</title>
             </Helmet>
             <div className={styles.main}>
-            <div className={styles['confirm-register-page']} style={{ paddingTop: '100px' }}>
-                <Card className={styles['card']}>
-                    <div className={styles['card__header']}>
-                        <Title style={{ textAlign: 'center', fontSize: 18 }} level={5}>
-                            Chúng tôi vừa gửi một mã xác nhận 6 kí tự đến @email
-                        </Title>
-                    </div>
-                    <div>
-                        <Text>
-                            Bạn sẽ nhận được email từ chúng tôi có chứa mã xác minh gồm 6 chữ số. Nếu nó không có trong
-                            hộp thư đến của bạn, vui lòng kiểm tra thư mục thư rác.
-                        </Text>
-                    </div>
-                    <Form
-                        style={{ marginTop: '20px' }}
-                        className={styles['card__form']}
-                        form={form}
-                        // layout="vertical"
-                        autoComplete="off"
-                        onFinish={handleSubmit}
-                    >
-                        <Form.Item
-                            name="confirmation_code"
-                            rules={[{ required: true, message: 'Bạn phải nhập mã xác nhận!' }]}
+                <div className={styles['confirm-register-page']} style={{ paddingTop: '100px' }}>
+                    <Card className={styles['card']}>
+                        <div className={styles['card__header']}>
+                            <Title style={{ textAlign: 'center', fontSize: 18 }} level={5}>
+                                Chúng tôi vừa gửi một mã xác nhận 6 kí tự đến @email
+                            </Title>
+                        </div>
+                        <div>
+                            <Text>
+                                Bạn sẽ nhận được email từ chúng tôi có chứa mã xác minh gồm 6 chữ số. Nếu nó không có
+                                trong hộp thư đến của bạn, vui lòng kiểm tra thư mục thư rác.
+                            </Text>
+                        </div>
+                        <Form
+                            style={{ marginTop: '20px' }}
+                            className={styles['card__form']}
+                            form={form}
+                            // layout="vertical"
+                            autoComplete="off"
+                            onFinish={handleSubmit}
                         >
-                            <Input size="large" placeholder="Nhập mã xác nhận của bạn" />
-                        </Form.Item>
-                        <Form.Item noStyle>
-                            <Button
-                                type="link"
-                                size="large"
-                                onClick={handleReSendCode}
-                                loading={isRunning}
-                                style={{
-                                    color: 'black',
-                                    fontWeight: 600,
-                                    padding: 0,
-                                    display: 'flex',
-                                    marginLeft: 'auto',
-                                }}
+                            <Form.Item
+                                name="confirmation_code"
+                                rules={[{ required: true, message: 'Bạn phải nhập mã xác nhận!' }]}
                             >
-                                Chưa nhận được mã,&nbsp;
-                                <span style={{ color: '#1890FF' }}>
-                                    gửi lại mã {isRunning && `sau ${minutes * 60 + seconds} giây`}
-                                </span>
-                            </Button>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button
-                                disabled={_.isEmpty(confirmationCode)}
-                                style={{ width: '100%' }}
-                                size="large"
-                                type="primary"
-                                htmlType="submit"
-                            >
-                                <b>Xác nhận</b>
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </Card>
-            </div>
+                                <Input size="large" placeholder="Nhập mã xác nhận của bạn" />
+                            </Form.Item>
+                            <Form.Item noStyle>
+                                <Button
+                                    type="link"
+                                    size="large"
+                                    onClick={handleReSendCode}
+                                    loading={isRunning}
+                                    style={{
+                                        color: 'black',
+                                        fontWeight: 600,
+                                        padding: 0,
+                                        display: 'flex',
+                                        marginLeft: 'auto',
+                                    }}
+                                >
+                                    Chưa nhận được mã,&nbsp;
+                                    <span style={{ color: '#1890FF' }}>
+                                        gửi lại mã {isRunning && `sau ${minutes * 60 + seconds} giây`}
+                                    </span>
+                                </Button>
+                            </Form.Item>
+                            <Form.Item>
+                                <Button
+                                    disabled={_.isEmpty(confirmationCode)}
+                                    style={{
+                                        width: '100%',
+                                        borderRadius: '40px',
+                                        padding: '8px 24px',
+                                        height: '40px',
+                                    }}
+                                    size="large"
+                                    type="primary"
+                                    htmlType="submit"
+                                >
+                                    <b>Xác nhận</b>
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </Card>
+                </div>
             </div>
         </>
     );

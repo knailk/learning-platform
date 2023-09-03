@@ -409,6 +409,26 @@ label.valid:after {
   width: 100%;
 }
 
+.card__footer{
+  margin-top: 20px;
+}
+
+.card__footer--left{
+  float: left;
+  text-decoration: none;
+}
+
+.card__footer--right{
+  float: right;
+  text-decoration: none;
+}
+
+.card__footer--left:hover,
+.card__footer--right:hover {
+  color: #2193b0;
+}
+
+
 @media screen and (max-width: 1200px) {
   .container {
     width: calc(100% - 30px);
@@ -424,11 +444,6 @@ label.valid:after {
 
 @media screen and (max-width: 768px) {
   .login-content {
-    flex-direction: column;
-    -moz-flex-direction: column;
-    -webkit-flex-direction: column;
-    -o-flex-direction: column;
-    -ms-flex-direction: column;
     justify-content: center;
     -moz-justify-content: center;
     -webkit-justify-content: center;
@@ -481,13 +496,7 @@ label.valid:after {
 }
 
 @media screen and (max-width: 400px) {
-  .social-login {
-    flex-direction: column;
-    -moz-flex-direction: column;
-    -webkit-flex-direction: column;
-    -o-flex-direction: column;
-    -ms-flex-direction: column;
-  }
+
 
   .social-label {
     margin-right: 0px;
