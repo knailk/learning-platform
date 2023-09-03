@@ -34,13 +34,13 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 
 		/*** START AUTH ***/
 		auth := &controllers.AuthController{AuthModel: &models.AuthModel{Repo: repo, CognitoRepo: cognitoRepo}}
-		v1.POST("/user/login", auth.Login)
-		v1.POST("/user/register", auth.Register)
-		v1.POST("/user/register/confirm", auth.RegisterConfirm)
-		v1.GET("/user/logout", auth.Logout)
+		v1.POST("/auth/login", auth.Login)
+		v1.POST("/auth/register", auth.Register)
+		v1.POST("/auth/register/confirm", auth.RegisterConfirm)
+		v1.GET("/auth/logout", auth.Logout)
 		v1.POST("/auth/forgot-password", auth.ForgotPassword)
 		v1.POST("/auth/forgot-password/confirm", auth.ConfirmForgotPassword)
-		v1.POST("/auth/resend-confirmation-code", auth.ResendConfirmationCode)
+		v1.POST("/auth/register/resend", auth.ResendConfirmationCode)
 		v1.POST("/auth/change-password", auth.ChangePassword)
 		v1.POST("/auth/refresh", auth.Refresh)
 

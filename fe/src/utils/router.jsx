@@ -3,6 +3,7 @@ import LearningPage from '../pages/user/LearningPage';
 import PracticePage from '../pages/user/PracticePage';
 import RankingPage from '../pages/user/RankingPage';
 import GamePage from '../pages/user/GamePage/GamePage';
+import ConfirmRegisterPage from '../pages/user/ConfirmRegisterPage';
 import ProfilePage from '../pages/user/ProfilePage';
 import MasterLayout from '../pages/theme/MasterLayout';
 
@@ -46,6 +47,14 @@ export const ROUTERS = {
             layout: MasterLayout,
             inMenu: true,
             img: 'images/profile.png',
+        },
+        {
+            title: 'Xác nhận đăng ký',
+            path: '/confirm-register',
+            component: <ConfirmRegisterPage />,
+            layout: null,
+            inMenu: false,
+            img: '',
         },
         // {
         //   title: "LOGIN",

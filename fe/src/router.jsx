@@ -22,14 +22,14 @@ const RouterCustom = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       {CONST_ROUTERS.MENU_NAV_BAR.map((item, index) => {
-        // let Layout = item?.layout === null ? Fragment : item?.layout;
+        let Layout = item?.layout === null ? Fragment : item?.layout;
         return (
           <Route
             key={index}
             path={item.path}
             element={
               <PrivateRoute>
-                <MasterLayout>{item.component}</MasterLayout>
+                <Layout>{item.component}</Layout>
               </PrivateRoute>
             }
           />

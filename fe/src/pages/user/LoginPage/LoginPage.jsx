@@ -26,7 +26,7 @@ const LoginPage = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await request.post("user/login", {
+      const response = await request.post("auth/login", {
         email: event.target.username.value,
         password: event.target.password.value,
       });

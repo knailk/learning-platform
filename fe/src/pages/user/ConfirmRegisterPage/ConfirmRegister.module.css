@@ -1,0 +1,59 @@
+.main {
+  background: radial-gradient(#2193b0, #6dd5ed);
+  /* padding: 50px 0; */
+  min-height: 100vh;
+}
+
+.confirm-register-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-register-page .policy-approvement {
+  padding: 16px;
+  background: #E6F7FF;
+  border-radius: 8px;
+}
+
+.ant-form-item-row .ant-form-item-label {
+  padding: 0 0 6px;
+}
+
+.confirm-register-page img {
+  width: 280px;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-register-page .card {
+  width: 600px;
+}
+
+.confirm-register-page__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-register-page__header a {
+  display: inline-block;
+}
+
+.confirm-register-page .ant-card-body {
+  padding: 26px;
+}
+
+.card__header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card__form {
+  margin: auto;
+}
