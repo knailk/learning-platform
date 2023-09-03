@@ -46,7 +46,7 @@ const ForgotPasswordPage = () => {
                                 autoComplete="off"
                                 onFinish={handleSubmit}
                             >
-                                <Form.Item name="email" label="Email">
+                                <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Bạn phải nhập email của bạn!' }]}>
                                     <Input size="large" placeholder="Nhập địa chỉ email của bạn" />
                                 </Form.Item>
                                 <Form.Item>

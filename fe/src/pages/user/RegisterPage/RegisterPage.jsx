@@ -18,7 +18,7 @@ const RegisterPage = () => {
     const { setAuthUser, setIsLogin } = useAuth();
 
     const handleRegister = async (values) => {
-        const { email, password, name, phone, age, confirmpassword } = values;
+        const { email, password, name, phone, confirmpassword } = values;
 
         if (password !== confirmpassword) {
             notification.error({

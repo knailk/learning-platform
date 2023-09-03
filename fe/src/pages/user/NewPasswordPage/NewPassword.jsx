@@ -29,7 +29,7 @@ const NewPasswordPage = () => {
     return (
         <>
             <Helmet>
-                <title>Xác nhận đăng ký</title>
+                <title>Đổi mật khẩu</title>
             </Helmet>
             <div className={styles.main}>
                 <div className={styles['new-password-page']} style={{ paddingTop: '100px' }}>
@@ -38,7 +38,7 @@ const NewPasswordPage = () => {
                             {/* HEADER */}
                             <div className={styles['card__header']}>
                                 <Typography.Title style={{ textAlign: 'center', fontSize: 18 }} level={5}>
-                                    Quên mật khẩu
+                                    Đổi mật khẩu
                                 </Typography.Title>
                             </div>
 
@@ -49,13 +49,25 @@ const NewPasswordPage = () => {
                                 autoComplete="off"
                                 onFinish={handleSubmit}
                             >
-                                <Form.Item name="confirmation_code" label="Mã xác nhận">
+                                <Form.Item
+                                    name="confirmation_code"
+                                    label="Mã xác nhận"
+                                    rules={[{ required: true, message: 'Nhập mã xác nhận!' }]}
+                                >
                                     <Input size="large" placeholder="Nhập mã xác nhận của bạn" />
                                 </Form.Item>
-                                <Form.Item name="new_password" label="Mật khẩu mới">
+                                <Form.Item
+                                    name="new_password"
+                                    label="Mật khẩu mới"
+                                    rules={[{ required: true, message: 'Nhập mật khẩu mới!' }]}
+                                >
                                     <Input.Password size="large" placeholder="Mật khẩu mới" />
                                 </Form.Item>
-                                <Form.Item name="confirmation_password" label="Xác nhận mật khẩu">
+                                <Form.Item
+                                    name="confirmation_password"
+                                    label="Xác nhận mật khẩu"
+                                    rules={[{ required: true, message: 'Xác nhận mật khẩu!' }]}
+                                >
                                     <Input.Password size="large" placeholder="Nhập mật khẩu" />
                                 </Form.Item>
                                 <Form.Item>
