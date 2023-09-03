@@ -2,7 +2,7 @@
 ######################
 .DS_Store
 .DS_Store?
-.vscode
+.vscode/
 
 # Logs #
 ######################
@@ -12,7 +12,6 @@
 .gitconfig
 .env
 cert/
-./.vscode
 
 # BUILD #
 ./learning-platform.exe

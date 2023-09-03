@@ -1,165 +1,148 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import Cookies from "universal-cookie";
-import {
-  faUser,
-  faLock,
-  faEnvelope,
-  faPhone,
-} from "@fortawesome/free-solid-svg-icons";
-import { notification } from "antd";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import Cookies from 'universal-cookie';
+import { faUser, faLock, faEnvelope, faPhone, faKey } from '@fortawesome/free-solid-svg-icons';
+import { Button, Form, Input, Divider, notification } from 'antd';
 
-import { useAuth } from "contexts/AuthContext";
-import request, { setAuthToken } from "utils/http";
-import styles from "./Register.module.css";
+import { useAuth } from 'contexts/AuthContext';
+import request, { setAuthToken } from 'utils/http';
+import styles from './Register.module.css';
 
 const cookies = new Cookies();
 
 const RegisterPage = () => {
-  const navigate = useNavigate();
-  const { setAuthUser, setIsLogin } = useAuth();
+    const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const { setAuthUser, setIsLogin } = useAuth();
 
-  const handleRegister = async (event) => {
-    event.preventDefault();
-    const password = event.target.password.value;
-    const rePassword = event.target.confirmpassword.value;
+    const handleRegister = async (values) => {
+        const { email, password, name, phone, age, confirmpassword } = values;
 
-    if (password !== rePassword) {
-      notification.error({
-        message: "Đăng ký thất bại",
-        description: "Mật khẩu nhập lại không khớp.",
-      });
-      return;
-    }
-    try {
-      const response = await request.post("user/register", {
-        email: event.target.email.value,
-        password: password,
-        name: event.target.name.value,
-        phone: event.target.phone.value,
-        age: 1,
-      });
+        if (password !== confirmpassword) {
+            notification.error({
+                message: 'Đăng ký thất bại',
+                description: 'Mật khẩu nhập lại không khớp.',
+            });
+            return;
+        }
+        try {
+            const response = await request.post('user/register', {
+                email: email,
+                password: password,
+                name: name,
+                phone: phone,
+                age: 1,
+            });
 
-      notification.success({
-        message: "Đăng ký thành công",
-        // description: "Đợi một chút...",
-      });
+            notification.success({
+                message: 'Đăng ký thành công',
+            });
 
-      setAuthUser(response.data.user);
-      setIsLogin(true);
+            setAuthUser(response?.data.user);
+            setIsLogin(true);
 
-      cookies.set("access_token", response.data.token.access_token, {
-        path: "/",
-      });
+            cookies.set('access_token', response?.data.token.access_token);
+            cookies.set('verified', response?.data.user.verified);
+            cookies.set('email', response?.data.user.email);
 
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-      notification.error({
-        message: "Đăng ký thất bại",
-        description: error.response.data.message,
-      });
-    }
-  };
+            navigate('/confirm-register');
+        } catch (error) {
+            console.log(error);
+            notification.error({
+                message: 'Đăng ký thất bại',
+                description: error.response.data.message,
+            });
+        }
+    };
 
-  return (
-    <>
-      <Helmet>
-        <title>Đăng ký || CPP</title>
-      </Helmet>
-      <div className={styles.main}>
-        <section className={styles.register}>
-          <div className={styles["register-container"]}>
-            <div className={styles["register-content"]}>
-              <div className={styles["register-form-container"]}>
-                <h2 className={styles["form-title"]}>Đăng ký</h2>
-                <form
-                  onSubmit={handleRegister}
-                  className={styles["register-form"]}
-                  id="register-form"
-                >
-                  <div className={styles["form-group"]}>
-                    <label htmlFor="name">
-                      <FontAwesomeIcon icon={faUser} />
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      placeholder="Nhập họ và tên"
-                    />
-                  </div>
-                  <div className={styles["form-group"]}>
-                    <label htmlFor="email">
-                      <FontAwesomeIcon icon={faEnvelope} />
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      placeholder="Nhập địa chỉ email"
-                    />
-                  </div>
-                  <div className={styles["form-group"]}>
-                    <label htmlFor="phone">
-                      <FontAwesomeIcon icon={faPhone} />
-                    </label>
-                    <input
-                      type="phone"
-                      name="phone"
-                      id="phone"
-                      placeholder="Nhập số điện thoại"
-                    />
-                  </div>
-                  <div className={styles["form-group"]}>
-                    <label htmlFor="pass">
-                      <FontAwesomeIcon icon={faLock} />
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      placeholder="Nhập mật khẩu"
-                    />
-                  </div>
-                  <div className={styles["form-group"]}>
-                    <label htmlFor="confirmpassword">
-                      <FontAwesomeIcon icon={faLock} />
-                    </label>
-                    <input
-                      type="password"
-                      name="confirmpassword"
-                      id="confirmpassword"
-                      placeholder="Nhập lại mật khẩu"
-                    />
-                  </div>
-                  <div
-                    className={`${styles["form-group"]} ${styles["form-button"]}`}
-                  >
-                    <input
-                      type="submit"
-                      name="register"
-                      id="register"
-                      className={styles["form-submit"]}
-                      value="Đăng ký"
-                    />
-                  </div>
-                </form>
-              </div>
-              <div className={styles["register-image"]}>
-                <img src="images/register.png" alt="sing up" />
-                <Link to="/login" className={styles["register-link"]}>
-                  Đã có tài khoản
-                </Link>
-              </div>
+    return (
+        <>
+            <Helmet>
+                <title>Đăng ký tài khoản</title>
+            </Helmet>
+            <div className={styles.main}>
+                <section className={styles.register}>
+                    <div className={styles['register-container']}>
+                        <div className={styles['register-content']}>
+                            <div className={styles['register-form-container']}>
+                                <h2 className={styles['form-title']}>Đăng ký tài khoản</h2>
+                                <Form form={form} onFinish={handleRegister} className={styles['register-form']}>
+                                    <Form.Item
+                                        className={styles['form-group']}
+                                        name="name"
+                                        rules={[{ required: true, message: 'Bạn phải nhập tên của bạn!' }]}
+                                    >
+                                        <Input
+                                            // size="large"
+                                            placeholder="Nhập họ và tên"
+                                            prefix={<FontAwesomeIcon icon={faUser} />}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        className={styles['form-group']}
+                                        name="email"
+                                        rules={[{ required: true, message: 'Bạn phải nhập email của bạn!' }]}
+                                    >
+                                        <Input
+                                            // size="large"
+                                            placeholder="Nhập địa chỉ email"
+                                            prefix={<FontAwesomeIcon icon={faEnvelope} />}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        className={styles['form-group']}
+                                        name="phone"
+                                        rules={[{ required: true, message: 'Bạn phải nhập số điện thoại của bạn!' }]}
+                                    >
+                                        <Input
+                                            // size="large"
+                                            placeholder="Nhập số điện thoại"
+                                            prefix={<FontAwesomeIcon icon={faPhone} />}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        className={styles['form-group']}
+                                        name="password"
+                                        rules={[{ required: true, message: 'Bạn phải nhập mật khẩu!' }]}
+                                    >
+                                        <Input.Password
+                                            // size="large"
+                                            placeholder="Nhập mật khẩu"
+                                            prefix={<FontAwesomeIcon icon={faLock} />}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        className={styles['form-group']}
+                                        name="confirmpassword"
+                                        rules={[{ required: true, message: 'Nhập lại mật khẩu!' }]}
+                                    >
+                                        <Input.Password
+                                            // size="large"
+                                            placeholder="Nhập lại mật khẩu"
+                                            prefix={<FontAwesomeIcon icon={faKey} />}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item className={`${styles['form-group']} ${styles['form-button']}`}>
+                                        <Button style={{ width: '100%' }} type="primary" htmlType="submit">
+                                            <b>Đăng ký</b>
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
+                            </div>
+                            <div className={styles['register-image']}>
+                                <img src="images/register.png" alt="sing up" />
+                                <Link to="/login" className={styles['register-link']}>
+                                    Đã có tài khoản
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-          </div>
-        </section>
-      </div>
-    </>
-  );
+        </>
+    );
 };
 
 export default RegisterPage;

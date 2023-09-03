@@ -120,15 +120,15 @@ h2 {
 }
 
 .register-image {
-    margin: 0 55px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* To center both the image and the link horizontally */
+    justify-content: center;
 }
 
 .form-title {
     margin-bottom: 33px;
-}
-
-.register-image {
-    margin-top: 45px;
 }
 
 .form-submit {
