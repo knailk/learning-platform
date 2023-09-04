@@ -1,20 +1,29 @@
-import React, { memo, useState } from "react";
-import clsx from "clsx";
-import styles from "./style.module.scss";
-import { Col, Space, Drawer } from "antd";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { LESSON_STATUS, LESSON_TYPE } from "../../../utils/constant";
-import LessonLayout from "./LessonComponent/LessonLayout";
+import React, { memo, useEffect, useState } from 'react';
+import clsx from 'clsx';
+import styles from './style.module.scss';
+import { Col, Space, Drawer } from 'antd';
+import { LESSON_STATUS, LESSON_TYPE } from '../../../utils/constant';
+import LessonLayout from './LessonComponent/LessonLayout';
 
 const PathItem = ({ ...props }) => {
     const data = props.data;
+    let statusItem = LESSON_STATUS.DISABLED;
+    if (data.chapter_id === props.currentChapter.chapter_id && data.id === props.currentChapter.lesson_id) {
+        statusItem = LESSON_STATUS.CURRENT;
+    } else {
+        props.finishState.forEach((element) => {
+            if (element.chapter_id === element.chapter_id && data.id === element.lesson_id) {
+                statusItem = LESSON_STATUS.FINISHED;
+            }
+        });
+    }
+
     const [open, setOpen] = useState(false);
     const [size, setSize] = useState();
     const [detailChapters, setDetailChapters] = useState({});
     const showDefaultDrawer = () => {
         setDetailChapters(data);
-        setSize("default");
+        setSize('default');
         setOpen(true);
     };
     const onClose = () => {
@@ -37,21 +46,10 @@ const PathItem = ({ ...props }) => {
                         onMouseUp={() => setTouchItemPath(false)}
                         onClick={showDefaultDrawer}
                     >
-                        <img
-                            src="images/finished_bg.svg"
-                            alt=""
-                            className={styles.finishedBackground}
-                        />
-                        <span
-                            className={styles.pathIcon}
-                            style={{ width: "50px" }}
-                        >
-                            {data.type === LESSON_TYPE.LEARNING && (
-                                <img src="images/lesson.svg" alt="check" />
-                            )}
-                            {data.type === LESSON_TYPE.PRACTICE && (
-                                <img src="images/practice.svg" alt="check" />
-                            )}
+                        <img src="images/finished_bg.svg" alt="" className={styles.finishedBackground} />
+                        <span className={styles.pathIcon} style={{ width: '50px' }}>
+                            {data.type === LESSON_TYPE.LEARNING && <img src="images/lesson.svg" alt="check" />}
+                            {data.type === LESSON_TYPE.PRACTICE && <img src="images/practice.svg" alt="check" />}
                         </span>
                     </Col>
                 );
@@ -68,7 +66,7 @@ const PathItem = ({ ...props }) => {
                         onClick={showDefaultDrawer}
                     >
                         <span className={styles.pathIcon}>
-                            <FontAwesomeIcon icon={faStar} color={"white"} />
+                            <img src="images/current.svg" alt="current" />
                         </span>
                     </Col>
                 );
@@ -84,21 +82,12 @@ const PathItem = ({ ...props }) => {
                         onMouseUp={() => setTouchItemPath(false)}
                         onClick={showDefaultDrawer}
                     >
-                        <span
-                            className={styles.pathIcon}
-                            style={{ width: "50px" }}
-                        >
+                        <span className={styles.pathIcon} style={{ width: '50px' }}>
                             {data.type === LESSON_TYPE.LEARNING && (
-                                <img
-                                    src="images/lesson_disabled.svg"
-                                    alt="learning"
-                                />
+                                <img src="images/lesson_disabled.svg" alt="learning" />
                             )}
                             {data.type === LESSON_TYPE.PRACTICE && (
-                                <img
-                                    src="images/practice_disabled.svg"
-                                    alt="practice"
-                                />
+                                <img src="images/practice_disabled.svg" alt="practice" />
                             )}
                         </span>
                     </Col>
@@ -108,16 +97,22 @@ const PathItem = ({ ...props }) => {
 
     return (
         <>
-            <Space>{renderSwitch(data.status)}</Space>
+            <Space>{renderSwitch(statusItem)}</Space>
             <Drawer
                 width={fullWidth}
                 placement="right"
                 size={size}
                 onClose={onClose}
                 open={open}
-                headerStyle={{ display: "none" }}
+                headerStyle={{ display: 'none' }}
             >
-                <LessonLayout data={detailChapters} />
+                <LessonLayout
+                    data={detailChapters}
+                    onClose={onClose}
+                    currentChapter={props.currentChapter}
+                    finishState={props.finishState}
+                    nextState={props.nextState}
+                />
             </Drawer>
         </>
     );
