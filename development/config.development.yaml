@@ -17,8 +17,8 @@ aws:
   region: ap-southeast-1
   cognito:
     cognito_user_pool_id: ap-southeast-1_7VCM3tWTS
-    cognito_app_client_id: 3l10b3plunkimig2g75k42r9u8
-    cognito_app_client_secret: # khong co
+    cognito_app_client_id: 1u61tcmqgkcnfu4vn43ca5d4pi
+    cognito_app_client_secret: 77f595ashpoas129kknosbs9c4raaapv4l046fulk1gp2nejf2d
   s3:
     bucket_user_assets: learning-platform-bucket
 jwt:
