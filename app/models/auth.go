@@ -22,19 +22,19 @@ type AuthModel struct {
 }
 
 // Login ...
-func (m *AuthModel) Login(ctx context.Context, req request.LoginRequest) (token *authjwt.TokenPair, user *entity.User, err error) {
+func (m *AuthModel) Login(ctx context.Context, req request.LoginRequest) (*authjwt.TokenPair, *entity.User, error) {
 	normalizeEmail := strings.ToLower(req.Email)
 
-	user, err = m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
+	user, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
 	if err != nil {
-		return token, user, err
+		return nil, nil, err
 	}
 
 	res, err := m.CognitoRepo.SignIn(ctx, cognitoRepoIn.SignIn{
 		Username: normalizeEmail, Password: req.Password,
 	})
 	if err != nil {
-		return token, user, err
+		return nil, nil, err
 	}
 
 	if res != nil {
@@ -49,32 +49,32 @@ func (m *AuthModel) Login(ctx context.Context, req request.LoginRequest) (token 
 			RefreshTokenExpiresIn: *res.AuthenticationResult.ExpiresIn,
 		})
 		if err != nil {
-			return token, user, err
+			return nil, nil, err
 		}
 	}
 
-	token, err = m.generateToken(user.ID)
+	token, err := m.generateToken(user.ID)
 	if err != nil {
-		return token, user, err
+		return nil, nil, err
 	}
 
 	return token, user, nil
 }
 
 // Register ...
-func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (user *entity.User, token *authjwt.TokenPair, err error) {
+func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (*entity.User, *authjwt.TokenPair, error) {
 	normalizeEmail := strings.ToLower(req.Email)
 	//Check if the user exists in database
 	checkUser, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).Count()
 	if err != nil {
-		return user, token, err
+		return nil, nil, err
 	}
 
 	if checkUser > 0 {
-		return user, token, errors.New("email already exists")
+		return nil, nil, errors.New("email already exists")
 	}
 
-	user = &entity.User{
+	user := &entity.User{
 		ID:    uuid.New(),
 		Email: req.Email,
 		Name:  req.Name,
@@ -85,7 +85,7 @@ func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (
 	//Create the user and return back the user ID
 	err = m.Repo.User.WithContext(ctx).Create(user)
 	if err != nil {
-		return user, token, err
+		return nil, nil, err
 	}
 
 	_, err = m.CognitoRepo.SignUp(ctx, cognitoRepoIn.SignUp{
@@ -93,23 +93,23 @@ func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (
 		Password: req.Password,
 	})
 	if err != nil {
-		return user, token, err
+		return nil, nil, err
 	}
 
-	token, err = m.generateToken(user.ID)
+	token, err := m.generateToken(user.ID)
 	if err != nil {
-		return user, token, err
+		return nil, nil, err
 	}
 
-	return user, token, err
+	return user, token, nil
 }
 
-func (m *AuthModel) ConfirmRegister(ctx context.Context, req request.ConfirmRegister) (user *entity.User, token *authjwt.TokenPair, err error) {
+func (m *AuthModel) ConfirmRegister(ctx context.Context, req request.ConfirmRegister) (*entity.User, *authjwt.TokenPair, error) {
 	normalizeEmail := strings.ToLower(req.Email)
 
-	existedUser, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
+	user, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
 	if err != nil {
-		return user, token, err
+		return nil, nil, err
 	}
 
 	_, err = m.CognitoRepo.ConfirmRegister(ctx, cognitoRepoIn.ConfirmRegister{
@@ -117,23 +117,23 @@ func (m *AuthModel) ConfirmRegister(ctx context.Context, req request.ConfirmRegi
 		ConfirmationCode: req.ConfirmationCode,
 	})
 	if err != nil {
-		return user, token, err
+		return nil, nil, err
 	}
 
 	_, err = m.Repo.User.WithContext(ctx).
-		Where(m.Repo.User.ID.Eq(existedUser.ID)).
+		Where(m.Repo.User.ID.Eq(user.ID)).
 		Updates(entity.User{
 			Verified: true,
 		})
 	if err != nil {
-		return user, token, err
+		return nil, nil, err
 	}
 
-	existedUser.Verified = true
+	user.Verified = true
 
-	token, err = m.generateToken(user.ID)
+	token, err := m.generateToken(user.ID)
 	if err != nil {
-		return user, token, err
+		return nil, nil, err
 	}
 
 	return user, token, nil
