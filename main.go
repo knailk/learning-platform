@@ -8,6 +8,7 @@ import (
 	"github.com/knailk/learning-platform/app/config"
 	"github.com/knailk/learning-platform/app/infra/provider"
 	"github.com/knailk/learning-platform/cmd/aws"
+	"github.com/knailk/learning-platform/cmd/jwt"
 	"github.com/knailk/learning-platform/db"
 
 	"github.com/gin-gonic/gin"
@@ -37,6 +38,11 @@ func main() {
 	provider.CognitoClient, provider.S3Client, provider.SesClient, err = aws.Init(ctx, cfg)
 	if err != nil {
 		log.Fatal(err, "initialize aws auth")
+		return
+	}
+
+	if err = jwt.Init(ctx, cfg); err != nil {
+		log.Fatal(err, "initialize auth jwt")
 		return
 	}
 
