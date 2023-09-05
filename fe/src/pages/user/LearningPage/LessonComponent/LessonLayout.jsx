@@ -6,6 +6,7 @@ import Lecture from './Lecture';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import Total from './Total';
+import CodeEditor from '../CodeEditorComponent/CodeEditorIcon';
 
 const LectureLayout = ({ ...props }) => {
     const [lengthSlide, setLengthSlide] = useState(0);
@@ -83,7 +84,7 @@ const LectureLayout = ({ ...props }) => {
                 }
                 break;
             case FILL:
-                if (textInput == currentQuestion.answer_content) {
+                if (textInput === currentQuestion.answer_content) {
                     setShowCorrect(true);
                     setShowInCorrect(false);
                     setTypeButtonNext(true);
@@ -242,9 +243,11 @@ const LectureLayout = ({ ...props }) => {
             });
         }
     };
-    const confirm = (e) => {
+    const confirm = (isCheck = false) => {
         props.onClose();
-        props.nextState();
+        if (isCheck) {
+            props.nextState();
+        }
     };
 
     return (
@@ -285,7 +288,7 @@ const LectureLayout = ({ ...props }) => {
                         [styles.correctBg]: showCorrect,
                     })}
                 >
-                    {slideNumber != lengthSlide && props.data.type == 'practice' && (
+                    {slideNumber !== lengthSlide && props.data.type === 'practice' && (
                         <Row justify={'space-around'} align={'middle'} style={{ height: '100%' }}>
                             {!showCorrect && !showInCorrect && (
                                 <Col className={styles.actionButton} span={5} onClick={() => handleCheckButton(true)}>
@@ -355,21 +358,21 @@ const LectureLayout = ({ ...props }) => {
                         </Row>
                     )}
 
-                    {(slideNumber == lengthSlide || props.data.type == 'lecture') && (
+                    {(slideNumber === lengthSlide || props.data.type === 'lecture') && (
                         <Row justify={'space-around'} align={'middle'} style={{ height: '100%' }}>
                             <button
                                 className={clsx(styles.actionButton, styles.inCorrectAnswer)}
                                 span={5}
-                                onClick={confirm}
+                                onClick={() => confirm(slideNumber === lengthSlide && props.data.type === 'practice')}
                             >
                                 Đóng
                             </button>
-                            {props.data.type == 'lecture' && (
+                            {props.data.type === 'lecture' && (
                                 <Col>
                                     <Popconfirm
                                         title="Xác nhận"
                                         description="Bạn đã học xong bài học này chưa"
-                                        onConfirm={confirm}
+                                        onConfirm={() => confirm(true)}
                                         okText="Xong rồi"
                                         cancelText="Vẫn chưa"
                                     >
@@ -381,6 +384,9 @@ const LectureLayout = ({ ...props }) => {
                             )}
                         </Row>
                     )}
+                </div>
+                <div className={styles.codeEditor}>
+                    <CodeEditor />
                 </div>
             </div>
         </>

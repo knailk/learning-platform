@@ -1,0 +1,172 @@
+.pythonIcon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+        width: 50px;
+        height: 50px;
+    }
+    cursor: pointer;
+}
+
+.pythonIcon {
+    position: relative;
+    transition: all 0.3s;
+}
+
+.pythonIcon:hover {
+    transform: translateY(15px);
+    -webkit-transform: translateY(15px);
+    -moz-transform: translateY(15px);
+    -ms-transform: translateY(15px);
+    -o-transform: translateY(15px);
+}
+
+.pythonIcon img {
+    max-width: 100%;
+    border-radius: 50%;
+    border: 5px solid #dadada;
+    filter: drop-shadow(-20px 0 10px rgba(0, 0, 0, 0.1));
+    cursor: pointer;
+    -webkit-filter: drop-shadow(-20px 0 10px rgba(0, 0, 0, 0.1));
+}
+
+.pythonIcon:not(:first-child) img {
+    margin-left: -20px;
+}
+
+.pythonIcon .name {
+    position: absolute;
+    background-color: #10996d;
+    color: #fff;
+    font-family: 'Bebas Neue', cursive;
+    padding: 15px 30px;
+    border-radius: 100px;
+    bottom: -80px;
+    left: 50%;
+    white-space: nowrap;
+    transform: translate(-50%, -30px);
+    letter-spacing: 1px;
+    font-size: 20px;
+    opacity: 0;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    -webkit-transform: translate(-50%, -30px);
+    -moz-transform: translate(-50%, -30px);
+    -ms-transform: translate(-50%, -30px);
+    -o-transform: translate(-50%, -30px);
+}
+
+.pythonIcon .name::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #10996d;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.pythonIcon img:hover + .name {
+    opacity: 1;
+    transform: translateX(-50%);
+    box-shadow: 0 10px 20px rgba(86, 86, 198, 0.3);
+}
+
+.terminalIcon {
+    img {
+        width: 40px;
+        height: 40px;
+    }
+    cursor: pointer;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    transition: 0.25s;
+    img {
+        --g: 4px; /* the gap */
+        --b: 5px; /* border thickness*/
+        --c: #669706; /* the color */
+        padding: calc(var(--g) + var(--b));
+        --_c: #0000 0 25%, var(--c) 0 50%;
+        --_g1: repeating-linear-gradient(90deg, var(--_c)) repeat-x;
+        --_g2: repeating-linear-gradient(180deg, var(--_c)) repeat-y;
+        background: var(--_g1) var(--_p, 25%) 0, var(--_g2) 0 var(--_p, 125%), var(--_g1) var(--_p, 125%) 100%,
+            var(--_g2) 100% var(--_p, 25%);
+        background-size: 200% var(--b), var(--b) 200%;
+        cursor: pointer;
+        filter: grayscale(50%);
+        transition: 0.3s;
+    }
+    img:hover {
+        --_p: 75%;
+        filter: grayscale(0%);
+    }
+}
+
+.codeEditor {
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+}
+.inputOutputWrapper {
+    width: 100%;
+    .outputTitle {
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .output {
+        margin-top: 8px;
+        textarea {
+            background-color: rgb(30 41 59);
+            color: rgb(34 197 94);
+            padding: 10px;
+            resize: none;
+            width: 95%;
+            height: 300px;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -ms-border-radius: 10px;
+            -o-border-radius: 10px;
+        }
+    }
+    .input {
+        margin-top: 15px;
+        textarea {
+            padding: 10px;
+            resize: none;
+            width: 95%;
+            height: 180px;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -ms-border-radius: 10px;
+            -o-border-radius: 10px;
+        }
+    }
+    .executeBtn {
+        cursor: pointer;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 50px;
+        color: white !important;
+        font-size: 16px;
+        background-color: #58cc02 !important;
+        border: 1.5px solid #58a700 !important;
+        box-shadow: 0 2px 0 #58a700 !important;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        -ms-border-radius: 10px;
+        -o-border-radius: 10px;
+    }
+}

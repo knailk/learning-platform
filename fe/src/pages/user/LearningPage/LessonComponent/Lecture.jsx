@@ -1,7 +1,7 @@
-import { memo } from "react";
-import { Row, Col } from "antd";
-import styles from "./style.module.scss";
-import clsx from "clsx";
+import { memo } from 'react';
+import { Row, Col } from 'antd';
+import styles from './style.module.scss';
+import clsx from 'clsx';
 
 const Lecture = ({ ...props }) => {
     const data = props.data;
@@ -14,10 +14,7 @@ const Lecture = ({ ...props }) => {
                     </Row>
                     {data.lectures.map((lecture) => {
                         return (
-                            <Row
-                                className={styles.lectureContent}
-                                key={lecture.id}
-                            >
+                            <Row className={styles.lectureContent} key={lecture.id}>
                                 {lecture.content}
                             </Row>
                         );

@@ -44,7 +44,7 @@ const PathItem = ({ ...props }) => {
                         )}
                         onMouseDown={() => setTouchItemPath(true)}
                         onMouseUp={() => setTouchItemPath(false)}
-                        onClick={showDefaultDrawer}
+                        // onClick={showDefaultDrawer}
                     >
                         <img src="images/finished_bg.svg" alt="" className={styles.finishedBackground} />
                         <span className={styles.pathIcon} style={{ width: '50px' }}>
@@ -80,7 +80,7 @@ const PathItem = ({ ...props }) => {
                         )}
                         onMouseDown={() => setTouchItemPath(true)}
                         onMouseUp={() => setTouchItemPath(false)}
-                        onClick={showDefaultDrawer}
+                        // onClick={showDefaultDrawer}
                     >
                         <span className={styles.pathIcon} style={{ width: '50px' }}>
                             {data.type === LESSON_TYPE.LEARNING && (
@@ -105,6 +105,7 @@ const PathItem = ({ ...props }) => {
                 onClose={onClose}
                 open={open}
                 headerStyle={{ display: 'none' }}
+                push={false}
             >
                 <LessonLayout
                     data={detailChapters}

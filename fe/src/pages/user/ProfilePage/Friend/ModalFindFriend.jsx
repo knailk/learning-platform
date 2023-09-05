@@ -10,7 +10,7 @@ const ModalFindFriend = () => {
                     <h1>Tìm bạn</h1>
                 </div>
                 <div>
-                    <input type="text" placeholder="Tìm bạn bè" />
+                    <input className={styles.inputText} type="text" placeholder="Tìm bạn bè" />
                 </div>
                 {/* <div className={styles.listFind}>
                     <Row>

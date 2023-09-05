@@ -6,9 +6,13 @@ import LearningPath from './LearningPath';
 import RankingBox from './RankingBox';
 import MissionBox from './MissionBox';
 const LearningPage = () => {
+    const dataCurrentChapter = localStorage.getItem('current_chapter');
+    const dataFinishState = localStorage.getItem('finish_state');
     const [chapters, setChapters] = useState([]);
-    const [currentChapter, setCurrentChapter] = useState({});
-    const [finishState, setFinishState] = useState([]);
+    const [currentChapter, setCurrentChapter] = useState(
+        JSON.parse(dataCurrentChapter) ? JSON.parse(dataCurrentChapter) : {},
+    );
+    const [finishState, setFinishState] = useState(JSON.parse(dataFinishState) ? JSON.parse(dataFinishState) : []);
     const nextState = () => {
         let flag = false;
         let isSet = false;
@@ -21,20 +25,21 @@ const LearningPage = () => {
                     return;
                 }
                 if (flag === true) {
-                    console.log(finishState);
-                    setCurrentChapter({
+                    let dataSave = {
                         chapter_id: lesson.chapter_id,
                         lesson_id: lesson.id,
-                    });
+                    };
+                    setCurrentChapter(dataSave);
+                    localStorage.setItem('current_chapter', JSON.stringify(dataSave));
                     isSet = true;
                     return;
                 }
                 if (lesson.chapter_id === currentChapter.chapter_id) {
                     if (lesson.id === currentChapter.lesson_id) {
-                        console.log(flag);
-                        console.log(currentChapter);
                         flag = true;
-                        setFinishState([...finishState, currentChapter]);
+                        let dataSave = [...finishState, currentChapter];
+                        setFinishState(dataSave);
+                        localStorage.setItem('finish_state', JSON.stringify(dataSave));
                     }
                 } else {
                     return;
@@ -47,7 +52,8 @@ const LearningPage = () => {
             .then((res) => res.json())
             .then((json) => {
                 setChapters(json.data);
-                if (json.data.length > 1) {
+                console.log('123', currentChapter);
+                if (json.data.length > 1 && !currentChapter.hasOwnProperty('chapter_id')) {
                     setCurrentChapter({
                         chapter_id: json.data[1].id,
                         lesson_id: json.data[1].lessons[0].id,
@@ -55,7 +61,7 @@ const LearningPage = () => {
                 }
             })
             .catch((error) => console.error(error));
-    }, []);
+    }, [currentChapter]);
     return (
         <div className={clsx(style.content)}>
             <Row className={style.wrapper}>
@@ -63,7 +69,7 @@ const LearningPage = () => {
                     {chapters.map(
                         (element) =>
                             // <LearningPath key={element.id} data={element} />
-                            element.level != 0 && (
+                            element.level !== 0 && (
                                 <LearningPath
                                     key={element.id}
                                     data={element}
