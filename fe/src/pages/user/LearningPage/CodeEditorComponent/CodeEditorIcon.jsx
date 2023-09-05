@@ -1,4 +1,4 @@
-// import clsx from 'clsx';
+import clsx from 'clsx';
 import React, { memo, useState, useRef } from 'react';
 import styles from './style.module.scss';
 import { Drawer, Space } from 'antd';
@@ -7,7 +7,6 @@ import InputOutputDrawer from './InputOutputDrawer';
 
 const CodeEditorIcon = () => {
     const [open, setOpen] = useState(false);
-    const [size, setSize] = useState('large');
     const [inputOutputDrawer, setInputOutputDrawer] = useState(false);
     const showDefaultDrawer = () => {
         setOpen(true);
@@ -37,7 +36,7 @@ const CodeEditorIcon = () => {
             <Drawer
                 title="Python Code Editor"
                 placement="right"
-                size={size}
+                size="large"
                 onClose={onClose}
                 open={open}
                 closable={false}

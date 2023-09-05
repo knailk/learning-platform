@@ -1,17 +1,19 @@
-import React, { memo, useRef, useState } from 'react';
+import React, { memo, useState } from 'react';
 import styles from './style.module.scss';
-import { Row, Col } from 'antd';
+import axios from 'axios';
 
 const InputOutputDrawer = ({ ...props }) => {
+    const [output, setOutput] = useState('');
     const getEditorValue = () => {
-        alert(props.editorRef.current.getValue());
+        const code = props.editorRef.current.getValue();
+        axios.post('http://localhost:80/python', { code }).then((data) => setOutput(data.data.data));
     };
     return (
         <>
             <div className={styles.inputOutputWrapper}>
                 <div className={styles.outputTitle}>Output</div>
                 <div className={styles.output}>
-                    <textarea></textarea>
+                    <textarea value={output} disabled></textarea>
                 </div>
                 <div className={styles.input}>
                     <textarea placeholder="Input here"></textarea>

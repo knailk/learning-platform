@@ -7,11 +7,14 @@
     img {
         width: 50px;
         height: 50px;
+        max-width: 100%;
+        border-radius: 50%;
+        border: 5px solid #dadada;
+        filter: drop-shadow(-20px 0 10px rgba(0, 0, 0, 0.1));
+        cursor: pointer;
+        -webkit-filter: drop-shadow(-20px 0 10px rgba(0, 0, 0, 0.1));
     }
     cursor: pointer;
-}
-
-.pythonIcon {
     position: relative;
     transition: all 0.3s;
 }
@@ -22,15 +25,6 @@
     -moz-transform: translateY(15px);
     -ms-transform: translateY(15px);
     -o-transform: translateY(15px);
-}
-
-.pythonIcon img {
-    max-width: 100%;
-    border-radius: 50%;
-    border: 5px solid #dadada;
-    filter: drop-shadow(-20px 0 10px rgba(0, 0, 0, 0.1));
-    cursor: pointer;
-    -webkit-filter: drop-shadow(-20px 0 10px rgba(0, 0, 0, 0.1));
 }
 
 .pythonIcon:not(:first-child) img {
@@ -80,16 +74,14 @@
 }
 
 .terminalIcon {
-    img {
-        width: 40px;
-        height: 40px;
-    }
     cursor: pointer;
     position: fixed;
     bottom: 50px;
     right: 50px;
     transition: 0.25s;
     img {
+        width: 40px;
+        height: 40px;
         --g: 4px; /* the gap */
         --b: 5px; /* border thickness*/
         --c: #669706; /* the color */
@@ -113,6 +105,9 @@
 .codeEditor {
     width: calc(100% - 2px);
     height: calc(100% - 2px);
+    * {
+        font-family: Consolas, 'Courier New', monospace !important;
+    }
 }
 .inputOutputWrapper {
     width: 100%;
@@ -129,16 +124,26 @@
             resize: none;
             width: 95%;
             height: 300px;
+            font-family: Consolas, 'Courier New', monospace !important;
+            font-weight: normal;
+            font-size: 14px;
+            font-feature-settings: 'liga' 0, 'calt' 0;
+            font-variation-settings: normal;
+            line-height: 19px;
+            letter-spacing: 0px;
             border-radius: 10px;
             -webkit-border-radius: 10px;
             -moz-border-radius: 10px;
             -ms-border-radius: 10px;
             -o-border-radius: 10px;
-        }
+            -webkit-font-feature-settings: 'liga' 0, 'calt' 0;
+            -moz-font-feature-settings: 'liga' 0, 'calt' 0;
+}
     }
     .input {
         margin-top: 15px;
         textarea {
+            font-family: Consolas, 'Courier New', monospace !important;
             padding: 10px;
             resize: none;
             width: 95%;

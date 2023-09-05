@@ -1,13 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
 
+@font-face {
+    font-family: 'Consolas';
+    src: local('Consolas'), url(../../../public/fonts/Consolas.ttf) format('woff');
+    /* other formats include: 'woff2', 'truetype, 'opentype',
+                              'embedded-opentype', and 'svg' */
+}
+
 * {
     margin: 0;
     font-family: 'Fira Sans', sans-serif;
 }
 
-.body{
+.body {
     background-color: #f3f3f3;
-
 }
 
 /* .ant-popover-inner {
@@ -19,8 +25,8 @@
     background-color: #57c2dc !important;
 } */
 
-
-.cpp-avatar {}
+.cpp-avatar {
+}
 
 .cpp-avatar--vip {
     border: 2px solid #ff9900;
