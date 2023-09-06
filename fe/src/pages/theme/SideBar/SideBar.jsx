@@ -4,6 +4,7 @@ import ItemSideBar from './ItemSideBar';
 import { ROUTERS } from '../../../utils/router';
 import { useLocation } from 'react-router-dom';
 import { Popover } from 'antd';
+import { SIDEBAR_TYPE } from 'utils/constant';
 
 const SideBar = () => {
     const location = useLocation();
@@ -11,7 +12,7 @@ const SideBar = () => {
         <div>
             {ROUTERS.MENU_NAV_BAR.map((item, index) => {
                 return (
-                    !item.inMenu && (
+                    SIDEBAR_TYPE.MORE == item.type && (
                         <ItemSideBar
                             key={index}
                             title={item.title}
@@ -33,7 +34,7 @@ const SideBar = () => {
                 <div className="navbar">
                     {ROUTERS.MENU_NAV_BAR.map((item, index) => {
                         return (
-                            item.inMenu && (
+                            SIDEBAR_TYPE.SIDEBAR == item.type && (
                                 <ItemSideBar
                                     key={index}
                                     title={item.title}

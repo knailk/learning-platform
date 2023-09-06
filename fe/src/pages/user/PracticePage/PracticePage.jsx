@@ -11,7 +11,6 @@ const PracticePage = () => {
             <Row className={styles.wrapper}>
                 <Col sm={24} lg={16} className={styles.learningPathWrapper}>
                     <LearningMenu />
-                    {/* <PracticeMenu /> */}
                 </Col>
                 <Col lg={8} className={styles.boxWrapper}>
                     <div className={styles.fixedBox}>

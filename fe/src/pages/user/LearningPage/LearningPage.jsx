@@ -5,6 +5,8 @@ import { Row, Col } from 'antd';
 import LearningPath from './LearningPath';
 import RankingBox from './RankingBox';
 import MissionBox from './MissionBox';
+import { ApiUrl } from 'utils/constant';
+
 const LearningPage = () => {
     const dataCurrentChapter = localStorage.getItem('current_chapter');
     const dataFinishState = localStorage.getItem('finish_state');
@@ -56,7 +58,7 @@ const LearningPage = () => {
         });
     };
     useEffect(() => {
-        fetch('http://ec2-3-0-139-245.ap-southeast-1.compute.amazonaws.com:8080/v1/chapters')
+        fetch(ApiUrl + '/chapters')
             .then((res) => res.json())
             .then((json) => {
                 setChapters(json.data);

@@ -25,11 +25,12 @@ const LearningMenu = () => {
         console.log(key);
     };
     const getItem = (label, key, icon, children, type) => {
+        let temp = <a href="#">{label}</a>;
         return {
             key,
             icon,
             children,
-            label,
+            label: temp,
             type,
         };
     };

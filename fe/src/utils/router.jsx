@@ -7,6 +7,8 @@ import ProfilePage from '../pages/user/ProfilePage';
 import ForgotPasswordPage from '../pages/user/ForgotPasswordPage';
 import NewPasswordPage from '../pages/user/NewPasswordPage';
 import MasterLayout from '../pages/theme/MasterLayout';
+import LecurePractice from 'pages/user/PracticePage/LecurePractice';
+import { SIDEBAR_TYPE } from './constant';
 
 export const ROUTERS = {
     MENU_NAV_BAR: [
@@ -17,6 +19,7 @@ export const ROUTERS = {
             layout: MasterLayout,
             inMenu: true,
             img: 'images/learning.png',
+            type: SIDEBAR_TYPE.SIDEBAR,
         },
         {
             title: 'LUYỆN TẬP',
@@ -25,6 +28,7 @@ export const ROUTERS = {
             layout: MasterLayout,
             inMenu: true,
             img: 'images/practice.png',
+            type: SIDEBAR_TYPE.SIDEBAR,
         },
         {
             title: 'XẾP HẠNG',
@@ -33,6 +37,7 @@ export const ROUTERS = {
             layout: MasterLayout,
             inMenu: true,
             img: 'images/ranking.png',
+            type: SIDEBAR_TYPE.SIDEBAR,
         },
         // {
         //   title: "GAME",
@@ -48,6 +53,7 @@ export const ROUTERS = {
             layout: MasterLayout,
             inMenu: true,
             img: 'images/profile.png',
+            type: SIDEBAR_TYPE.SIDEBAR,
         },
         {
             title: 'Xác nhận đăng ký',
@@ -56,6 +62,7 @@ export const ROUTERS = {
             layout: null,
             inMenu: false,
             img: '',
+            type: SIDEBAR_TYPE.MORE,
         },
         {
             title: 'Quên mật khẩu',
@@ -64,6 +71,7 @@ export const ROUTERS = {
             layout: null,
             inMenu: false,
             img: '',
+            type: SIDEBAR_TYPE.MORE,
         },
         {
             title: 'Mật khẩu mới',
@@ -72,6 +80,16 @@ export const ROUTERS = {
             layout: null,
             inMenu: false,
             img: '',
+            type: SIDEBAR_TYPE.MORE,
+        },
+        {
+            title: '',
+            path: '/practice/lecture',
+            component: <LecurePractice />,
+            layout: MasterLayout,
+            inMenu: false,
+            img: '',
+            type: SIDEBAR_TYPE.NOTSIDEBAR,
         },
         // {
         //   title: "LOGIN",

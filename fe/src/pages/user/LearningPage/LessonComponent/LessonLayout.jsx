@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import Total from './Total';
 import CodeEditor from '../CodeEditorComponent/CodeEditorIcon';
+import { ApiUrl } from 'utils/constant';
 
 const LectureLayout = ({ ...props }) => {
     const [lengthSlide, setLengthSlide] = useState(0);
@@ -137,7 +138,7 @@ const LectureLayout = ({ ...props }) => {
     };
 
     useEffect(() => {
-        fetch('http://ec2-3-0-139-245.ap-southeast-1.compute.amazonaws.com:8080/v1/lessons/' + props.data.id)
+        fetch(ApiUrl + '/lessons/' + props.data.id)
             .then((res) => res.json())
             .then((json) => {
                 props.data.type === 'lecture' ? setLesson(json.data) : setQuestions(json.data.questions);
