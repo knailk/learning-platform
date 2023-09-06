@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -49,6 +49,9 @@ func (ctrl *AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
+	ctrl.SetAccessCookie(ctx, token.AccessToken.Token)
+	ctrl.SetRefreshCookie(ctx, token.RefreshToken.Token)
+	
 	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully logged in", "user": user, "token": token})
 }
 
@@ -145,6 +148,7 @@ func (ctrl *AuthController) ResendConfirmationCode(ctx *gin.Context) {
 
 	err := ctrl.AuthModel.ResendConfirmationCode(ctx, resendConfirmationCodeRequest)
 	if err != nil {
+		log.Error("error resend confirm code: ", err)
 		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
 		return
 	}
@@ -155,6 +159,7 @@ func (ctrl *AuthController) ResendConfirmationCode(ctx *gin.Context) {
 func (ctrl *AuthController) ChangePassword(ctx *gin.Context) {
 	auth, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
+		log.Error("error change password: ", err)
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
 		return
 	}
@@ -171,6 +176,7 @@ func (ctrl *AuthController) ChangePassword(ctx *gin.Context) {
 
 	authToken, err := ctrl.AuthModel.ChangePassword(ctx, changePasswordRequest)
 	if err != nil {
+		log.Error("error change password in model: ", err)
 		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
 		return
 	}
@@ -225,16 +231,17 @@ func (ctrl *AuthController) GetCurrentAuth(ctx *gin.Context) (*entity.User, erro
 
 // GetAccessToken gets the access token.
 func (ctrl *AuthController) GetAccessToken(ctx *gin.Context) (token string, err error) {
-	if token, err = ctx.Cookie(refreshKey); err != nil {
-		return "", errors.New("error unauthorized")
+	if token, err = ctx.Cookie(accessKey); err != nil {
+		return "", fmt.Errorf("error unauthorized: %w", err)
 	}
+
 	return token, nil
 }
 
 // GetRefreshToken gets the refresh token.
 func (ctrl *AuthController) GetRefreshToken(ctx *gin.Context) (token string, err error) {
 	if token, err = ctx.Cookie(refreshKey); err != nil {
-		return "", errors.New("error unauthorized")
+		return "", fmt.Errorf("error unauthorized: %w", err)
 	}
 	return token, nil
 }

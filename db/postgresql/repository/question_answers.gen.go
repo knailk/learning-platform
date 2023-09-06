@@ -30,8 +30,9 @@ func newQuestionAnswer(db *gorm.DB, opts ...gen.DOOption) questionAnswer {
 	_questionAnswer.ID = field.NewField(tableName, "id")
 	_questionAnswer.LessonAnswerID = field.NewField(tableName, "lesson_answer_id")
 	_questionAnswer.QuestionID = field.NewField(tableName, "question_id")
-	_questionAnswer.Answer = field.NewString(tableName, "answer")
+	_questionAnswer.Answer = field.NewField(tableName, "answer")
 	_questionAnswer.Score = field.NewInt(tableName, "score")
+	_questionAnswer.IsTrue = field.NewBool(tableName, "is_true")
 	_questionAnswer.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_questionAnswer.CreatedAt = field.NewTime(tableName, "created_at")
 
@@ -47,8 +48,9 @@ type questionAnswer struct {
 	ID             field.Field
 	LessonAnswerID field.Field
 	QuestionID     field.Field
-	Answer         field.String
+	Answer         field.Field
 	Score          field.Int
+	IsTrue         field.Bool
 	UpdatedAt      field.Time
 	CreatedAt      field.Time
 
@@ -70,8 +72,9 @@ func (q *questionAnswer) updateTableName(table string) *questionAnswer {
 	q.ID = field.NewField(table, "id")
 	q.LessonAnswerID = field.NewField(table, "lesson_answer_id")
 	q.QuestionID = field.NewField(table, "question_id")
-	q.Answer = field.NewString(table, "answer")
+	q.Answer = field.NewField(table, "answer")
 	q.Score = field.NewInt(table, "score")
+	q.IsTrue = field.NewBool(table, "is_true")
 	q.UpdatedAt = field.NewTime(table, "updated_at")
 	q.CreatedAt = field.NewTime(table, "created_at")
 
@@ -102,12 +105,13 @@ func (q *questionAnswer) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (q *questionAnswer) fillFieldMap() {
-	q.fieldMap = make(map[string]field.Expr, 7)
+	q.fieldMap = make(map[string]field.Expr, 8)
 	q.fieldMap["id"] = q.ID
 	q.fieldMap["lesson_answer_id"] = q.LessonAnswerID
 	q.fieldMap["question_id"] = q.QuestionID
 	q.fieldMap["answer"] = q.Answer
 	q.fieldMap["score"] = q.Score
+	q.fieldMap["is_true"] = q.IsTrue
 	q.fieldMap["updated_at"] = q.UpdatedAt
 	q.fieldMap["created_at"] = q.CreatedAt
 }

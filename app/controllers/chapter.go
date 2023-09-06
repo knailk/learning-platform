@@ -10,10 +10,17 @@ import (
 )
 
 type ChapterController struct {
+	*AuthController
 	ChapterModel *models.ChapterModel
 }
 
 func (ctrl *ChapterController) List(ctx *gin.Context) {
+	_, err := ctrl.GetCurrentAuth(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
 	chapters, err := ctrl.ChapterModel.List(ctx)
 	if err != nil {
 		log.Error("error listing chapters", err)
@@ -24,6 +31,12 @@ func (ctrl *ChapterController) List(ctx *gin.Context) {
 }
 
 func (ctrl *ChapterController) Get(ctx *gin.Context) {
+	_, err := ctrl.GetCurrentAuth(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
 	chapter, err := ctrl.ChapterModel.Get(ctx, uuid.MustParse(ctx.Param("id")))
 	if err != nil {
 		log.Error("error get chapter", err)

@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 
+	"github.com/joho/godotenv"
 	"github.com/knailk/learning-platform/app/api"
 	"github.com/knailk/learning-platform/app/config"
 	"github.com/knailk/learning-platform/app/infra/provider"
@@ -16,6 +18,11 @@ import (
 
 func main() {
 	ctx := context.Background()
+
+	err := godotenv.Load()
+	if err != nil {
+		panic(fmt.Sprintf("failed to load .env by error: %v", err))
+	}
 
 	cfg, err := config.LoadConfig("development/config.development.yaml")
 	if err != nil {
