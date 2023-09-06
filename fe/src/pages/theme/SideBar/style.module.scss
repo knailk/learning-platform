@@ -53,3 +53,31 @@
 .imgItem {
     margin-right: 20px;
 }
+.itemNavBarMore {
+    border: 2px white solid;
+    padding: 5px;
+    margin-top: 10px;
+    width: 120px;
+    // height: 30px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: #777777;
+    &:hover {
+        border: #84d8ff 2px solid;
+        color: #1cb0f6;
+        animation: none;
+        -webkit-animation: none;
+    }
+    span {
+        display: none;
+        @media (min-width: 1160px) {
+            display: inline-block;
+        }
+    }
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}

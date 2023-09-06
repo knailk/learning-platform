@@ -244,10 +244,11 @@ const LectureLayout = ({ ...props }) => {
         }
     };
     const confirm = (isCheck = false) => {
-        props.onClose();
         if (isCheck) {
             props.nextState();
+            //send score to server
         }
+        props.onClose();
     };
 
     return (
