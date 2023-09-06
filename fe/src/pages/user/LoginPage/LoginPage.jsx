@@ -27,18 +27,20 @@ const LoginPage = () => {
                 password: password,
             });
 
-            notification.success({message: 'Đăng nhập thành công'});
+            notification.success({ message: 'Đăng nhập thành công' });
             setAuthUser(response.data.user);
             setIsLogin(true);
 
             cookies.set('access_token', response.data.token.access_token);
             cookies.set('verified', response.data.user.verified);
             cookies.set('email', response.data.user.email);
+            cookies.set('is_login', true);
 
             if (!response.data.user.verified) navigate('/confirm-register');
 
             navigate('/');
         } catch (error) {
+            console.log(error);
             notification.error({
                 message: 'Đăng nhập thất bại',
                 description: 'Tên đăng nhập hoặc mật khẩu không hợp lệ',

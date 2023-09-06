@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({
-  baseURL: "http://localhost:9000/v1/",
+  baseURL: "http://ec2-3-0-139-245.ap-southeast-1.compute.amazonaws.com:8080/v1/",
 });
 
 export const setAuthToken = (token) => {

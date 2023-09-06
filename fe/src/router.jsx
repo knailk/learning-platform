@@ -2,18 +2,19 @@ import React,{ Fragment } from "react";
 import { ROUTERS as CONST_ROUTERS } from "./utils/router";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
+import Cookies from 'universal-cookie';
 import LoginPage from "./pages/user/LoginPage";
 import RegisterPage from "./pages/user/RegisterPage";
 import MasterLayout from "./pages/theme/MasterLayout";
 
-function PrivateRoute({ children }) {
-  const { isLogin } = useAuth();
-  console.log("isLogin", isLogin);
-  console.log("children", children);
+const cookies = new Cookies();
 
-  // if (!isLogin) {
-  //   return <Navigate to="/login" />;
-  // }
+function PrivateRoute({ children }) {
+  const isLogin = cookies.get("is_login");
+
+  if (!isLogin) {
+    return <Navigate to="/login" />;
+  }
   return children;
 }
 const RouterCustom = () => {
