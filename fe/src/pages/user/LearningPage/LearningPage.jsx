@@ -26,16 +26,24 @@ const LearningPage = () => {
                 }
                 if (flag === true) {
                     let dataSave = {
-                        chapter_id: lesson.chapter_id,
-                        lesson_id: lesson.id,
+                        chapter: {
+                            chapter_id: chapter.id,
+                            chapter_name: chapter.name,
+                            chapter_level: chapter.level,
+                        },
+                        lesson: {
+                            lesson_id: lesson.id,
+                            lesson_name: lesson.name,
+                            lesson_type: lesson.type,
+                        },
                     };
                     setCurrentChapter(dataSave);
                     localStorage.setItem('current_chapter', JSON.stringify(dataSave));
                     isSet = true;
                     return;
                 }
-                if (lesson.chapter_id === currentChapter.chapter_id) {
-                    if (lesson.id === currentChapter.lesson_id) {
+                if (lesson.chapter_id === currentChapter.chapter.chapter_id) {
+                    if (lesson.id === currentChapter.lesson.lesson_id) {
                         flag = true;
                         let dataSave = [...finishState, currentChapter];
                         setFinishState(dataSave);
@@ -53,10 +61,18 @@ const LearningPage = () => {
             .then((json) => {
                 setChapters(json.data);
                 console.log('123', currentChapter);
-                if (json.data.length > 1 && !currentChapter.hasOwnProperty('chapter_id')) {
+                if (json.data.length > 1 && !currentChapter.hasOwnProperty('lesson')) {
                     setCurrentChapter({
-                        chapter_id: json.data[1].id,
-                        lesson_id: json.data[1].lessons[0].id,
+                        chapter: {
+                            chapter_id: json.data[1].id,
+                            chapter_name: json.data[1].name,
+                            chapter_level: json.data[1].level,
+                        },
+                        lesson: {
+                            lesson_id: json.data[1].lessons[0].id,
+                            lesson_name: json.data[1].lessons[0].name,
+                            lesson_type: json.data[1].lessons[0].type,
+                        },
                     });
                 }
             })

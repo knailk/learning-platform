@@ -8,11 +8,14 @@ import LessonLayout from './LessonComponent/LessonLayout';
 const PathItem = ({ ...props }) => {
     const data = props.data;
     let statusItem = LESSON_STATUS.DISABLED;
-    if (data.chapter_id === props.currentChapter.chapter_id && data.id === props.currentChapter.lesson_id) {
+    if (
+        data.chapter_id === props.currentChapter.chapter.chapter_id &&
+        data.id === props.currentChapter.lesson.lesson_id
+    ) {
         statusItem = LESSON_STATUS.CURRENT;
     } else {
         props.finishState.forEach((element) => {
-            if (element.chapter_id === element.chapter_id && data.id === element.lesson_id) {
+            if (data.chapter_id === element.chapter.chapter_id && data.id === element.lesson.lesson_id) {
                 statusItem = LESSON_STATUS.FINISHED;
             }
         });
