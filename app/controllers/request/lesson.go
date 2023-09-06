@@ -1,13 +1,12 @@
-package entity
+package request
 
 import (
 	"time"
 
-	uuid "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
-type Lesson struct {
-	ID        uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
+type LessonAnswerRequest struct {
 	ChapterID uuid.UUID `json:"chapter_id"`
 	Name      string    `json:"name"`
 	Type      string    `json:"type"` // practice or lecture
@@ -15,7 +14,4 @@ type Lesson struct {
 	Score     int       `json:"score"`
 	UpdatedAt time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 	CreatedAt time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
-
-	Questions []Question `json:"questions,omitempty" gorm:"foreignKey:LessonID"`
-	Lectures  []Lecture  `json:"lectures,omitempty" gorm:"foreignKey:LessonID"`
 }

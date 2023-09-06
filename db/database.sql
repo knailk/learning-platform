@@ -86,6 +86,7 @@ CREATE TABLE "users" (
     "name" text,
     "age" integer,
     "score" integer,
+    "current_lesson" char(36),
     "verified" bool,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
@@ -150,8 +151,9 @@ CREATE TABLE "question_answers" (
     "id" char(36) PRIMARY KEY,
     "lesson_answer_id" char(36),
     "question_id" char(36),
+    "answer" text [],
     "score" integer,
-    "answer" text,
+    "is_true" bool,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
 );
@@ -160,7 +162,7 @@ CREATE TABLE "lesson_answers" (
     "id" char(36) PRIMARY KEY,
     "user_id" char(36),
     "lesson_id" char(36),
-    "total_score" integer,
+    "score" integer,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
 );

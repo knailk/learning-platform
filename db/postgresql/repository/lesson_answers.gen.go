@@ -28,9 +28,8 @@ func newLessonAnswer(db *gorm.DB, opts ...gen.DOOption) lessonAnswer {
 	tableName := _lessonAnswer.lessonAnswerDo.TableName()
 	_lessonAnswer.ALL = field.NewAsterisk(tableName)
 	_lessonAnswer.ID = field.NewField(tableName, "id")
-	_lessonAnswer.LessonAnswerID = field.NewField(tableName, "lesson_answer_id")
-	_lessonAnswer.QuestionID = field.NewField(tableName, "question_id")
-	_lessonAnswer.Answer = field.NewString(tableName, "answer")
+	_lessonAnswer.UserID = field.NewField(tableName, "user_id")
+	_lessonAnswer.LessonID = field.NewField(tableName, "lesson_id")
 	_lessonAnswer.Score = field.NewInt(tableName, "score")
 	_lessonAnswer.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_lessonAnswer.CreatedAt = field.NewTime(tableName, "created_at")
@@ -43,14 +42,13 @@ func newLessonAnswer(db *gorm.DB, opts ...gen.DOOption) lessonAnswer {
 type lessonAnswer struct {
 	lessonAnswerDo lessonAnswerDo
 
-	ALL            field.Asterisk
-	ID             field.Field
-	LessonAnswerID field.Field
-	QuestionID     field.Field
-	Answer         field.String
-	Score          field.Int
-	UpdatedAt      field.Time
-	CreatedAt      field.Time
+	ALL       field.Asterisk
+	ID        field.Field
+	UserID    field.Field
+	LessonID  field.Field
+	Score     field.Int
+	UpdatedAt field.Time
+	CreatedAt field.Time
 
 	fieldMap map[string]field.Expr
 }
@@ -68,9 +66,8 @@ func (l lessonAnswer) As(alias string) *lessonAnswer {
 func (l *lessonAnswer) updateTableName(table string) *lessonAnswer {
 	l.ALL = field.NewAsterisk(table)
 	l.ID = field.NewField(table, "id")
-	l.LessonAnswerID = field.NewField(table, "lesson_answer_id")
-	l.QuestionID = field.NewField(table, "question_id")
-	l.Answer = field.NewString(table, "answer")
+	l.UserID = field.NewField(table, "user_id")
+	l.LessonID = field.NewField(table, "lesson_id")
 	l.Score = field.NewInt(table, "score")
 	l.UpdatedAt = field.NewTime(table, "updated_at")
 	l.CreatedAt = field.NewTime(table, "created_at")
@@ -102,11 +99,10 @@ func (l *lessonAnswer) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (l *lessonAnswer) fillFieldMap() {
-	l.fieldMap = make(map[string]field.Expr, 7)
+	l.fieldMap = make(map[string]field.Expr, 6)
 	l.fieldMap["id"] = l.ID
-	l.fieldMap["lesson_answer_id"] = l.LessonAnswerID
-	l.fieldMap["question_id"] = l.QuestionID
-	l.fieldMap["answer"] = l.Answer
+	l.fieldMap["user_id"] = l.UserID
+	l.fieldMap["lesson_id"] = l.LessonID
 	l.fieldMap["score"] = l.Score
 	l.fieldMap["updated_at"] = l.UpdatedAt
 	l.fieldMap["created_at"] = l.CreatedAt

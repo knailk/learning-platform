@@ -234,6 +234,7 @@ func (ctrl *AuthController) GetAccessToken(ctx *gin.Context) (token string, err 
 	if token, err = ctx.Cookie(accessKey); err != nil {
 		return "", fmt.Errorf("error unauthorized: %w", err)
 	}
+
 	return token, nil
 }
 
