@@ -2,7 +2,7 @@ package models
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/google/uuid"
@@ -22,7 +22,7 @@ type AuthModel struct {
 }
 
 // Login ...
-func (m *AuthModel) Login(ctx context.Context, req request.LoginRequest) (*authjwt.TokenPair, *entity.User, error) {
+func (m *AuthModel) Login(ctx context.Context, req request.LoginRequest) (*entity.User,*authjwt.TokenPair,  error) {
 	normalizeEmail := strings.ToLower(req.Email)
 
 	user, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.Email.Eq(normalizeEmail)).First()
@@ -58,7 +58,7 @@ func (m *AuthModel) Login(ctx context.Context, req request.LoginRequest) (*authj
 		return nil, nil, err
 	}
 
-	return token, user, nil
+	return user,token, nil
 }
 
 // Register ...
@@ -71,7 +71,7 @@ func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (
 	}
 
 	if checkUser > 0 {
-		return nil, nil, errors.New("email already exists")
+		return nil, nil, fmt.Errorf("email already exists :%w", err)
 	}
 
 	user := &entity.User{
@@ -226,7 +226,7 @@ func (m *AuthModel) ConfirmForgotPassword(ctx context.Context, req request.Confi
 func (m *AuthModel) Refresh(ctx context.Context, refreshToken string) (*authjwt.TokenPair, error) {
 	claims, err := m.verifyJWTToken(refreshToken)
 	if err != nil {
-		return nil, errors.New("error unauthorize")
+		return nil, fmt.Errorf("error unauthorize :%w", err)
 	}
 
 	user, err := m.Repo.User.WithContext(ctx).Where(m.Repo.User.ID.Eq(uuid.MustParse(claims.UserID))).First()
@@ -244,7 +244,7 @@ func (m *AuthModel) Refresh(ctx context.Context, refreshToken string) (*authjwt.
 func (m *AuthModel) GetCurrentAuth(ctx context.Context, jwt string) (*entity.User, error) {
 	claims, err := m.verifyJWTToken(jwt)
 	if err != nil {
-		return nil, errors.New("error unauthorize")
+		return nil, fmt.Errorf("error unauthorize :%w", err)
 	}
 
 	existedUser, err := m.Repo.User.WithContext(ctx).
@@ -269,7 +269,7 @@ func (m *AuthModel) generateJWTTokenPair(uID uuid.UUID, userID uuid.UUID) (*auth
 
 	tokenPair, err := authjwt.GenerateTokenPair(&claims)
 	if err != nil {
-		return nil, errors.New("failed to generate token pair")
+		return nil, fmt.Errorf("failed to generate token pair :%w", err)
 	}
 
 	return tokenPair, nil
