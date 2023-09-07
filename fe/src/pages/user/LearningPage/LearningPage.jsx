@@ -5,7 +5,7 @@ import { Row, Col } from 'antd';
 import LearningPath from './LearningPath';
 import RankingBox from './RankingBox';
 import MissionBox from './MissionBox';
-import { ApiUrl } from 'utils/constant';
+import request from 'utils/http';
 
 const LearningPage = () => {
     const dataCurrentChapter = localStorage.getItem('current_chapter');
@@ -57,28 +57,33 @@ const LearningPage = () => {
             });
         });
     };
+    const getData = async () => {
+        const response = await request.get('chapters');
+        console.log(response);
+    };
     useEffect(() => {
-        fetch(ApiUrl + '/chapters')
-            .then((res) => res.json())
-            .then((json) => {
-                setChapters(json.data);
-                console.log('123', currentChapter);
-                if (json.data.length > 1 && !currentChapter.hasOwnProperty('lesson')) {
-                    setCurrentChapter({
-                        chapter: {
-                            chapter_id: json.data[1].id,
-                            chapter_name: json.data[1].name,
-                            chapter_level: json.data[1].level,
-                        },
-                        lesson: {
-                            lesson_id: json.data[1].lessons[0].id,
-                            lesson_name: json.data[1].lessons[0].name,
-                            lesson_type: json.data[1].lessons[0].type,
-                        },
-                    });
-                }
-            })
-            .catch((error) => console.error(error));
+        getData();
+        // fetch(request.get('lecture'))
+        //     .then((res) => res.json())
+        //     .then((json) => {
+        //         setChapters(json.data);
+        //         console.log('123', currentChapter);
+        //         if (json.data.length > 1 && !currentChapter.hasOwnProperty('lesson')) {
+        //             setCurrentChapter({
+        //                 chapter: {
+        //                     chapter_id: json.data[1].id,
+        //                     chapter_name: json.data[1].name,
+        //                     chapter_level: json.data[1].level,
+        //                 },
+        //                 lesson: {
+        //                     lesson_id: json.data[1].lessons[0].id,
+        //                     lesson_name: json.data[1].lessons[0].name,
+        //                     lesson_type: json.data[1].lessons[0].type,
+        //                 },
+        //             });
+        //         }
+        //     })
+        //     .catch((error) => console.error(error));
     }, [currentChapter]);
     return (
         <div className={clsx(style.content)}>
