@@ -26,12 +26,12 @@ const LearningMenu = () => {
         console.log(key);
     };
     const getItem = (label, key, icon, children, type) => {
-        let temp = <a href="#">{label}</a>;
+        let div = <div>{label}</div>;
         return {
             key,
             icon,
             children,
-            label: temp,
+            label: div,
             type,
         };
     };
@@ -54,7 +54,6 @@ const LearningMenu = () => {
                 chapter.chapter.chapter_id,
                 null,
                 itemSubMenuLecture,
-                'group',
             ),
         );
         itemMenuPractice.push(
@@ -63,7 +62,6 @@ const LearningMenu = () => {
                 chapter.chapter.chapter_id,
                 null,
                 itemSubMenuPractice,
-                'group',
             ),
         );
     });

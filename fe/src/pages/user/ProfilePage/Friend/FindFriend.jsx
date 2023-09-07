@@ -1,7 +1,6 @@
 import React, { memo, useState } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Modal } from 'antd';
 import style from './style.module.scss';
-import { Modal } from 'antd';
 import ModalFindFriend from './ModalFindFriend';
 
 const FindFriend = () => {
@@ -43,7 +42,10 @@ const FindFriend = () => {
                                     </Row>
                                     <Row style={{ marginTop: '7px' }}>
                                         <Col span={6}>
-                                            <img alt="icon" src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/d4280fdf64d66de7390fe84802432a53.svg" />
+                                            <img
+                                                alt="icon"
+                                                src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/d4280fdf64d66de7390fe84802432a53.svg"
+                                            />
                                         </Col>
                                         <Col span={18}>Hoàn thành thêm 8 bài học để bắt đầu thi đua</Col>
                                     </Row>

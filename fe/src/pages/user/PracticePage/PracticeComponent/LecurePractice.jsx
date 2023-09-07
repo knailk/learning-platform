@@ -21,8 +21,8 @@ const LecturePractice = () => {
     }
     const items = [
         getItem(<TitleMenu title="Navigation One" />, 'sub1', null, [
-            getItem('Item 1', 'g1', null, [getItem('Option 1', '1'), getItem('Option 2', '2')], 'group'),
-            getItem('Item 2', 'g2', null, [getItem('Option 3', '3'), getItem('Option 4', '4')], 'group'),
+            getItem('Item 1', 'g1', null, [getItem('Option 1', '1'), getItem('Option 2', '2')]),
+            getItem('Item 2', 'g2', null, [getItem('Option 3', '3'), getItem('Option 4', '4')]),
         ]),
         getItem(<TitleMenu title="Navigation Two" />, 'sub2', null, [
             getItem('Option 5', '5'),
