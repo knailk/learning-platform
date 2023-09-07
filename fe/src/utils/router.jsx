@@ -18,7 +18,7 @@ export const ROUTERS = {
             component: <LearningPage />,
             layout: MasterLayout,
             inMenu: true,
-            img: 'images/learning.png',
+            img: '/images/learning.png',
             type: SIDEBAR_TYPE.SIDEBAR,
         },
         {
@@ -27,7 +27,7 @@ export const ROUTERS = {
             component: <PracticePage />,
             layout: MasterLayout,
             inMenu: true,
-            img: 'images/practice.png',
+            img: '/images/practice.png',
             type: SIDEBAR_TYPE.SIDEBAR,
         },
         {
@@ -36,7 +36,7 @@ export const ROUTERS = {
             component: <RankingPage />,
             layout: MasterLayout,
             inMenu: true,
-            img: 'images/ranking.png',
+            img: '/images/ranking.png',
             type: SIDEBAR_TYPE.SIDEBAR,
         },
         // {
@@ -52,7 +52,7 @@ export const ROUTERS = {
             component: <ProfilePage />,
             layout: MasterLayout,
             inMenu: true,
-            img: 'images/profile.png',
+            img: '/images/profile.png',
             type: SIDEBAR_TYPE.SIDEBAR,
         },
         {
@@ -84,7 +84,7 @@ export const ROUTERS = {
         },
         {
             title: '',
-            path: '/practice/lecture',
+            path: '/practice/lecture/:lesson_id',
             component: <LecurePractice />,
             layout: MasterLayout,
             inMenu: false,

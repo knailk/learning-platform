@@ -4,6 +4,7 @@ import styles from './style.module.scss';
 import { Row, Col, Menu } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 const LearningMenu = () => {
     const finishState = JSON.parse(localStorage.getItem('finish_state'));
     const data_menu = [];
@@ -42,7 +43,9 @@ const LearningMenu = () => {
         const itemSubMenuLecture = [];
         const itemSubMenuPractice = [];
         chapter.lesson.forEach((item) => {
-            if (item.lesson_type === 'lecture') itemSubMenuLecture.push(getItem(item.lesson_name, item.lesson_id));
+            let itemId = item.lesson_id;
+            let itemUrl = <Link to={`/practice/${item.lesson_type}/${itemId}`}>{item.lesson_name}</Link>;
+            if (item.lesson_type === 'lecture') itemSubMenuLecture.push(getItem(itemUrl, itemId));
             if (item.lesson_type === 'practice') itemSubMenuPractice.push(getItem(item.lesson_name, item.lesson_id));
         });
         itemMenuLecture.push(
