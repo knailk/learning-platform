@@ -2,13 +2,13 @@ import React, { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { useTimer } from '../../../hooks/useTimer';
-import { useAuth } from 'contexts/AuthContext';
+import Cookies from 'universal-cookie';
 import request from 'utils/http';
 import { Button, Card, Form, Input, Typography, notification } from 'antd';
-import _ from 'lodash';
 
 import styles from './ForgotPassword.module.css';
+
+const cookies = new Cookies();
 
 const ForgotPasswordPage = () => {
     const [form] = Form.useForm();
@@ -19,7 +19,10 @@ const ForgotPasswordPage = () => {
         const response = await request.post('auth/forgot-password', {
             email: email,
         });
-        if (response) navigate('/new-password');
+        if (response) {
+            cookies.set('forgot_email', email)
+            navigate('/new-password');
+        }
     }, []);
 
     return (
@@ -46,7 +49,11 @@ const ForgotPasswordPage = () => {
                                 autoComplete="off"
                                 onFinish={handleSubmit}
                             >
-                                <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Bạn phải nhập email của bạn!' }]}>
+                                <Form.Item
+                                    name="email"
+                                    label="Email"
+                                    rules={[{ required: true, message: 'Bạn phải nhập email của bạn!' }]}
+                                >
                                     <Input size="large" placeholder="Nhập địa chỉ email của bạn" />
                                 </Form.Item>
                                 <Form.Item>

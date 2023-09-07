@@ -1,11 +1,14 @@
 import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import request from 'utils/http';
 import { Button, Card, Form, Input, Typography, notification } from 'antd';
 
 import styles from './NewPassword.module.css';
+
+const cookies = new Cookies();
 
 const NewPasswordPage = () => {
     const [form] = Form.useForm();
@@ -15,7 +18,7 @@ const NewPasswordPage = () => {
         const { confirmation_code, new_password } = formValues;
         try {
             const response = await request.post('auth/forgot-password/confirm', {
-                email: 'tiendung371922asd',
+                email: cookies.get('forgot_email'),
                 confirmation_code: confirmation_code,
                 confirmation_password: new_password,
             });

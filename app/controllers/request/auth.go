@@ -17,7 +17,7 @@ type LoginRequest struct {
 
 // RegisterRequest ...
 type RegisterRequest struct {
-	Name     string `json:"name" binding:"required,min=3,max=30,fullName"` //fullName rule is in validator.go
+	Name     string `json:"name" binding:"required,min=3,max=30"` //fullName rule is in validator.go
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=3,max=50"`
 	Age      int    `json:"age" binding:"required,min=1,max=100"`

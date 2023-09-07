@@ -2,43 +2,40 @@ import React, { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useTimer } from '../../../hooks/useTimer';
-import { useAuth } from 'contexts/AuthContext';
+import Cookies from 'universal-cookie';
 import request from 'utils/http';
 import { Button, Card, Form, Input, Typography, notification } from 'antd';
 import _ from 'lodash';
 
 import styles from './ConfirmRegister.module.css';
 
+const cookies = new Cookies();
 const { Title, Text } = Typography;
 
 const ConfirmRegisterPage = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const { minutes, seconds, isRunning, startTimer } = useTimer({ m: 1, s: 30 });
-    const { authUser } = useAuth();
     const confirmationCode = Form.useWatch('confirmation_code', form);
 
-    const handleSubmit = useCallback(
-        async (formValues) => {
-            const response = await request.post('auth/register/confirm', {
-                email: authUser?.email,
-                confirmation_code: confirmationCode,
-            });
-            if (response) navigate('/');
-        },
-        [authUser?.email],
-    );
+    const handleSubmit = async (formValues) => {
+        const response = await request.post('auth/register/confirm', {
+            email: cookies.get('email'),
+            confirmation_code: confirmationCode,
+        });
+        if (response) navigate('/');
+    };
 
     const handleReSendCode = useCallback(async () => {
         const response = await request.post('/auth/register/resend', {
-            email: authUser?.email,
+            email: cookies.get('email'),
         });
         if (response) {
             notification.success({ message: 'Gửi lại mã xác nhận thành công' });
         }
 
         startTimer();
-    }, [authUser?.email]);
+    }, []);
 
     return (
         <>

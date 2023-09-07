@@ -28,7 +28,7 @@ const RegisterPage = () => {
             return;
         }
         try {
-            const response = await request.post('user/register', {
+            const response = await request.post('auth/register', {
                 email: email,
                 password: password,
                 name: name,
@@ -43,9 +43,10 @@ const RegisterPage = () => {
             setAuthUser(response?.data.user);
             setIsLogin(true);
 
-            cookies.set('access_token', response?.data.token.access_token);
-            cookies.set('verified', response?.data.user.verified);
-            cookies.set('email', response?.data.user.email);
+            cookies.set('access_token', response.data.token.AccessToken.token);
+            cookies.set('verified', response.data.user.verified);
+            cookies.set('email', response.data.user.email);
+            cookies.set('is_login', true);
 
             navigate('/confirm-register');
         } catch (error) {

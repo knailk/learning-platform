@@ -60,7 +60,7 @@ func (ctrl *AuthController) Register(ctx *gin.Context) {
 	var registerRequest request.RegisterRequest
 
 	if validationErr := ctx.ShouldBindJSON(&registerRequest); validationErr != nil {
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid register details"})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid register details", "error": validationErr.Error()})
 		return
 	}
 
