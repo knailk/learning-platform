@@ -9,21 +9,12 @@ import AvatarCpn from 'components/Avatar';
 import StatiscalCpn from 'components/Statistical';
 
 const ModalDetailRanking = ({ userInfor, closeModal }) => {
-    const [addFriend, setAddFriend] = useState(
-        userInfor.friend_type === FRIEND_TYPE.FRIEND || userInfor.friend_type === FRIEND_TYPE.SEND_REQUEST,
-    );
-    const [addFriendText, setAddFriendText] = useState();
+    const [addFriend, setAddFriend] = useState(userInfor.friend_type === FRIEND_TYPE.FRIEND);
+    const [addFriendText, setAddFriendText] = useState(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
     useEffect(() => {
-        setAddFriendText(() => {
-            if (userInfor.friend_type === FRIEND_TYPE.FRIEND) {
-                return 'Bạn bè';
-            } else if (userInfor.friend_type === FRIEND_TYPE.NOT_FRIEND) {
-                return 'Thêm bạn';
-            } else {
-                return 'Đang chờ';
-            }
-        });
-    }, [userInfor.friend_type]);
+        setAddFriendText(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
+    }, [addFriend]);
+    const showButton = true;
     return (
         <>
             <div className={styles.modalTitle}>Thông tin cá nhân</div>
@@ -55,27 +46,25 @@ const ModalDetailRanking = ({ userInfor, closeModal }) => {
                         {userInfor.follower} Người đang theo dõi
                     </Row>
                 </Col>
-                <Col xl={6} lg={4} md={24}>
-                    <div
-                        className={styles.addButton}
-                        onClick={() => {
-                            setAddFriend(true);
-                            setAddFriendText('Đang chờ');
-                        }}
-                    >
+                {showButton && (
+                    <Col xl={6} lg={4} md={24}>
                         <div
-                            className={clsx(styles.plus, {
-                                [styles.tick]: addFriend,
-                            })}
-                        ></div>
-                        <div className={styles.text}>
-                            <span>{addFriendText}</span>
+                            className={styles.addButton}
+                            onClick={() => {
+                                setAddFriend(!addFriend);
+                            }}
+                        >
+                            <div
+                                className={clsx(styles.plus, {
+                                    [styles.tick]: addFriend,
+                                })}
+                            ></div>
+                            <div className={styles.text}>
+                                <span>{addFriendText}</span>
+                            </div>
                         </div>
-                        <span className={styles.iconFriend}>
-                            <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
-                        </span>
-                    </div>
-                </Col>
+                    </Col>
+                )}
             </Row>
             <Row gutter={[16, 16]} style={{ marginBottom: 10 }}>
                 <Col span={12}>

@@ -1,7 +1,6 @@
 import React, { memo, useState } from 'react';
 import style from './style.module.scss';
 import { Row, Col, Modal } from 'antd';
-import ModalDetailRanking from './ModalDetailRanking';
 
 const UserRanking = () => {
     return (
@@ -12,9 +11,7 @@ const UserRanking = () => {
                         <Col span={16}>
                             <h1>Xếp hạng của tôi</h1>
                         </Col>
-                        <Col span={8}>
-                            <h1 className={style.viewDetail}>Xem kết quả</h1>
-                        </Col>
+                        <Col span={8}>{/* <h1 className={style.viewDetail}>Xem kết quả</h1> */}</Col>
                     </Row>
                     <Row style={{ marginTop: '10px' }}>
                         <Col span={2} style={{ margin: 'auto' }}>

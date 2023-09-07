@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import AvatarCpn from '../../../../components/Avatar';
 import ModalDetailRanking from '../ModalDetailRanking';
 
-const OtherTop = ({ item, index }) => {
+const OtherTop = ({ item, index, hasModal }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
@@ -36,9 +36,11 @@ const OtherTop = ({ item, index }) => {
                     </Row>
                 </Col>
             </Row>
-            <Modal title="" footer="" open={isModalOpen} closeIcon={false}>
-                <ModalDetailRanking userInfor={item} closeModal={handleCancel} />
-            </Modal>
+            {hasModal && (
+                <Modal title="" footer="" open={isModalOpen} closeIcon={false}>
+                    <ModalDetailRanking userInfor={item} closeModal={handleCancel} />
+                </Modal>
+            )}
         </>
     );
 };

@@ -12,7 +12,7 @@ const GameBox = () => {
                     </Row>
                     <Row style={{ marginTop: '20px' }}>
                         <Col span={4}>
-                            <img src="images/game_icon.png" alt="gameicon" />
+                            <img src="/images/game_icon.png" alt="gameicon" />
                         </Col>
                         <Col span={20}>Hãy kiếm nhiều điểm hơn qua trò chơi để nâng cao bảng xếp hạng nhé</Col>
                     </Row>

@@ -39,7 +39,7 @@ const DATA = [
         birth: '01/01/2001',
         start_date: '05/2023',
         follower: '1',
-        friend_type: FRIEND_TYPE.SEND_REQUEST,
+        friend_type: FRIEND_TYPE.FRIEND,
         total_lecture: 10,
         total_question: 10,
         ranking: 1,
@@ -130,17 +130,17 @@ const RankingPage = () => {
                     <Col order={2} span={8}>
                         <TopThree data={DATA.slice(0, 3)[0]} img="/images/winner.png" />
                     </Col>
-                    <Col>
+                    <Col order={1} span={6}>
                         <TopThree data={DATA.slice(0, 3)[1]} notOne={true} img="/images/second.png" />
                     </Col>
-                    <Col order={2} span={6}>
+                    <Col order={3} span={6}>
                         <TopThree data={DATA.slice(0, 3)[2]} notOne={true} img="/images/third.png" />
                     </Col>
                 </Row>
                 <Row className={style.otherTopWrapper} justify={'space-between'}>
                     <Col span={11}>
                         {DATA.slice(3).map((item, index) => {
-                            return <OtherTop item={item} index={index + 4} />;
+                            return <OtherTop item={item} index={index + 4} hasModal={true} />;
                         })}
                     </Col>
                     <Col span={11}>

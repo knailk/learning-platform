@@ -412,23 +412,3 @@
         -o-transition: 0.1s ease-in-out;
     }
 }
-
-// .avatarTopThree {
-//     img {
-//         --s: 250px; /* the size of the image */
-//         --b: 8px; /* the border thickness*/
-//         --g: 14px; /* the gap */
-//         --c: #4ecdc4; /* the color */
-
-//         width: var(--s);
-//         aspect-ratio: 1;
-//         outline: calc(var(--s) / 2) solid #0009;
-//         outline-offset: calc(var(--s) / -2);
-//         cursor: pointer;
-//         transition: 0.3s;
-//     }
-//     img:hover {
-//         outline: var(--b) solid var(--c);
-//         outline-offset: var(--g);
-//     }
-// }
