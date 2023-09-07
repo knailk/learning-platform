@@ -16,3 +16,9 @@ export const SIDEBAR_TYPE = {
     NOTSIDEBAR: 'not_sidebar',
     SIDEBAR: 'sidebar',
 };
+
+export const FRIEND_TYPE = {
+    FRIEND: 1,
+    NOT_FRIEND: 2,
+    SEND_REQUEST: 3,
+};
