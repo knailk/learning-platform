@@ -48,7 +48,7 @@ const SideBar = () => {
                     })}
                     <Popover placement="right" content={content} trigger="click">
                         <div>
-                            <ItemSideBar key="more" title="KHÁC" url="" imgSrc="images/more.png" inMenu={true} />
+                            <ItemSideBar key="more" title="KHÁC" url="" imgSrc="/images/more.png" inMenu={true} />
                         </div>
                     </Popover>
                 </div>

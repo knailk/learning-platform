@@ -7,7 +7,7 @@ import ProfilePage from '../pages/user/ProfilePage';
 import ForgotPasswordPage from '../pages/user/ForgotPasswordPage';
 import NewPasswordPage from '../pages/user/NewPasswordPage';
 import MasterLayout from '../pages/theme/MasterLayout';
-import LecurePractice from 'pages/user/PracticePage/LecurePractice';
+import LecurePractice from 'pages/user/PracticePage/PracticeComponent/LecurePractice';
 import { SIDEBAR_TYPE } from './constant';
 
 export const ROUTERS = {
@@ -84,7 +84,7 @@ export const ROUTERS = {
         },
         {
             title: '',
-            path: '/practice/lecture/:lesson_id',
+            path: '/practice/:lesson_id',
             component: <LecurePractice />,
             layout: MasterLayout,
             inMenu: false,

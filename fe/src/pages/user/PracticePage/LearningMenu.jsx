@@ -44,7 +44,7 @@ const LearningMenu = () => {
         const itemSubMenuPractice = [];
         chapter.lesson.forEach((item) => {
             let itemId = item.lesson_id;
-            let itemUrl = <Link to={`/practice/${item.lesson_type}/${itemId}`}>{item.lesson_name}</Link>;
+            let itemUrl = <Link to={`/practice/${itemId}`}>{item.lesson_name}</Link>;
             if (item.lesson_type === 'lecture') itemSubMenuLecture.push(getItem(itemUrl, itemId));
             if (item.lesson_type === 'practice') itemSubMenuPractice.push(getItem(item.lesson_name, item.lesson_id));
         });
@@ -54,6 +54,7 @@ const LearningMenu = () => {
                 chapter.chapter.chapter_id,
                 null,
                 itemSubMenuLecture,
+                'group',
             ),
         );
         itemMenuPractice.push(
@@ -62,6 +63,7 @@ const LearningMenu = () => {
                 chapter.chapter.chapter_id,
                 null,
                 itemSubMenuPractice,
+                'group',
             ),
         );
     });
