@@ -16,9 +16,9 @@ const DATA = [
         start_date: '05/2023',
         follower: '1',
         friend_type: FRIEND_TYPE.NOT_FRIEND,
-        total_lecture:10,
-        total_question:10,
-        ranking:1
+        total_lecture: 10,
+        total_question: 10,
+        ranking: 1,
     },
     {
         avatar: 'images/avatar2.jpg',
@@ -28,9 +28,9 @@ const DATA = [
         start_date: '05/2023',
         follower: '1',
         friend_type: FRIEND_TYPE.FRIEND,
-        total_lecture:10,
-        total_question:10,
-        ranking:1
+        total_lecture: 10,
+        total_question: 10,
+        ranking: 1,
     },
     {
         avatar: 'images/avatar3.jpg',
@@ -40,9 +40,9 @@ const DATA = [
         start_date: '05/2023',
         follower: '1',
         friend_type: FRIEND_TYPE.SEND_REQUEST,
-        total_lecture:10,
-        total_question:10,
-        ranking:1
+        total_lecture: 10,
+        total_question: 10,
+        ranking: 1,
     },
     {
         avatar: 'images/avatar4.jpg',
@@ -52,21 +52,21 @@ const DATA = [
         start_date: '05/2023',
         follower: '1',
         friend_type: FRIEND_TYPE.NOT_FRIEND,
-        total_lecture:10,
-        total_question:10,
-        ranking:1
+        total_lecture: 10,
+        total_question: 10,
+        ranking: 1,
     },
     {
         avatar: '',
         name: 'Trần Trường Sinh',
-        score: 600,
+        score: 500,
         birth: '01/01/2001',
         start_date: '05/2023',
         follower: '1',
         friend_type: FRIEND_TYPE.NOT_FRIEND,
-        total_lecture:10,
-        total_question:10,
-        ranking:1
+        total_lecture: 10,
+        total_question: 10,
+        ranking: 1,
     },
     {
         avatar: 'images/avatar2.jpg',
@@ -76,9 +76,9 @@ const DATA = [
         start_date: '05/2023',
         follower: '1',
         friend_type: FRIEND_TYPE.NOT_FRIEND,
-        total_lecture:10,
-        total_question:10,
-        ranking:1
+        total_lecture: 10,
+        total_question: 10,
+        ranking: 1,
     },
     {
         avatar: '',
@@ -88,21 +88,21 @@ const DATA = [
         start_date: '05/2023',
         follower: '1',
         friend_type: FRIEND_TYPE.NOT_FRIEND,
-        total_lecture:10,
-        total_question:10,
-        ranking:1
+        total_lecture: 10,
+        total_question: 10,
+        ranking: 1,
     },
     {
-        avatar: 'images/avatar1.jpg',
+        avatar: 'images/avatar2.jpg',
         name: 'Nguyễn Tuấn Long',
         score: 600,
         birth: '01/01/2001',
         start_date: '05/2023',
         follower: '1',
         friend_type: FRIEND_TYPE.NOT_FRIEND,
-        total_lecture:10,
-        total_question:10,
-        ranking:1
+        total_lecture: 10,
+        total_question: 10,
+        ranking: 1,
     },
     {
         avatar: '',
@@ -112,9 +112,9 @@ const DATA = [
         start_date: '05/2023',
         follower: '1',
         friend_type: FRIEND_TYPE.NOT_FRIEND,
-        total_lecture:10,
-        total_question:10,
-        ranking:1
+        total_lecture: 10,
+        total_question: 10,
+        ranking: 1,
     },
 ];
 
@@ -127,7 +127,15 @@ const RankingPage = () => {
                     <div className={style.rankingTitle}>BẢNG XẾP HẠNG</div>
                 </Row>
                 <Row className={style.topThreeWrapper} align={'top'} justify={'center'}>
-                    <TopThree data={DATA.slice(0, 3)} />
+                    <Col order={2} span={8}>
+                        <TopThree data={DATA.slice(0, 3)[0]} img="/images/winner.png" />
+                    </Col>
+                    <Col>
+                        <TopThree data={DATA.slice(0, 3)[1]} notOne={true} img="/images/second.png" />
+                    </Col>
+                    <Col order={2} span={6}>
+                        <TopThree data={DATA.slice(0, 3)[2]} notOne={true} img="/images/third.png" />
+                    </Col>
                 </Row>
                 <Row className={style.otherTopWrapper} justify={'space-between'}>
                     <Col span={11}>

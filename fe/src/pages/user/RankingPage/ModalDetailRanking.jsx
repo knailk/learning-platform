@@ -89,7 +89,7 @@ const ModalDetailRanking = ({ userInfor, closeModal }) => {
                 <Col span={12}>
                     <StatiscalCpn
                         title="Bài tập"
-                        total={userInfor.total_queston}
+                        total={userInfor.total_question}
                         img="/images/practice.png"
                         height={30}
                     />
