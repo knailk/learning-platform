@@ -116,3 +116,65 @@ $primary: #ddf4ff;
         }
     }
 }
+.question {
+    margin-top: 30px;
+    font-size: 1.3em;
+}
+.answer {
+    margin: auto;
+    margin-top: 10px;
+    .itemOption {
+        cursor: pointer;
+        width: 560px;
+        margin-top: 20px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 500;
+        color: #4b4b4b;
+        border: 2px solid #e5e5e5;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        -ms-border-radius: 10px;
+        -o-border-radius: 10px;
+        box-shadow: 1px 2px 0px #e5e5e5;
+        background-color: white;
+    }
+    .itemOptionActive {
+        background-color: #b5ebf8;
+        color: #249ed8;
+        border: 2px solid #84d8ff;
+        box-shadow: 1px 2px 0px #84d8ff;
+        background-color: white;
+    }
+    .itemFill {
+        background-color: white;
+        * {
+            color: #4b4b4b;
+            font-size: 18px;
+            font-weight: 500;
+            input {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+                    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            }
+        }
+    }
+}
+
+.inputText {
+    appearance: none;
+    border: none;
+    outline: none;
+    border-bottom: 0.2em solid #49a7bc;
+    background: #c6f4ff;
+    padding: 0.4em;
+    color: white;
+    border-radius: 0.2em 0.2em 0 0;
+    -webkit-border-radius: 0.2em 0.2em 0 0;
+    -moz-border-radius: 0.2em 0.2em 0 0;
+    -ms-border-radius: 0.2em 0.2em 0 0;
+    -o-border-radius: 0.2em 0.2em 0 0;
+}
