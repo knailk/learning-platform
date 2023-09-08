@@ -16,7 +16,7 @@ const (
 	refreshKey             = "knailk_jwt_refresh"
 	cookiePath             = "/v1"
 	cookiePathRefreshToken = "/v1/auth/refresh"
-	cookieHTTPOnly         = false
+	cookieHTTPOnly         = true
 	cookieMaxAge           = 86400
 )
 
@@ -263,6 +263,7 @@ func (ctrl *AuthController) ExpireJWTCookie(ctx *gin.Context) {
 }
 
 func (ctrl *AuthController) setTokenWithAge(ctx *gin.Context, key, path, token string, age int) {
-	ctx.SetSameSite(http.SameSiteDefaultMode)
-	ctx.SetCookie(key, token, age, path, "", false, cookieHTTPOnly)
+	// ctx.SetSameSite(http.SameSiteDefaultMode)
+	fmt.Println("1111", ctx.Request.Host)
+	ctx.SetCookie(key, token, age, path, ctx.Request.Host, false, cookieHTTPOnly)
 }
