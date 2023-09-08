@@ -25,15 +25,18 @@ const PersonalInformation = (props) => {
     const { profile } = props;
     const [nameValue, setNameValue] = useState('');
     const [birthValue, setBirthValue] = useState(profile.birth);
+    const [phoneNumber, setPhoneNumber] = useState(profile.phone);
     const [editProfile, setEditProfile] = useState(false);
     console.log(profile);
     const handleEditButton = async () => {
         if (editProfile) {
             try {
-                await request.put('user/profile', { name: nameValue, birth: birthValue }).then(function () {
-                    setEditProfile(!editProfile);
-                    notification.success({ message: 'Thay đổi thông tin thành công' });
-                });
+                await request
+                    .put('user/profile', { name: nameValue, birth: birthValue, phone: phoneNumber })
+                    .then(function () {
+                        setEditProfile(!editProfile);
+                        notification.success({ message: 'Thay đổi thông tin thành công' });
+                    });
             } catch (error) {
                 console.log(error);
                 notification.error({ message: 'Thay đổi thông tin thất bại' });
@@ -101,7 +104,17 @@ const PersonalInformation = (props) => {
                         <span>
                             <FontAwesomeIcon icon={faPhone}></FontAwesomeIcon>
                         </span>
-                        {profile.phone}
+                        {editProfile && (
+                            <input
+                                type="text"
+                                value={phoneNumber}
+                                className={style.inputPhone}
+                                onChange={(e) => {
+                                    setPhoneNumber(e.target.value);
+                                }}
+                            />
+                        )}
+                        {!editProfile && phoneNumber}
                     </Row>
                     <Row className={common_style.userInfo}>
                         <span>

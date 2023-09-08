@@ -1,12 +1,136 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styles from './style.module.scss';
 import clsx from 'clsx';
-import { Row, Col, Menu } from 'antd';
+import { Row, Col, Menu, notification, Spin } from 'antd';
 import TitleMenu from './TitleMenu';
+import Lecture from 'components/Lecture/Lecture';
+import request from 'utils/http';
 
 const LecturePractice = () => {
-    const lessonId = useParams().lesson_id;
+    /// need to refactor this
+    ///
+    const CHOOSE_ONE = 'single_choice';
+    const FILL = 'text_input';
+    const CHOOSE_MULTI = 'multiple_choice';
+    const [activeOption, setActiveOption] = useState(-1);
+    const [selectionAnswer, setSelectionAnswer] = useState([]);
+    const [textInput, setTextInput] = useState('');
+    const [showCorrect, setShowCorrect] = useState(false);
+    const [showInCorrect, setShowInCorrect] = useState(false);
+    const [questionAnswers, setQuestionAnswers] = useState([]);
+    const lessonRender = (question) => {
+        switch (question.answer_type) {
+            case CHOOSE_ONE:
+                return (
+                    <>
+                        <Row className={styles.question}>
+                            <h1>{question.question_content}</h1>
+                        </Row>
+                        <Row>
+                            <Col className={styles.answer}>
+                                {question.answer_content.map((item, idx) => (
+                                    <Row
+                                        key={idx}
+                                        className={clsx([
+                                            styles.itemOption,
+                                            {
+                                                [styles.itemOptionActive]: activeOption === idx,
+                                            },
+                                        ])}
+                                    >
+                                        {item}
+                                    </Row>
+                                ))}
+                            </Col>
+                        </Row>
+                    </>
+                );
+            case FILL:
+                return (
+                    <>
+                        <Row className={styles.question}>
+                            <h1>{question.question_content}</h1>
+                        </Row>
+                        <Row>
+                            <Col className={styles.answer} style={{ marginLeft: 0, marginTop: 70 }}>
+                                <Row className={clsx(styles.itemFill)}>
+                                    <Col>
+                                        <input className={clsx(styles.inputText)} type="text" width={'auto'} />
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </>
+                );
+            case CHOOSE_MULTI:
+                return (
+                    <>
+                        <Row className={styles.question}>
+                            <h1>{question.question_content}</h1>
+                        </Row>
+                        <Row>
+                            <Col className={styles.answer}>
+                                {question.answer_content.map((item, idx) => (
+                                    <Row
+                                        key={idx}
+                                        className={clsx([
+                                            styles.itemOption,
+                                            {
+                                                [styles.itemOptionActive]: selectionAnswer.includes(idx),
+                                            },
+                                        ])}
+                                    >
+                                        {item}
+                                    </Row>
+                                ))}
+                            </Col>
+                        </Row>
+                    </>
+                );
+            default:
+                break;
+        }
+    };
+    const render = () => {
+        if (lessonType === 'lecture') {
+            return <Lecture data={lectureData} style={style} />;
+        } else {
+            return questionData.map((question, idx) => {
+                return <div key={idx}>{lessonRender(question)}</div>;
+            });
+        }
+    };
+    ///
+    ///
+    const [lessonId, setLessonId] = useState(useParams().lesson_id);
+    const [lectureData, setLectureData] = useState({ lectures: [] });
+    const [questionData, setQuestions] = useState([]);
+    const [lessonType, setLessonType] = useState('');
+    let style = {
+        padding: '30px 70px',
+        marginBottom: '50px',
+    };
+    const getData = async () => {
+        try {
+            const response = await request.get('lessons/' + lessonId);
+            const data = response.data.data;
+            setLessonType(data.type);
+            // console.log(data.lectures);
+            console.log(lessonType);
+            data.type === 'lecture' ? setLectureData(data) : setQuestions(data.questions);
+        } catch (error) {
+            console.log(error);
+            notification.error({
+                message: 'Lỗi lấy dữ liệu',
+            });
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
     const onClick = (e) => {
         console.log('click ', e);
     };
@@ -39,29 +163,34 @@ const LecturePractice = () => {
             getItem('Option 12', '12'),
         ]),
     ];
-    return (
-        <>
-            <div className={clsx(styles.content)}>
-                <Link to="/practice" className={styles.cta}>
-                    <span className={styles.backButton}>Quay về</span>
-                    <img width={15} src="/images/Back_arrow.svg" alt="back" />
-                </Link>
-                <Row>
-                    <Col span={20}>content</Col>
-                    <Col span={4}>
-                        <Menu
-                            onClick={onClick}
-                            style={{ width: 256 }}
-                            defaultSelectedKeys={['1']}
-                            defaultOpenKeys={['sub1']}
-                            mode="inline"
-                            items={items}
-                        />
-                    </Col>
-                </Row>
-            </div>
-        </>
-    );
+    console.log(lectureData);
+    if (questionData.length != 0 || lectureData.lectures.length != 0) {
+        return (
+            <>
+                <div className={clsx(styles.content)}>
+                    <Link to="/practice" className={styles.cta}>
+                        <span className={styles.backButton}>Quay về</span>
+                        <img width={15} src="/images/Back_arrow.svg" alt="back" />
+                    </Link>
+                    <Row>
+                        <Col span={20}>{render()}</Col>
+                        <Col span={4}>
+                            <Menu
+                                onClick={onClick}
+                                style={{ width: 256 }}
+                                defaultSelectedKeys={['1']}
+                                defaultOpenKeys={['sub1']}
+                                mode="inline"
+                                items={items}
+                            />
+                        </Col>
+                    </Row>
+                </div>
+            </>
+        );
+    } else {
+        return <Spin />;
+    }
 };
 
 export default memo(LecturePractice);

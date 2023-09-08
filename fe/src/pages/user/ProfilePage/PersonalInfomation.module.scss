@@ -91,6 +91,15 @@
             margin: 0px;
             height: 25px;
         }
+        .inputPhone {
+            appearance: none;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            font-size: 17px;
+            color: #1cb0f6;
+            border-bottom: 0.2em solid #1cb0f6;
+        }
     }
 
     .editButton {
