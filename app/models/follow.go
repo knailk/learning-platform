@@ -48,15 +48,15 @@ func (m *FollowModel) DeleteFollow(ctx context.Context, req request.Follow) erro
 	return err
 }
 
-func (m *FollowModel) GetFollowers(ctx context.Context, userID uuid.UUID) (*response.FollowInfo, error) {
+func (m *FollowModel) GetFollowers(ctx context.Context, userID uuid.UUID) (response.FollowInfo, error) {
 	followed, err := m.Repo.User.
 		WithContext(ctx).
 		LeftJoin(
 			m.Repo.Follow,
 			m.Repo.Follow.FollowedUserID.EqCol(m.Repo.User.ID)).
-		Where(m.Repo.User.ID.Eq(userID), m.Repo.Follow.FollowedUserID.IsNotNull()).Find()
+		Where(m.Repo.Follow.FollowingUserID.Eq(userID)).Find()
 	if err != nil {
-		return nil, err
+		return response.FollowInfo{}, err
 	}
 
 	following, err := m.Repo.User.
@@ -64,12 +64,12 @@ func (m *FollowModel) GetFollowers(ctx context.Context, userID uuid.UUID) (*resp
 		LeftJoin(
 			m.Repo.Follow,
 			m.Repo.Follow.FollowingUserID.EqCol(m.Repo.User.ID)).
-		Where(m.Repo.User.ID.Eq(userID)).Find()
+		Where(m.Repo.Follow.FollowedUserID.Eq(userID)).Find()
 	if err != nil {
-		return nil, err
+		return response.FollowInfo{}, err
 	}
 
-	return &response.FollowInfo{
+	return response.FollowInfo{
 		FollowedUsers:  followed,
 		FollowingUsers: following,
 	}, nil
