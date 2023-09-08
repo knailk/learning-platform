@@ -85,7 +85,7 @@ CREATE TABLE "users" (
     "phone" text,
     "name" text,
     "avatar" text,
-    "age" integer,
+    "birth" text,
     "score" integer,
     "current_lesson" char(36),
     "verified" bool,

@@ -13,7 +13,7 @@ type User struct {
 	Phone         string    `json:"phone"`
 	Name          string    `json:"name"`
 	Avatar        string    `json:"avatar"`
-	Age           int       `json:"age"`
+	Birth         string    `json:"birth"`
 	Score         int       `json:"score"`
 	CurrentLesson uuid.UUID `json:"current_lesson"`
 	Verified      bool      `json:"-"`

@@ -7,7 +7,6 @@ import (
 	"github.com/google/uuid"
 )
 
-
 // ------------------------------------------------------//
 // LoginRequest ...
 type LoginRequest struct {
@@ -20,13 +19,13 @@ type RegisterRequest struct {
 	Name     string `json:"name" binding:"required,min=3,max=30"` //fullName rule is in validator.go
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=3,max=50"`
-	Age      int    `json:"age" binding:"required,min=1,max=100"`
+	Birth    string `json:"birth"`
 	Phone    string `json:"phone"`
 }
 
 // --------------------------------------------------------------------//
 type ConfirmRegister struct {
-	Email         string `json:"email"`
+	Email            string `json:"email"`
 	ConfirmationCode string `json:"confirmation_code"`
 }
 
@@ -44,7 +43,7 @@ type ResendConfirmationCode struct {
 	Email string `json:"email"`
 }
 type ConfirmForgotPassword struct {
-	Email             string `json:"email"`
+	Email                string `json:"email"`
 	ConfirmationCode     string `json:"confirmation_code"`
 	ConfirmationPassword string `json:"confirmation_password"`
 }

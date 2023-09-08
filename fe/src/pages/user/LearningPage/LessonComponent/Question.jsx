@@ -1,7 +1,7 @@
-import React, { memo, useState, useRef } from "react";
-import clsx from "clsx";
-import styles from "./style.module.scss";
-import { Col, Row } from "antd";
+import React, { memo, useState, useRef } from 'react';
+import clsx from 'clsx';
+import styles from './style.module.scss';
+import { Col, Row } from 'antd';
 
 const Question = ({ type }) => {
     const CHOOSE_ONE = 1;
@@ -11,11 +11,7 @@ const Question = ({ type }) => {
     const [selectionAnswer, setSelectionAnswer] = useState([]);
     const inputFill = useRef();
     const handleSelection = (id) => {
-        setSelectionAnswer((props) =>
-            props.includes(id)
-                ? props.filter((val) => val !== id)
-                : [...props, id],
-        );
+        setSelectionAnswer((props) => (props.includes(id) ? props.filter((val) => val !== id) : [...props, id]));
     };
 
     const lessonRender = (question) => {
@@ -34,8 +30,7 @@ const Question = ({ type }) => {
                                         className={clsx([
                                             styles.itemOption,
                                             {
-                                                [styles.itemOptionActive]:
-                                                    activeOption === item.id,
+                                                [styles.itemOptionActive]: activeOption === item.id,
                                             },
                                         ])}
                                         onClick={() => setActiveOption(item.id)}
@@ -54,18 +49,11 @@ const Question = ({ type }) => {
                             <h1>{question.question}</h1>
                         </Row>
                         <Row>
-                            <Col
-                                className={styles.answer}
-                                style={{ marginLeft: 0, marginTop: 70 }}
-                            >
+                            <Col className={styles.answer} style={{ marginLeft: 0, marginTop: 70 }}>
                                 <Row className={clsx(styles.itemFill)}>
                                     <Col>{question.answer.content1}</Col>
                                     <Col>
-                                        <input
-                                            type="text"
-                                            width={"auto"}
-                                            ref={inputFill}
-                                        />
+                                        <input type="text" width={'auto'} ref={inputFill} />
                                     </Col>
                                     <Col>{question.answer.content2}</Col>
                                 </Row>
@@ -87,10 +75,7 @@ const Question = ({ type }) => {
                                         className={clsx([
                                             styles.itemOption,
                                             {
-                                                [styles.itemOptionActive]:
-                                                    selectionAnswer.includes(
-                                                        item.id,
-                                                    ),
+                                                [styles.itemOptionActive]: selectionAnswer.includes(item.id),
                                             },
                                         ])}
                                         onClick={() => handleSelection(item.id)}
@@ -102,6 +87,8 @@ const Question = ({ type }) => {
                         </Row>
                     </>
                 );
+            default:
+                return <></>;
         }
     };
     return <>{lessonRender(type)}</>;
