@@ -14,5 +14,5 @@ type Chapter struct {
 	UpdatedAt   time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 	CreatedAt   time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 
-	Lessons *[]Lesson `json:"lessons,omitempty" gorm:"foreignKey:ChapterID"`
+	Lessons []Lesson `json:"lessons,omitempty" gorm:"foreignKey:ChapterID"`
 }

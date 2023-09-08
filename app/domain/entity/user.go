@@ -18,5 +18,5 @@ type User struct {
 	CurrentLesson uuid.UUID `json:"current_lesson"`
 	Verified      bool      `json:"-"`
 	UpdatedAt     time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
-	CreatedAt     time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
+	CreatedAt     time.Time `json:"created_at" gorm:"default:CURRENT_TIMESTAMP()"`
 }
