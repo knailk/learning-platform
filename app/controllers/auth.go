@@ -51,7 +51,7 @@ func (ctrl *AuthController) Login(ctx *gin.Context) {
 
 	ctrl.SetAccessCookie(ctx, token.AccessToken.Token)
 	ctrl.SetRefreshCookie(ctx, token.RefreshToken.Token)
-	
+
 	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully logged in", "user": user, "token": token})
 }
 
@@ -264,6 +264,11 @@ func (ctrl *AuthController) ExpireJWTCookie(ctx *gin.Context) {
 
 func (ctrl *AuthController) setTokenWithAge(ctx *gin.Context, key, path, token string, age int) {
 	// ctx.SetSameSite(http.SameSiteDefaultMode)
-	fmt.Println("1111", ctx.Request.Host)
-	ctx.SetCookie(key, token, age, path, ctx.Request.Host, false, cookieHTTPOnly)
+	domain := ""
+	if ctx.Request.Host == "localhost:8080" {
+		domain = "localhost"
+	} else {
+		domain = "ec2-3-0-139-245.ap-southeast-1.compute.amazonaws.com"
+	}
+	ctx.SetCookie(key, token, age, path, domain, false, cookieHTTPOnly)
 }
