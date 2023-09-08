@@ -7,9 +7,8 @@ import LessonLayout from './LessonComponent/LessonLayout';
 
 const PathItem = ({ ...props }) => {
     const data = props.data;
-    console.log(props);
     let statusItem = LESSON_STATUS.DISABLED;
-    if (data.id === props.currentChapter) {
+    if (data.id === props.currentLesson) {
         statusItem = LESSON_STATUS.CURRENT;
     } else {
         props.finishState.forEach((element) => {
@@ -111,7 +110,7 @@ const PathItem = ({ ...props }) => {
                 <LessonLayout
                     data={detailChapters}
                     onClose={onClose}
-                    currentChapter={props.currentChapter}
+                    currentLesson={props.currentLesson}
                     finishState={props.finishState}
                     nextState={props.nextState}
                 />

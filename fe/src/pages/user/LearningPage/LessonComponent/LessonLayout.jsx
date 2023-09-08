@@ -1,15 +1,13 @@
 import React, { memo, useRef, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './style.module.scss';
-import { Col, Row, Carousel, Popconfirm, notification } from 'antd';
+import { Col, Row, Carousel, Popconfirm, notification, Spin } from 'antd';
 import Lecture from './Lecture';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import Total from './Total';
 import CodeEditor from '../CodeEditorComponent/CodeEditorIcon';
 import request from 'utils/http';
-
-
 
 const LectureLayout = ({ ...props }) => {
     const [lengthSlide, setLengthSlide] = useState(0);
@@ -30,13 +28,15 @@ const LectureLayout = ({ ...props }) => {
     const [showInCorrect, setShowInCorrect] = useState(false);
     const [correctAnswer, setCorrectAnswer] = useState('');
     const [totalScore, setTotalScore] = useState(0);
+    const lessonId = props.data.id;
+    const lessonType = props.data.type;
 
     const getData = async () => {
         try {
-            const response = await request.get('lessons/' + props.data.id);
+            const response = await request.get('lessons/' + lessonId);
             const data = response.data.data;
-            props.data.type === 'lecture' ? setLesson(data) : setQuestions(data.questions);
-            setLengthSlide(props.data.type === 'lecture' ? data.lectures.length : data.questions.length);
+            lessonType === 'lecture' ? setLesson(data) : setQuestions(data.questions);
+            setLengthSlide(lessonType === 'lecture' ? data.lectures.length : data.questions.length);
         } catch (error) {
             console.log(error);
             notification.error({
@@ -248,7 +248,7 @@ const LectureLayout = ({ ...props }) => {
         }
     };
     const render = () => {
-        if (props.data.type === 'lecture') {
+        if (lessonType === 'lecture') {
             return <Lecture data={lesson} />;
         } else {
             return questions.map((question, idx) => {
@@ -256,160 +256,180 @@ const LectureLayout = ({ ...props }) => {
             });
         }
     };
+    const sendScore = async (lesson_id, score, question_answer) => {
+        try {
+            await request.post('lessons/answer', {
+                lesson_id,
+                score,
+                question_answer,
+            });
+        } catch (error) {
+            console.log(error);
+            notification.error({
+                message: 'Lỗi hệ thống',
+            });
+        }
+    };
     const confirm = (isCheck = false) => {
         if (isCheck) {
             // props.nextState();
             //send score to server
-            if (props.data.type === 'lecture') {
-                return <Lecture data={lesson} />;
-            } else {
-                return;
-            }
+            sendScore(lessonId, totalScore, []);
         }
         props.onClose();
     };
-
-    return (
-        <>
-            <div className={styles.lectureLayoutWrapper}>
-                {props.data.type === 'practice' && (
-                    <div className={styles.progressBarWrapper}>
-                        <div className={styles.progressBar}>
-                            <div
-                                className={styles.progressBarSuccess}
-                                style={{ width: widthStyle }}
-                                key={widthStyle}
-                            ></div>
-                        </div>
-                    </div>
-                )}
-                <div
-                    className={clsx(styles.lessonContent, {
-                        [styles.lessonContentPractice]: props.data.type === 'practice',
-                    })}
-                >
-                    <Col>
-                        <Carousel
-                            ref={carousel}
-                            afterChange={(currentSlide) => setSlideNumber(currentSlide)}
-                            dots={false}
-                        >
-                            {render()}
-                            <div>
-                                <Total data={totalScore} />
+    if (questions.length != 0) {
+        return (
+            <>
+                <div className={styles.lectureLayoutWrapper}>
+                    {lessonType === 'practice' && (
+                        <div className={styles.progressBarWrapper}>
+                            <div className={styles.progressBar}>
+                                <div
+                                    className={styles.progressBarSuccess}
+                                    style={{ width: widthStyle }}
+                                    key={widthStyle}
+                                ></div>
                             </div>
-                        </Carousel>
-                    </Col>
-                </div>
-                <div
-                    className={clsx(styles.actionButtonWrappper, {
-                        [styles.inCorrectBg]: showInCorrect,
-                        [styles.correctBg]: showCorrect,
-                    })}
-                >
-                    {slideNumber !== lengthSlide && props.data.type === 'practice' && (
-                        <Row justify={'space-around'} align={'middle'} style={{ height: '100%' }}>
-                            {!showCorrect && !showInCorrect && (
-                                <Col className={styles.actionButton} span={5} onClick={() => handleCheckButton(true)}>
-                                    BỎ QUA
-                                </Col>
-                            )}
-                            {(showCorrect || showInCorrect) && (
-                                <Col span={5}>
-                                    <Row>
-                                        <Col className={clsx(styles.iconResult)}>
-                                            {showInCorrect && <img src="images/close.svg" alt="close" />}
-                                            {showCorrect && <img src="images/correct.svg" alt="correct" />}
-                                        </Col>
-                                        <Col
-                                            style={{
-                                                marginLeft: 10,
-                                            }}
-                                        >
-                                            <Row className={styles.resultTitle}>
-                                                {showInCorrect && 'Đáp án đúng'}
-                                                {showCorrect && 'Chính xác'}
-                                            </Row>
-                                            {showInCorrect && <Row style={{ fontSize: 16 }}>{correctAnswer}</Row>}
-                                            <Row className={clsx(styles.reportButton)}>
-                                                <span
-                                                    style={{
-                                                        marginRight: 5,
-                                                        marginTop: 2,
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faFlag} />
-                                                </span>
-                                                <span>Báo cáo</span>
-                                            </Row>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            )}
-                            <button
-                                className={clsx(
-                                    styles.actionButton,
-                                    {
-                                        [styles.disableButton]: !enableButton,
-                                    },
-                                    {
-                                        [styles.checkButton]: enableButton,
-                                    },
-                                    {
-                                        [styles.correctAnswer]: showCorrect,
-                                    },
-                                    {
-                                        [styles.inCorrectAnswer]: showInCorrect,
-                                    },
-                                )}
-                                span={5}
-                                onClick={() => {
-                                    if (typeButtonNext) {
-                                        handleContinueButton();
-                                    } else {
-                                        handleCheckButton();
-                                    }
-                                }}
-                                disabled={!enableButton}
-                            >
-                                {typeButtonNext ? 'TIẾP TỤC' : 'KIỂM TRA'}
-                            </button>
-                        </Row>
+                        </div>
                     )}
-
-                    {(slideNumber === lengthSlide || props.data.type === 'lecture') && (
-                        <Row justify={'space-around'} align={'middle'} style={{ height: '100%' }}>
-                            <button
-                                className={clsx(styles.actionButton, styles.inCorrectAnswer)}
-                                span={5}
-                                onClick={() => confirm(slideNumber === lengthSlide && props.data.type === 'practice')}
+                    <div
+                        className={clsx(styles.lessonContent, {
+                            [styles.lessonContentPractice]: lessonType === 'practice',
+                        })}
+                    >
+                        <Col>
+                            <Carousel
+                                ref={carousel}
+                                afterChange={(currentSlide) => setSlideNumber(currentSlide)}
+                                dots={false}
                             >
-                                Đóng
-                            </button>
-                            {props.data.type === 'lecture' && (
-                                <Col>
-                                    <Popconfirm
-                                        title="Xác nhận"
-                                        description="Bạn đã học xong bài học này chưa"
-                                        onConfirm={() => confirm(true)}
-                                        okText="Xong rồi"
-                                        cancelText="Vẫn chưa"
+                                {render()}
+                                <div>
+                                    <Total data={totalScore} />
+                                </div>
+                            </Carousel>
+                        </Col>
+                    </div>
+                    <div
+                        className={clsx(styles.actionButtonWrappper, {
+                            [styles.inCorrectBg]: showInCorrect,
+                            [styles.correctBg]: showCorrect,
+                        })}
+                    >
+                        {slideNumber !== lengthSlide && lessonType === 'practice' && (
+                            <Row justify={'space-around'} align={'middle'} style={{ height: '100%' }}>
+                                {!showCorrect && !showInCorrect && (
+                                    <Col
+                                        className={styles.actionButton}
+                                        span={5}
+                                        onClick={() => handleCheckButton(true)}
                                     >
-                                        <button className={clsx(styles.actionButton, styles.correctAnswer)} span={5}>
-                                            Hoàn thành
-                                        </button>
-                                    </Popconfirm>
-                                </Col>
-                            )}
-                        </Row>
-                    )}
+                                        BỎ QUA
+                                    </Col>
+                                )}
+                                {(showCorrect || showInCorrect) && (
+                                    <Col span={5}>
+                                        <Row>
+                                            <Col className={clsx(styles.iconResult)}>
+                                                {showInCorrect && <img src="images/close.svg" alt="close" />}
+                                                {showCorrect && <img src="images/correct.svg" alt="correct" />}
+                                            </Col>
+                                            <Col
+                                                style={{
+                                                    marginLeft: 10,
+                                                }}
+                                            >
+                                                <Row className={styles.resultTitle}>
+                                                    {showInCorrect && 'Đáp án đúng'}
+                                                    {showCorrect && 'Chính xác'}
+                                                </Row>
+                                                {showInCorrect && <Row style={{ fontSize: 16 }}>{correctAnswer}</Row>}
+                                                <Row className={clsx(styles.reportButton)}>
+                                                    <span
+                                                        style={{
+                                                            marginRight: 5,
+                                                            marginTop: 2,
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faFlag} />
+                                                    </span>
+                                                    <span>Báo cáo</span>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                )}
+                                <button
+                                    className={clsx(
+                                        styles.actionButton,
+                                        {
+                                            [styles.disableButton]: !enableButton,
+                                        },
+                                        {
+                                            [styles.checkButton]: enableButton,
+                                        },
+                                        {
+                                            [styles.correctAnswer]: showCorrect,
+                                        },
+                                        {
+                                            [styles.inCorrectAnswer]: showInCorrect,
+                                        },
+                                    )}
+                                    span={5}
+                                    onClick={() => {
+                                        if (typeButtonNext) {
+                                            handleContinueButton();
+                                        } else {
+                                            handleCheckButton();
+                                        }
+                                    }}
+                                    disabled={!enableButton}
+                                >
+                                    {typeButtonNext ? 'TIẾP TỤC' : 'KIỂM TRA'}
+                                </button>
+                            </Row>
+                        )}
+
+                        {(slideNumber === lengthSlide || lessonType === 'lecture') && (
+                            <Row justify={'space-around'} align={'middle'} style={{ height: '100%' }}>
+                                <button
+                                    className={clsx(styles.actionButton, styles.inCorrectAnswer)}
+                                    span={5}
+                                    onClick={() => confirm(slideNumber === lengthSlide && lessonType === 'practice')}
+                                >
+                                    Đóng
+                                </button>
+                                {lessonType === 'lecture' && (
+                                    <Col>
+                                        <Popconfirm
+                                            title="Xác nhận"
+                                            description="Bạn đã học xong bài học này chưa"
+                                            onConfirm={() => confirm(true)}
+                                            okText="Xong rồi"
+                                            cancelText="Vẫn chưa"
+                                        >
+                                            <button
+                                                className={clsx(styles.actionButton, styles.correctAnswer)}
+                                                span={5}
+                                            >
+                                                Hoàn thành
+                                            </button>
+                                        </Popconfirm>
+                                    </Col>
+                                )}
+                            </Row>
+                        )}
+                    </div>
+                    <div className={styles.codeEditor}>
+                        <CodeEditor />
+                    </div>
                 </div>
-                <div className={styles.codeEditor}>
-                    <CodeEditor />
-                </div>
-            </div>
-        </>
-    );
+            </>
+        );
+    } else {
+        return <Spin />;
+    }
 };
 
 export default memo(LectureLayout);
