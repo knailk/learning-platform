@@ -44,6 +44,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		user := &controllers.UserController{AuthController: auth, UserModel: &models.UserModel{Repo: repo}}
 		v1.PUT("/user/profile", user.UpdateProfile)
 		v1.GET("/user/rank", user.GetRank)
+		v1.POST("/user/avatar", user.UploadAvatar)
 
 		/*** START Chapter ***/
 		chapter := &controllers.ChapterController{AuthController: auth, ChapterModel: &models.ChapterModel{Repo: repo}}
@@ -54,7 +55,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		lesson := &controllers.LessonController{AuthController: auth, LessonModel: &models.LessonModel{Repo: repo}}
 		v1.GET("/lessons", lesson.List)
 		v1.POST("/lessons/answer", lesson.CreateLessonsAnswer)
-		v1.POST("/lessons/answer/:id", lesson.GetLessonsAnswer)
+		v1.GET("/lessons/answer/:id", lesson.GetLessonsAnswer)
 		v1.GET("/lessons/:id", lesson.Get)
 		v1.GET("/chapters/:id/lessons", lesson.ListByChapterID)
 		

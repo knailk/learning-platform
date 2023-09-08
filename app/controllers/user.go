@@ -68,3 +68,26 @@ func (ctrl *UserController) GetRank(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": rank})
 }
+
+func (ctrl *UserController) UploadAvatar(ctx *gin.Context) {
+	auth, err := ctrl.GetCurrentAuth(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in", "error": err.Error()})
+		return
+	}
+
+	req := request.UpdateAvatarRequest{}
+	if err = ctx.BindJSON(&req); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error upload avatar", "error": err.Error()})
+		return
+	}
+
+	req.UserID = auth.ID
+
+	user, err := ctrl.UserModel.UpdateAvatar(ctx, req)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error update avatar", "error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": user})
+}

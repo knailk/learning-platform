@@ -11,3 +11,10 @@ type ProfileRequest struct {
 	Birth  string    `json:"birth"`
 	Phone  string    `json:"phone"`
 }
+
+type UpdateAvatarRequest struct {
+	UserID   uuid.UUID `json:"-"`
+
+	FileData string `json:"file_data"`
+	FileName string `json:"file_name"`
+}

@@ -7,13 +7,17 @@ import (
 	"github.com/knailk/learning-platform/app/controllers/request"
 	"github.com/knailk/learning-platform/app/controllers/response"
 	"github.com/knailk/learning-platform/app/domain/entity"
+	aws "github.com/knailk/learning-platform/app/domain/repository"
+	"github.com/knailk/learning-platform/app/domain/repository/in/s3"
+	utils "github.com/knailk/learning-platform/app/utils/image.go"
 
 	"github.com/knailk/learning-platform/db/postgresql/repository"
 )
 
 // UserModel ...
 type UserModel struct {
-	Repo *repository.PostgresRepository
+	Repo   *repository.PostgresRepository
+	S3Repo aws.S3Repository
 }
 
 // One ...
@@ -59,7 +63,7 @@ func (m *UserModel) GetRank(ctx context.Context, userID uuid.UUID) (response.Ran
 
 		numberOfFollower, err := m.Repo.Follow.WithContext(ctx).Where(m.Repo.Follow.FollowedUserID.Eq(u.ID)).Count()
 		if err != nil {
-			return nil ,err
+			return nil, err
 		}
 
 		res = append(res, response.UserInfo{
@@ -72,4 +76,32 @@ func (m *UserModel) GetRank(ctx context.Context, userID uuid.UUID) (response.Ran
 
 	}
 	return res, nil
+}
+
+func (m *UserModel) UpdateAvatar(ctx context.Context, req request.UpdateAvatarRequest) (user *entity.User, err error) {
+	imageDataFile, err := utils.NewFileData(req.FileData, req.FileName, utils.AvatarMineTypes)
+	if err != nil {
+		return nil, err
+	}
+
+	uploadFileRes, err := m.S3Repo.UploadFile(ctx, s3.UploadFile{
+		FileType: imageDataFile.FileType,
+		FileData: imageDataFile.FileData,
+		FileName: imageDataFile.FileName,
+		Bucket:   "learning-platform-bucket",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = m.Repo.User.WithContext(ctx).
+		Where(m.Repo.User.ID.Eq(req.UserID)).
+		Updates(entity.User{
+			Avatar: uploadFileRes.Location,
+		})
+	if err != nil {
+		return nil, err
+	}
+
+	return m.Repo.User.WithContext(ctx).Where(m.Repo.User.ID.Eq(req.UserID)).First()
 }

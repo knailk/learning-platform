@@ -27,7 +27,7 @@ func NewS3Repository(client awsInfra.S3Client, config *config.Config) repository
 
 func (r *s3Repository) UploadFile(ctx context.Context, in repoIn.UploadFile) (*s3manager.UploadOutput, error) {
 	upInput := &s3manager.UploadInput{
-		Bucket:      aws.String(in.Bucket + in.FilePath),
+		Bucket:      aws.String(in.Bucket),
 		Body:        bytes.NewBuffer(in.FileData),
 		Key:         aws.String(in.FileName),
 		ContentType: aws.String(in.FileType),
