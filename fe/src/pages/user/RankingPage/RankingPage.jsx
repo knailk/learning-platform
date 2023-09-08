@@ -27,7 +27,7 @@ const RankingPage = () => {
     }, []);
 
     if (ranking.length !== 0) {
-        ranking.sort((a, b) => b.ranking - a.ranking);
+        ranking.sort((a, b) => a.ranking - b.ranking);
 
         return (
             <div className={style.content}>
