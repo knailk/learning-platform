@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"errors"
 
 	"github.com/google/uuid"
 	"github.com/knailk/learning-platform/app/controllers/request"
@@ -16,14 +17,29 @@ type FollowModel struct {
 	Repo *repository.PostgresRepository
 }
 
-func (m *FollowModel) CreateFollow(ctx context.Context,req request.Follow) error {
+func (m *FollowModel) CreateFollow(ctx context.Context, req request.Follow) error {
+	if req.FollowedID == req.FollowingID {
+		return errors.New("cannot follow yourself")
+	}
+	checkExist, err := m.Repo.Follow.WithContext(ctx).Where(field.Attrs(&entity.Follow{
+		FollowedUserID:  req.FollowedID,
+		FollowingUserID: req.FollowingID,
+	})).Count()
+	if err != nil {
+		return err
+	}
+
+	if checkExist > 0 {
+		return errors.New("already followed")
+	}
+
 	return m.Repo.Follow.WithContext(ctx).Create(&entity.Follow{
 		FollowedUserID:  req.FollowedID,
 		FollowingUserID: req.FollowingID,
 	})
 }
 
-func (m *FollowModel) DeleteFollow(ctx context.Context,req request.Follow) error {
+func (m *FollowModel) DeleteFollow(ctx context.Context, req request.Follow) error {
 	_, err := m.Repo.Follow.WithContext(ctx).Where(field.Attrs(&entity.Follow{
 		FollowedUserID:  req.FollowedID,
 		FollowingUserID: req.FollowingID,
@@ -38,7 +54,7 @@ func (m *FollowModel) GetFollowers(ctx context.Context, userID uuid.UUID) (*resp
 		LeftJoin(
 			m.Repo.Follow,
 			m.Repo.Follow.FollowedUserID.EqCol(m.Repo.User.ID)).
-		Where(m.Repo.User.ID.Eq(userID)).Find()
+		Where(m.Repo.User.ID.Eq(userID), m.Repo.Follow.FollowedUserID.IsNotNull()).Find()
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +70,7 @@ func (m *FollowModel) GetFollowers(ctx context.Context, userID uuid.UUID) (*resp
 	}
 
 	return &response.FollowInfo{
-		FollowedUsers: followed,
+		FollowedUsers:  followed,
 		FollowingUsers: following,
 	}, nil
 }

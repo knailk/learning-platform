@@ -8,6 +8,6 @@ import (
 type ProfileRequest struct {
 	UserID uuid.UUID `json:"-"`
 	Name   string    `json:"name"`
-	Age    int       `json:"age"`
+	Birth  string    `json:"birth"`
 	Phone  string    `json:"phone"`
 }
