@@ -1,7 +1,7 @@
 import styles from './style.module.scss';
 import { Row, Col } from 'antd';
 
-const StatiscalCpn = ({ title, total, img, height = 70 }) => {
+const StatisticalCpn = ({ title, total, img, height = 70 }) => {
     return (
         <div className={styles.detail} style={{ height: height }}>
             <Row>
@@ -23,4 +23,4 @@ const StatiscalCpn = ({ title, total, img, height = 70 }) => {
     );
 };
 
-export default StatiscalCpn;
+export default StatisticalCpn;
