@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/knailk/learning-platform/app/controllers"
 	cognitoClient "github.com/knailk/learning-platform/app/external/adaptor/cognitoclient"
+	"github.com/knailk/learning-platform/app/external/adaptor/s3client"
 	"github.com/knailk/learning-platform/app/infra/provider"
 	"github.com/knailk/learning-platform/app/middleware"
 	"github.com/knailk/learning-platform/app/models"
@@ -24,6 +25,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 	dbSQL := provider.DB
 	repo := repository.NewPostgresRepository(dbSQL)
 	cognitoRepo := cognitoClient.NewCognitoRepository(provider.CognitoClient, provider.Config)
+	s3Repo := s3client.NewS3Repository(provider.S3Client, provider.Config)
 
 	v1 := r.Group("/v1")
 	{
@@ -41,7 +43,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		v1.POST("/auth/refresh", auth.Refresh)
 
 		/*** START USER ***/
-		user := &controllers.UserController{AuthController: auth, UserModel: &models.UserModel{Repo: repo}}
+		user := &controllers.UserController{AuthController: auth, UserModel: &models.UserModel{Repo: repo, S3Repo: s3Repo}}
 		v1.PUT("/user/profile", user.UpdateProfile)
 		v1.GET("/user/rank", user.GetRank)
 		v1.POST("/user/avatar", user.UploadAvatar)
@@ -58,7 +60,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		v1.GET("/lessons/answer/:id", lesson.GetLessonsAnswer)
 		v1.GET("/lessons/:id", lesson.Get)
 		v1.GET("/chapters/:id/lessons", lesson.ListByChapterID)
-		
+
 		/*** START Chapter ***/
 		follow := &controllers.FollowController{AuthController: auth, FollowModel: &models.FollowModel{Repo: repo}}
 		v1.GET("/follows", follow.GetFollow)
