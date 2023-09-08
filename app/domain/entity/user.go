@@ -12,6 +12,7 @@ type User struct {
 	Email         string    `json:"email"`
 	Phone         string    `json:"phone"`
 	Name          string    `json:"name"`
+	Avatar        string    `json:"avatar"`
 	Age           int       `json:"age"`
 	Score         int       `json:"score"`
 	CurrentLesson uuid.UUID `json:"current_lesson"`

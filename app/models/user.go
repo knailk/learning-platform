@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/jinzhu/copier"
 	"github.com/knailk/learning-platform/app/controllers/request"
 	"github.com/knailk/learning-platform/app/controllers/response"
 	"github.com/knailk/learning-platform/app/domain/entity"
@@ -31,11 +30,46 @@ func (m *UserModel) Update(ctx context.Context, req request.ProfileRequest) (use
 	return
 }
 
-func (m *UserModel) GetRank(ctx context.Context) (res response.Rank, err error) {
+func (m *UserModel) GetRank(ctx context.Context, userID uuid.UUID) (response.Rank, error) {
 	users, err := m.Repo.User.WithContext(ctx).Order(m.Repo.User.Score.Desc()).Limit(20).Find()
 	if err != nil {
 		return nil, err
 	}
-	copier.Copy(&res, &users)
-	return
+
+	res := response.Rank{}
+
+	for i, u := range users {
+		numberOfLectures, err := m.Repo.LessonAnswer.WithContext(ctx).
+			Where(m.Repo.LessonAnswer.UserID.Eq(u.ID)).
+			LeftJoin(m.Repo.Lesson, m.Repo.Lesson.ID.EqCol(m.Repo.LessonAnswer.LessonID)).
+			Where(m.Repo.Lesson.Type.Eq("lecture")).
+			Count()
+		if err != nil {
+			return nil, err
+		}
+
+		numberOfPractices, err := m.Repo.LessonAnswer.WithContext(ctx).
+			Where(m.Repo.LessonAnswer.UserID.Eq(u.ID)).
+			LeftJoin(m.Repo.Lesson, m.Repo.Lesson.ID.EqCol(m.Repo.LessonAnswer.LessonID)).
+			Where(m.Repo.Lesson.Type.Eq("practice")).
+			Count()
+		if err != nil {
+			return nil, err
+		}
+
+		numberOfFollower, err := m.Repo.Follow.WithContext(ctx).Where(m.Repo.Follow.FollowedUserID.Eq(u.ID)).Count()
+		if err != nil {
+			return nil ,err
+		}
+
+		res = append(res, response.UserInfo{
+			User:          *u,
+			TotalLecture:  numberOfLectures,
+			TotalQuestion: numberOfPractices,
+			Follower:      numberOfFollower,
+			Ranking:       i + 1,
+		})
+
+	}
+	return res, nil
 }

@@ -33,6 +33,11 @@ func newLessonAnswer(db *gorm.DB, opts ...gen.DOOption) lessonAnswer {
 	_lessonAnswer.Score = field.NewInt(tableName, "score")
 	_lessonAnswer.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_lessonAnswer.CreatedAt = field.NewTime(tableName, "created_at")
+	_lessonAnswer.QuestionAnswers = lessonAnswerHasManyQuestionAnswers{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("QuestionAnswers", "entity.QuestionAnswer"),
+	}
 
 	_lessonAnswer.fillFieldMap()
 
@@ -42,13 +47,14 @@ func newLessonAnswer(db *gorm.DB, opts ...gen.DOOption) lessonAnswer {
 type lessonAnswer struct {
 	lessonAnswerDo lessonAnswerDo
 
-	ALL       field.Asterisk
-	ID        field.Field
-	UserID    field.Field
-	LessonID  field.Field
-	Score     field.Int
-	UpdatedAt field.Time
-	CreatedAt field.Time
+	ALL             field.Asterisk
+	ID              field.Field
+	UserID          field.Field
+	LessonID        field.Field
+	Score           field.Int
+	UpdatedAt       field.Time
+	CreatedAt       field.Time
+	QuestionAnswers lessonAnswerHasManyQuestionAnswers
 
 	fieldMap map[string]field.Expr
 }
@@ -99,13 +105,14 @@ func (l *lessonAnswer) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (l *lessonAnswer) fillFieldMap() {
-	l.fieldMap = make(map[string]field.Expr, 6)
+	l.fieldMap = make(map[string]field.Expr, 7)
 	l.fieldMap["id"] = l.ID
 	l.fieldMap["user_id"] = l.UserID
 	l.fieldMap["lesson_id"] = l.LessonID
 	l.fieldMap["score"] = l.Score
 	l.fieldMap["updated_at"] = l.UpdatedAt
 	l.fieldMap["created_at"] = l.CreatedAt
+
 }
 
 func (l lessonAnswer) clone(db *gorm.DB) lessonAnswer {
@@ -116,6 +123,77 @@ func (l lessonAnswer) clone(db *gorm.DB) lessonAnswer {
 func (l lessonAnswer) replaceDB(db *gorm.DB) lessonAnswer {
 	l.lessonAnswerDo.ReplaceDB(db)
 	return l
+}
+
+type lessonAnswerHasManyQuestionAnswers struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a lessonAnswerHasManyQuestionAnswers) Where(conds ...field.Expr) *lessonAnswerHasManyQuestionAnswers {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a lessonAnswerHasManyQuestionAnswers) WithContext(ctx context.Context) *lessonAnswerHasManyQuestionAnswers {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a lessonAnswerHasManyQuestionAnswers) Session(session *gorm.Session) *lessonAnswerHasManyQuestionAnswers {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a lessonAnswerHasManyQuestionAnswers) Model(m *entity.LessonAnswer) *lessonAnswerHasManyQuestionAnswersTx {
+	return &lessonAnswerHasManyQuestionAnswersTx{a.db.Model(m).Association(a.Name())}
+}
+
+type lessonAnswerHasManyQuestionAnswersTx struct{ tx *gorm.Association }
+
+func (a lessonAnswerHasManyQuestionAnswersTx) Find() (result []*entity.QuestionAnswer, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a lessonAnswerHasManyQuestionAnswersTx) Append(values ...*entity.QuestionAnswer) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a lessonAnswerHasManyQuestionAnswersTx) Replace(values ...*entity.QuestionAnswer) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a lessonAnswerHasManyQuestionAnswersTx) Delete(values ...*entity.QuestionAnswer) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a lessonAnswerHasManyQuestionAnswersTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a lessonAnswerHasManyQuestionAnswersTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type lessonAnswerDo struct{ gen.DO }

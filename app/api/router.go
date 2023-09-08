@@ -29,6 +29,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 	{
 		/*** START AUTH ***/
 		auth := &controllers.AuthController{AuthModel: &models.AuthModel{Repo: repo, CognitoRepo: cognitoRepo}}
+		v1.GET("/auth/me", auth.CurrentUser)
 		v1.POST("/auth/login", auth.Login)
 		v1.POST("/auth/register", auth.Register)
 		v1.POST("/auth/register/confirm", auth.RegisterConfirm)

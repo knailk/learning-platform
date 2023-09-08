@@ -1,12 +1,15 @@
 package response
 
-import "github.com/google/uuid"
+import (
+	"github.com/knailk/learning-platform/app/domain/entity"
+)
 
 type UserInfo struct {
-	ID    uuid.UUID `json:"id"`
-	Name  string    `json:"name"`
-	Age   int       `json:"age"`
-	Score int       `json:"score"`
+	entity.User
+	Follower      int64 `json:"follower"`
+	TotalLecture  int64 `json:"total_lecture"`
+	TotalQuestion int64 `json:"total_question"`
+	Ranking       int   `json:"ranking"`
 }
 
 type Rank []UserInfo

@@ -34,25 +34,36 @@ func NewAuthController(
 	}
 }
 
+func (ctrl *AuthController) CurrentUser(ctx *gin.Context) {
+	auth, err := ctrl.GetCurrentAuth(ctx)
+	if err != nil {
+		log.Error("error change password: ", err)
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "error": err})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"user": auth})
+}
+
 func (ctrl *AuthController) Login(ctx *gin.Context) {
 	var loginRequest request.LoginRequest
 
-	if validationErr := ctx.ShouldBindJSON(&loginRequest); validationErr != nil {
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid login details"})
+	if err := ctx.ShouldBindJSON(&loginRequest); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid login details", "error": err})
 		return
 	}
 
 	user, token, err := ctrl.AuthModel.Login(ctx, loginRequest)
 	if err != nil {
 		log.Error("error login: ", err)
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid login details"})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Invalid login details", "error": err})
 		return
 	}
 
 	ctrl.SetAccessCookie(ctx, token.AccessToken.Token)
 	ctrl.SetRefreshCookie(ctx, token.RefreshToken.Token)
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully logged in", "user": user, "token": token})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully logged in", "user": user})
 }
 
 // Register ...
@@ -64,13 +75,13 @@ func (ctrl *AuthController) Register(ctx *gin.Context) {
 		return
 	}
 
-	user, token, err := ctrl.AuthModel.Register(ctx, registerRequest)
+	user, _, err := ctrl.AuthModel.Register(ctx, registerRequest)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully registered", "user": user, "token": token})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Successfully registered", "user": user})
 }
 
 // Register ...
@@ -79,7 +90,7 @@ func (ctrl *AuthController) RegisterConfirm(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&confirmRegisterRequest); err != nil {
 		log.Error("confirm register error: ", err)
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Confirm register error"})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Confirm register error", "error": err})
 		return
 	}
 
@@ -92,7 +103,7 @@ func (ctrl *AuthController) RegisterConfirm(ctx *gin.Context) {
 	ctrl.SetAccessCookie(ctx, token.AccessToken.Token)
 	ctrl.SetRefreshCookie(ctx, token.RefreshToken.Token)
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Confirm register successfully", "user": user, "token": token})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Confirm register successfully", "user": user})
 }
 
 func (ctrl *AuthController) ForgotPassword(ctx *gin.Context) {
@@ -100,7 +111,7 @@ func (ctrl *AuthController) ForgotPassword(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&forgotPasswordRequest); err != nil {
 		log.Error("forgot password error: ", err)
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Forgot password error"})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Forgot password error", "error": err})
 		return
 	}
 
@@ -113,7 +124,7 @@ func (ctrl *AuthController) ForgotPassword(ctx *gin.Context) {
 	ctrl.SetAccessCookie(ctx, authToken.AccessToken.Token)
 	ctrl.SetRefreshCookie(ctx, authToken.RefreshToken.Token)
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Forgot password request OK"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Forgot password request OK", "error": err})
 }
 
 func (ctrl *AuthController) ConfirmForgotPassword(ctx *gin.Context) {
@@ -121,7 +132,7 @@ func (ctrl *AuthController) ConfirmForgotPassword(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&confirmForgotPasswordRequest); err != nil {
 		log.Error("confirm forgot password  error: ", err)
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Confirm forgot password error"})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Confirm forgot password error", "error": err})
 		return
 	}
 
@@ -134,7 +145,7 @@ func (ctrl *AuthController) ConfirmForgotPassword(ctx *gin.Context) {
 	ctrl.SetAccessCookie(ctx, authToken.AccessToken.Token)
 	ctrl.SetRefreshCookie(ctx, authToken.RefreshToken.Token)
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Confirm forgot password request OK"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Confirm forgot password request OK", "error": err})
 }
 
 func (ctrl *AuthController) ResendConfirmationCode(ctx *gin.Context) {
@@ -142,7 +153,7 @@ func (ctrl *AuthController) ResendConfirmationCode(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&resendConfirmationCodeRequest); err != nil {
 		log.Error("resend confirm code error: ", err)
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Resend confirmation code error"})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Resend confirmation code error", "error": err})
 		return
 	}
 
@@ -153,14 +164,14 @@ func (ctrl *AuthController) ResendConfirmationCode(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Resend confirmation code OK"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Resend confirmation code OK", "error": err})
 }
 
 func (ctrl *AuthController) ChangePassword(ctx *gin.Context) {
 	auth, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
 		log.Error("error change password: ", err)
-		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "error": err})
 		return
 	}
 
@@ -168,7 +179,7 @@ func (ctrl *AuthController) ChangePassword(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&changePasswordRequest); err != nil {
 		log.Error("change password error: ", err)
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Confirm forgot password error"})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Confirm forgot password error", "error": err})
 		return
 	}
 
@@ -184,7 +195,7 @@ func (ctrl *AuthController) ChangePassword(ctx *gin.Context) {
 	ctrl.SetAccessCookie(ctx, authToken.AccessToken.Token)
 	ctrl.SetRefreshCookie(ctx, authToken.RefreshToken.Token)
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Confirm forgot password request OK"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Confirm forgot password request OK", "error": err})
 }
 
 // Logout ...
@@ -198,7 +209,7 @@ func (ctrl *AuthController) Refresh(ctx *gin.Context) {
 	token, err := ctrl.GetRefreshToken(ctx)
 	if err != nil {
 		log.Error("error refresh: ", err)
-		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "error": err})
 		return
 	}
 

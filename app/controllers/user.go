@@ -18,7 +18,7 @@ type UserController struct {
 func (ctrl *UserController) GetProfile(ctx *gin.Context) {
 	au, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in"})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in","error": err})
 		return
 	}
 
@@ -31,20 +31,20 @@ func (ctrl *UserController) GetProfile(ctx *gin.Context) {
 }
 
 func (ctrl *UserController) UpdateProfile(ctx *gin.Context) {
-	au, err := ctrl.GetCurrentAuth(ctx)
+	auth, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in"})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in","error": err})
 		return
 	}
 
 	var profileRequest request.ProfileRequest
 
 	if validationErr := ctx.ShouldBindJSON(&profileRequest); validationErr != nil {
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationErr,"error": err})
 		return
 	}
 
-	profileRequest.UserID = au.ID
+	profileRequest.UserID = auth.ID
 
 	user, err := ctrl.UserModel.Update(ctx, profileRequest)
 	if err != nil {
@@ -55,9 +55,15 @@ func (ctrl *UserController) UpdateProfile(ctx *gin.Context) {
 }
 
 func (ctrl *UserController) GetRank(ctx *gin.Context) {
-	rank, err := ctrl.UserModel.GetRank(ctx)
+	auth, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get rank", "err": err})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in","error": err})
+		return
+	}
+
+	rank, err := ctrl.UserModel.GetRank(ctx, auth.ID)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get rank", "error": err})
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": rank})

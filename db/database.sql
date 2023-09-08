@@ -84,6 +84,7 @@ CREATE TABLE "users" (
     "email" text,
     "phone" text,
     "name" text,
+    "avatar" text,
     "age" integer,
     "score" integer,
     "current_lesson" char(36),
