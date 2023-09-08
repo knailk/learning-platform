@@ -32,7 +32,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.Phone = field.NewString(tableName, "phone")
 	_user.Name = field.NewString(tableName, "name")
 	_user.Avatar = field.NewString(tableName, "avatar")
-	_user.Age = field.NewInt(tableName, "age")
+	_user.Birth = field.NewString(tableName, "birth")
 	_user.Score = field.NewInt(tableName, "score")
 	_user.CurrentLesson = field.NewField(tableName, "current_lesson")
 	_user.Verified = field.NewBool(tableName, "verified")
@@ -53,7 +53,7 @@ type user struct {
 	Phone         field.String
 	Name          field.String
 	Avatar        field.String
-	Age           field.Int
+	Birth         field.String
 	Score         field.Int
 	CurrentLesson field.Field
 	Verified      field.Bool
@@ -80,7 +80,7 @@ func (u *user) updateTableName(table string) *user {
 	u.Phone = field.NewString(table, "phone")
 	u.Name = field.NewString(table, "name")
 	u.Avatar = field.NewString(table, "avatar")
-	u.Age = field.NewInt(table, "age")
+	u.Birth = field.NewString(table, "birth")
 	u.Score = field.NewInt(table, "score")
 	u.CurrentLesson = field.NewField(table, "current_lesson")
 	u.Verified = field.NewBool(table, "verified")
@@ -116,7 +116,7 @@ func (u *user) fillFieldMap() {
 	u.fieldMap["phone"] = u.Phone
 	u.fieldMap["name"] = u.Name
 	u.fieldMap["avatar"] = u.Avatar
-	u.fieldMap["age"] = u.Age
+	u.fieldMap["birth"] = u.Birth
 	u.fieldMap["score"] = u.Score
 	u.fieldMap["current_lesson"] = u.CurrentLesson
 	u.fieldMap["verified"] = u.Verified

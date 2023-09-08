@@ -56,6 +56,12 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		v1.POST("/lessons/answer", lesson.CreateLessonsAnswer)
 		v1.GET("/lessons/:id", lesson.Get)
 		v1.GET("/chapters/:id/lessons", lesson.ListByChapterID)
+		
+		/*** START Chapter ***/
+		follow := &controllers.FollowController{AuthController: auth, FollowModel: &models.FollowModel{Repo: repo}}
+		v1.GET("/follows", follow.GetFollow)
+		v1.POST("/follows", follow.CreateFollow)
+		v1.DELETE("/follows/:following_id", follow.DeleteFollow)
 	}
 
 	// route not found

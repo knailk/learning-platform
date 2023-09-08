@@ -79,7 +79,7 @@ func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (
 		ID:    uuid.New(),
 		Email: req.Email,
 		Name:  req.Name,
-		Age:   req.Age,
+		Birth:   req.Birth,
 		Phone: req.Phone,
 	}
 
