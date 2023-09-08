@@ -29,7 +29,12 @@ const SideBar = () => {
     return (
         <>
             <div className={style.sideBar}>
-                <div className={style.logo}>LOGO</div>
+                <div className={style.logo}>
+                    <img
+                        src="https://d35aaqx5ub95lt.cloudfront.net/vendor/70a4be81077a8037698067f583816ff9.svg"
+                        alt="asd"
+                    />
+                </div>
                 <div className="nav"></div>
                 <div className="navbar">
                     {ROUTERS.MENU_NAV_BAR.map((item, index) => {

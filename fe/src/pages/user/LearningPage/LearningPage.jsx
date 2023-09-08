@@ -9,11 +9,8 @@ import request from 'utils/http';
 
 const LearningPage = () => {
     const dataNullLesson = '00000000-0000-0000-0000-000000000000';
-    const dataCurrentChapter = localStorage.getItem('user_info');
     const [chapters, setChapters] = useState([]);
-    const [currentChapter, setCurrentChapter] = useState(
-        JSON.parse(dataCurrentChapter) ? JSON.parse(dataCurrentChapter).current_lesson : {},
-    );
+    const [currentLesson, setCurrentLesson] = useState('');
     const [finishState, setFinishState] = useState([]);
     const nextState = () => {
         let flag = false;
@@ -27,29 +24,16 @@ const LearningPage = () => {
                     return;
                 }
                 if (flag === true) {
-                    let dataSave = {
-                        chapter: {
-                            chapter_id: chapter.id,
-                            chapter_name: chapter.name,
-                            chapter_level: chapter.level,
-                        },
-                        lesson: {
-                            lesson_id: lesson.id,
-                            lesson_name: lesson.name,
-                            lesson_type: lesson.type,
-                        },
-                    };
-                    setCurrentChapter(dataSave);
-                    localStorage.setItem('current_chapter', JSON.stringify(dataSave));
+                    let dataSave = lesson.id;
+                    setCurrentLesson(dataSave);
                     isSet = true;
                     return;
                 }
-                if (lesson.chapter_id === currentChapter.chapter.chapter_id) {
-                    if (lesson.id === currentChapter.lesson.lesson_id) {
+                if (lesson.chapter_id === currentLesson) {
+                    if (lesson.id === currentLesson) {
                         flag = true;
-                        let dataSave = [...finishState, currentChapter];
+                        let dataSave = [...finishState, currentLesson];
                         setFinishState(dataSave);
-                        localStorage.setItem('finish_state', JSON.stringify(dataSave));
                     }
                 } else {
                     return;
@@ -59,28 +43,36 @@ const LearningPage = () => {
     };
     const getData = async () => {
         try {
-            const response = await request.get('chapters');
-            const data = response.data.data;
-            setChapters(data);
-            if (currentChapter === dataNullLesson) {
-                setCurrentChapter(data[1].lessons[0].id);
+            const responseChapter = await request.get('chapters');
+            const dataChapter = responseChapter.data.data;
+            const responseUser = await request.get('/auth/me');
+            const dataCurrentLesson = responseUser.data.user.current_lesson;
+            setChapters(dataChapter);
+            console.log(dataCurrentLesson);
+            console.log(dataChapter);
+            if (dataCurrentLesson === dataNullLesson) {
+                setCurrentLesson(dataChapter[1].lessons[0].id);
             } else {
                 let isSet = false;
-                data.forEach((chapter) => {
+                for (let chapter of dataChapter) {
+                    console.log(chapter.lessons);
                     if (isSet) {
-                        return;
+                        break;
                     }
-                    chapter.lessons.forEach((lesson) => {
+                    for (const element of chapter.lessons) {
+                        let lesson = element;
+                        console.log(lesson);
                         if (isSet) {
-                            return;
+                            console.log(lesson.id);
+                            setCurrentLesson(lesson.id);
+                            break;
                         }
-                        if (lesson.id === currentChapter) {
+                        finishState.push(lesson.id);
+                        if (lesson.id === dataCurrentLesson) {
                             isSet = true;
-                        } else {
-                            finishState.push(lesson.id);
                         }
-                    });
-                });
+                    }
+                }
             }
         } catch (error) {
             console.log(error);
@@ -103,7 +95,7 @@ const LearningPage = () => {
                                 <LearningPath
                                     key={element.id}
                                     data={element}
-                                    currentChapter={currentChapter}
+                                    currentLesson={currentLesson}
                                     finishState={finishState}
                                     nextState={nextState}
                                 />

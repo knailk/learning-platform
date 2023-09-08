@@ -13,7 +13,11 @@
 .logo {
     height: 30px;
     padding: 32px 0px 30px 16px;
-    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    img {
+        width: 80%;
+    }
 }
 
 .itemNavBar {

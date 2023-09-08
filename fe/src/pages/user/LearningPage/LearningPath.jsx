@@ -60,7 +60,7 @@ const LearningPath = ({ ...props }) => {
                             <Row key={element.id} style={marginItem[element.level + 1]}>
                                 <PathItem
                                     data={element}
-                                    currentChapter={props.currentChapter}
+                                    currentLesson={props.currentLesson}
                                     finishState={props.finishState}
                                     nextState={props.nextState}
                                 />
