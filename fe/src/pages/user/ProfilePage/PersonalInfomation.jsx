@@ -1,47 +1,48 @@
-import style from './PersionalInfomation.module.scss';
+import style from './PersonalInfomation.module.scss';
 import common_style from './style.module.scss';
 import React, { memo, useState } from 'react';
-import { Row, Col, message } from 'antd';
+import { Row, Col, notification } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCakeCandles,
     faUser,
     faUserPen,
     faPen,
-    faUserGroup,
+    faPhone,
     faClock,
     faFloppyDisk,
 } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
-const PersionalInformation = () => {
+import request from 'utils/http';
+
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
+const PersonalInformation = (props) => {
+    const { profile } = props;
+    const [nameValue, setNameValue] = useState('');
     const [editProfile, setEditProfile] = useState(false);
-    const [textEdit, setTextEdit] = useState('Chỉnh sửa');
-    const handleEditButton = () => {
+
+    const handleEditButton = async () => {
         if (editProfile) {
-            openMessage();
-            setEditProfile(!editProfile);
-            setTextEdit('Chỉnh sửa');
+            try {
+                await request.put('user/profile', { name: nameValue }).then(function () {
+                    setEditProfile(!editProfile);
+                    notification.success({ message: 'Thay đổi thông tin thành công' });
+                });
+            } catch (error) {
+                console.log(error);
+                notification.error({ message: 'Thay đổi thông tin thất bại'});
+            }
         } else {
-            setTextEdit('Lưu lại');
             setEditProfile(!editProfile);
         }
     };
-    const [messageApi, contextHolder] = message.useMessage();
-    const key = 'updatable';
-    const openMessage = () => {
-        messageApi.open({
-            key,
-            type: 'loading',
-            content: 'Đang lưu...',
-        });
-        setTimeout(() => {
-            messageApi.open({
-                key,
-                type: 'success',
-                content: 'Thành công!',
-                duration: 2,
-            });
-        }, 1000);
+
+    const handleInputChange = (e) => {
+        setNameValue(e.target.value);
     };
 
     return (
@@ -60,7 +61,8 @@ const PersionalInformation = () => {
                         <input
                             className={clsx({ [style.notEditInput]: !editProfile }, { [style.editInput]: editProfile })}
                             type="text"
-                            value={'Minh Toàn'}
+                            onChange={handleInputChange}
+                            defaultValue={profile.name}
                             readOnly={!editProfile}
                         />
                     </Row>
@@ -68,35 +70,47 @@ const PersionalInformation = () => {
                         <span>
                             <FontAwesomeIcon icon={faUser} />
                         </span>
-                        UserId
+                        {profile.id}
                     </Row>
                     <Row className={common_style.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faCakeCandles} />
                         </span>
-                        10/08/2001
+                        {2023 - profile.age}
+                    </Row>
+                    <Row className={common_style.userInfo}>
+                        <span>
+                            <FontAwesomeIcon icon={faPhone}></FontAwesomeIcon>
+                        </span>
+                        {profile.phone}
                     </Row>
                     <Row className={common_style.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faClock} />
                         </span>
-                        Đã tham gia vào Tháng Năm 2023
-                    </Row>
-                    <Row className={common_style.userInfo}>
-                        <span>
-                            <FontAwesomeIcon icon={faUserGroup}></FontAwesomeIcon>
-                        </span>
-                        Đang theo dõi 0 / 0 Người đang theo dõi
+                        Đã tham gia vào {formatDate(profile.created_at)}
                     </Row>
                 </Col>
                 <Col xl={4} lg={4} md={24}>
-                    {contextHolder}
                     <div className={style.editButton} onClick={() => handleEditButton()}>
-                        <span>
-                            {!editProfile && <FontAwesomeIcon icon={faUserPen} />}
-                            {editProfile && <FontAwesomeIcon icon={faFloppyDisk} />}
-                        </span>
-                        <p>{textEdit}</p>
+                        {!editProfile && (
+                            <>
+                                {' '}
+                                <span>
+                                    <FontAwesomeIcon icon={faUserPen} />
+                                </span>
+                                <p>Chỉnh sửa</p>
+                            </>
+                        )}
+                        {editProfile && (
+                            <>
+                                {' '}
+                                <span>
+                                    <FontAwesomeIcon icon={faFloppyDisk} />
+                                </span>
+                                <p>Lưu lại</p>
+                            </>
+                        )}
                     </div>
                 </Col>
             </Row>
@@ -104,4 +118,4 @@ const PersionalInformation = () => {
     );
 };
 
-export default memo(PersionalInformation);
+export default memo(PersonalInformation);

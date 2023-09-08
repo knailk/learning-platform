@@ -3,7 +3,8 @@ import style from './Statistical.module.scss';
 import { Row, Col } from 'antd';
 import common_style from '../style.module.scss';
 
-const Statistical = () => {
+const Statistical = (props) => {
+    const { profile } = props;
     return (
         <>
             <div className={style.statisticalWrapper}>
@@ -15,14 +16,14 @@ const Statistical = () => {
                         <div className={style.detail}>
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
-                                    <img alt="" src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg" />
+                                    <img
+                                        alt=""
+                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg"
+                                    />
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
-                                        <h1>Bài học</h1>
-                                    </Row>
-                                    <Row>
-                                        <h1>20</h1>
+                                        <h1>Bài học: {profile.total_lecture}</h1>
                                     </Row>
                                 </Col>
                             </Row>
@@ -32,14 +33,14 @@ const Statistical = () => {
                         <div className={style.detail}>
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
-                                    <img alt="" src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg" />
+                                    <img
+                                        alt=""
+                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg"
+                                    />
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
-                                        <h1>Bài tập luyện:</h1>
-                                    </Row>
-                                    <Row>
-                                        <h1>20</h1>
+                                        <h1>Bài tập: {profile.total_question}</h1>
                                     </Row>
                                 </Col>
                             </Row>
@@ -50,14 +51,14 @@ const Statistical = () => {
                         <div className={style.detail}>
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
-                                    <img alt="" src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg" />
+                                    <img
+                                        alt=""
+                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg"
+                                    />
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
-                                        <h1>Số vàng:</h1>
-                                    </Row>
-                                    <Row>
-                                        <h1>2000</h1>
+                                        <h1>Số điểm: {profile.score}</h1>
                                     </Row>
                                 </Col>
                             </Row>
@@ -68,14 +69,14 @@ const Statistical = () => {
                         <div className={style.detail}>
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
-                                    <img alt="" src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg" />
+                                    <img
+                                        alt=""
+                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg"
+                                    />
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
-                                        <h1>Xếp hạng</h1>
-                                    </Row>
-                                    <Row>
-                                        <h1>100</h1>
+                                        <h1>Xếp hạng: {profile.ranking}</h1>
                                     </Row>
                                 </Col>
                             </Row>

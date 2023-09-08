@@ -35,8 +35,9 @@ const LoginPage = () => {
             cookies.set('email', response.data.user.email);
             cookies.set('is_login', true);
 
-            if (!response.data.user.verified) navigate('/confirm-register');
             localStorage.setItem('user_info', JSON.stringify(response.data.user));
+
+            if (!response.data.user.verified) navigate('/confirm-register');
             navigate('/');
         } catch (error) {
             console.log(error);
