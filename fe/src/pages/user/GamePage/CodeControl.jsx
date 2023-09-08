@@ -5,7 +5,7 @@ import { Col, Row } from 'antd';
 import clsx from 'clsx';
 import PythonEditor from '../LearningPage/CodeEditorComponent/PythonEditor';
 
-function BoardControl() {
+function BoardControl({sendMessage}) {
     const [play, setPlay] = useState(false);
     const [horseMoves, setHorseMoves] = useState('');
     const [codeMoves, setCodeMoves] = useState('#Move horse\n');
@@ -16,7 +16,8 @@ function BoardControl() {
     };
     const getEditorValue = () => {
         // const code = editorRef.current.getValue();
-        console.log(horseMoves);
+        //console.log(horseMoves);
+        sendMessage("SonRice", "CreateStates", horseMoves);
     };
     const handleAddItem = (name) => {
         if (!play) {

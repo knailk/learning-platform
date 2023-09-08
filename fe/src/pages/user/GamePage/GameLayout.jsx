@@ -5,8 +5,9 @@ import { Row, Col } from 'antd';
 import CodeControl from './CodeControl';
 import { Unity, useUnityContext } from 'react-unity-webgl';
 
+
 const GameLayout = () => {
-    const { unityProvider } = useUnityContext({
+    const { unityProvider, sendMessage } = useUnityContext({
         loaderUrl: 'Build/Output.loader.js',
         dataUrl: 'Build/Output.data',
         frameworkUrl: 'Build/Output.framework.js',
@@ -32,7 +33,7 @@ const GameLayout = () => {
                     </Row>
                     <Col></Col>
                 </Col>
-                <CodeControl />
+                <CodeControl sendMessage={sendMessage} />
             </Row>
         </>
     );
