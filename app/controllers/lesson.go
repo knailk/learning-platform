@@ -87,3 +87,21 @@ func (ctrl *LessonController) CreateLessonsAnswer(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "OK"})
 }
+
+func (ctrl *LessonController) GetLessonsAnswer(ctx *gin.Context) {
+	auth, err := ctrl.GetCurrentAuth(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
+	lessonID := uuid.MustParse(ctx.Param("id"))
+
+	lessonAnswer, err := ctrl.LessonModel.GetAnswer(ctx, auth.ID, lessonID)
+	if err != nil {
+		log.Error("create lesson answer error: ", err)
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Create lesson answer error", "err": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": lessonAnswer})
+}

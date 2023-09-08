@@ -54,6 +54,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		lesson := &controllers.LessonController{AuthController: auth, LessonModel: &models.LessonModel{Repo: repo}}
 		v1.GET("/lessons", lesson.List)
 		v1.POST("/lessons/answer", lesson.CreateLessonsAnswer)
+		v1.POST("/lessons/answer/:id", lesson.GetLessonsAnswer)
 		v1.GET("/lessons/:id", lesson.Get)
 		v1.GET("/chapters/:id/lessons", lesson.ListByChapterID)
 		

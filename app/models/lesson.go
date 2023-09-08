@@ -75,3 +75,13 @@ func (m *LessonModel) CreateAnswer(ctx context.Context, lessonAnswer entity.Less
 
 	return m.Repo.LessonAnswer.WithContext(ctx).Create(&lessonAnswer)
 }
+
+func (m *LessonModel) GetAnswer(ctx context.Context, userID uuid.UUID, lessonID uuid.UUID) (*entity.LessonAnswer, error) {
+	return m.Repo.LessonAnswer.
+		WithContext(ctx).
+		Where(
+			m.Repo.LessonAnswer.LessonID.Eq(lessonID),
+			m.Repo.LessonAnswer.UserID.Eq(userID)).
+		Preload(m.Repo.LessonAnswer.QuestionAnswers).
+		First()
+}
