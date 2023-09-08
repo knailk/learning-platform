@@ -6,6 +6,7 @@ import { Row, Col, Menu, notification, Spin } from 'antd';
 import TitleMenu from './TitleMenu';
 import Lecture from 'components/Lecture/Lecture';
 import request from 'utils/http';
+import Question from 'pages/user/LearningPage/LessonComponent/Question';
 
 const LecturePractice = () => {
     /// need to refactor this
