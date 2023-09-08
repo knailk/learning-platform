@@ -26,11 +26,11 @@ const PersonalInformation = (props) => {
     const [nameValue, setNameValue] = useState('');
     const [birthValue, setBirthValue] = useState(profile.birth);
     const [editProfile, setEditProfile] = useState(false);
-
+    console.log(profile);
     const handleEditButton = async () => {
         if (editProfile) {
             try {
-                await request.put('user/profile', { name: nameValue }).then(function () {
+                await request.put('user/profile', { name: nameValue, birth: birthValue }).then(function () {
                     setEditProfile(!editProfile);
                     notification.success({ message: 'Thay đổi thông tin thành công' });
                 });
@@ -82,17 +82,20 @@ const PersonalInformation = (props) => {
                             <Space direction="vertical" size={12}>
                                 <DatePicker
                                     className={style.datePicker}
-                                    defaultValue={dayjs('10/08/2001', 'DD/MM/YYYY')}
+                                    defaultValue={dayjs(
+                                        birthValue ? formatDate(birthValue) : formatDate(new Date()),
+                                        'DD/MM/YYYY',
+                                    )}
                                     format={'DD/MM/YYYY'}
                                     readOnly={true}
                                     allowClear={false}
                                     suffixIcon={false}
                                     style={{ fontWeight: 'bold' }}
-                                    onChange={(__date, dateString) => console.log(dateString)}
+                                    onChange={(__date, dateString) => setBirthValue(formatDate(dateString))}
                                 />
                             </Space>
                         )}
-                        {!editProfile && '10/08/2001'}
+                        {!editProfile && (birthValue ? formatDate(birthValue) : formatDate(new Date()))}
                     </Row>
                     <Row className={common_style.userInfo}>
                         <span>
