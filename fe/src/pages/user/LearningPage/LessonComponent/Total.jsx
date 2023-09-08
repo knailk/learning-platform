@@ -1,7 +1,6 @@
 import { memo } from 'react';
-import clsx from 'clsx';
 import styles from './style.module.scss';
-import { Col, Row } from 'antd';
+import { Row } from 'antd';
 
 const Total = ({ ...props }) => {
     return (

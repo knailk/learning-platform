@@ -1,20 +1,20 @@
 import clsx from 'clsx';
 import React, { memo, useEffect, useState } from 'react';
 import style from './style.module.scss';
-import { Row, Col } from 'antd';
+import { Row, Col, notification } from 'antd';
 import LearningPath from './LearningPath';
 import RankingBox from './RankingBox';
 import MissionBox from './MissionBox';
 import request from 'utils/http';
 
 const LearningPage = () => {
-    const dataCurrentChapter = localStorage.getItem('current_chapter');
-    const dataFinishState = localStorage.getItem('finish_state');
+    const dataNullLesson = '00000000-0000-0000-0000-000000000000';
+    const dataCurrentChapter = localStorage.getItem('user_info');
     const [chapters, setChapters] = useState([]);
     const [currentChapter, setCurrentChapter] = useState(
-        JSON.parse(dataCurrentChapter) ? JSON.parse(dataCurrentChapter) : {},
+        JSON.parse(dataCurrentChapter) ? JSON.parse(dataCurrentChapter).current_lesson : {},
     );
-    const [finishState, setFinishState] = useState(JSON.parse(dataFinishState) ? JSON.parse(dataFinishState) : []);
+    const [finishState, setFinishState] = useState([]);
     const nextState = () => {
         let flag = false;
         let isSet = false;
@@ -58,33 +58,40 @@ const LearningPage = () => {
         });
     };
     const getData = async () => {
-        const response = await request.get('chapters');
-        console.log(response);
+        try {
+            const response = await request.get('chapters');
+            const data = response.data.data;
+            setChapters(data);
+            if (currentChapter === dataNullLesson) {
+                setCurrentChapter(data[1].lessons[0].id);
+            } else {
+                let isSet = false;
+                data.forEach((chapter) => {
+                    if (isSet) {
+                        return;
+                    }
+                    chapter.lessons.forEach((lesson) => {
+                        if (isSet) {
+                            return;
+                        }
+                        if (lesson.id === currentChapter) {
+                            isSet = true;
+                        } else {
+                            finishState.push(lesson.id);
+                        }
+                    });
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            notification.error({
+                message: 'Lỗi lấy dữ liệu',
+            });
+        }
     };
     useEffect(() => {
         getData();
-        // fetch(request.get('lecture'))
-        //     .then((res) => res.json())
-        //     .then((json) => {
-        //         setChapters(json.data);
-        //         console.log('123', currentChapter);
-        //         if (json.data.length > 1 && !currentChapter.hasOwnProperty('lesson')) {
-        //             setCurrentChapter({
-        //                 chapter: {
-        //                     chapter_id: json.data[1].id,
-        //                     chapter_name: json.data[1].name,
-        //                     chapter_level: json.data[1].level,
-        //                 },
-        //                 lesson: {
-        //                     lesson_id: json.data[1].lessons[0].id,
-        //                     lesson_name: json.data[1].lessons[0].name,
-        //                     lesson_type: json.data[1].lessons[0].type,
-        //                 },
-        //             });
-        //         }
-        //     })
-        //     .catch((error) => console.error(error));
-    }, [currentChapter]);
+    }, []);
     return (
         <div className={clsx(style.content)}>
             <Row className={style.wrapper}>

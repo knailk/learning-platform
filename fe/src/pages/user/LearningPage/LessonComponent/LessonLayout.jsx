@@ -1,13 +1,15 @@
 import React, { memo, useRef, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './style.module.scss';
-import { Col, Row, Carousel, Popconfirm } from 'antd';
+import { Col, Row, Carousel, Popconfirm, notification } from 'antd';
 import Lecture from './Lecture';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import Total from './Total';
 import CodeEditor from '../CodeEditorComponent/CodeEditorIcon';
-import { ApiUrl } from 'utils/constant';
+import request from 'utils/http';
+
+
 
 const LectureLayout = ({ ...props }) => {
     const [lengthSlide, setLengthSlide] = useState(0);
@@ -28,6 +30,24 @@ const LectureLayout = ({ ...props }) => {
     const [showInCorrect, setShowInCorrect] = useState(false);
     const [correctAnswer, setCorrectAnswer] = useState('');
     const [totalScore, setTotalScore] = useState(0);
+
+    const getData = async () => {
+        try {
+            const response = await request.get('lessons/' + props.data.id);
+            const data = response.data.data;
+            props.data.type === 'lecture' ? setLesson(data) : setQuestions(data.questions);
+            setLengthSlide(props.data.type === 'lecture' ? data.lectures.length : data.questions.length);
+        } catch (error) {
+            console.log(error);
+            notification.error({
+                message: 'Lỗi lấy dữ liệu',
+            });
+        }
+    };
+    useEffect(() => {
+        getData();
+    }, []);
+
     const areEqual = (array1, array2) => {
         if (array1.length === array2.length) {
             return array1.every((element) => {
@@ -137,16 +157,6 @@ const LectureLayout = ({ ...props }) => {
         }
     };
 
-    useEffect(() => {
-        fetch(ApiUrl + '/lessons/' + props.data.id)
-            .then((res) => res.json())
-            .then((json) => {
-                props.data.type === 'lecture' ? setLesson(json.data) : setQuestions(json.data.questions);
-                setLengthSlide(props.data.type === 'lecture' ? json.data.lectures.length : json.data.questions.length);
-            })
-            .catch((error) => console.error(error));
-    }, []);
-
     const lessonRender = (question) => {
         switch (question.answer_type) {
             case CHOOSE_ONE:
@@ -233,6 +243,8 @@ const LectureLayout = ({ ...props }) => {
                         </Row>
                     </>
                 );
+            default:
+                break;
         }
     };
     const render = () => {
@@ -246,8 +258,13 @@ const LectureLayout = ({ ...props }) => {
     };
     const confirm = (isCheck = false) => {
         if (isCheck) {
-            props.nextState();
+            // props.nextState();
             //send score to server
+            if (props.data.type === 'lecture') {
+                return <Lecture data={lesson} />;
+            } else {
+                return;
+            }
         }
         props.onClose();
     };

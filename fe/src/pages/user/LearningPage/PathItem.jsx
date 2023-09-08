@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import clsx from 'clsx';
 import styles from './style.module.scss';
 import { Col, Space, Drawer } from 'antd';
@@ -7,15 +7,13 @@ import LessonLayout from './LessonComponent/LessonLayout';
 
 const PathItem = ({ ...props }) => {
     const data = props.data;
+    console.log(props);
     let statusItem = LESSON_STATUS.DISABLED;
-    if (
-        data.chapter_id === props.currentChapter.chapter.chapter_id &&
-        data.id === props.currentChapter.lesson.lesson_id
-    ) {
+    if (data.id === props.currentChapter) {
         statusItem = LESSON_STATUS.CURRENT;
     } else {
         props.finishState.forEach((element) => {
-            if (data.chapter_id === element.chapter.chapter_id && data.id === element.lesson.lesson_id) {
+            if (data.id === element) {
                 statusItem = LESSON_STATUS.FINISHED;
             }
         });
