@@ -263,6 +263,6 @@ func (ctrl *AuthController) ExpireJWTCookie(ctx *gin.Context) {
 }
 
 func (ctrl *AuthController) setTokenWithAge(ctx *gin.Context, key, path, token string, age int) {
-	ctx.SetSameSite(http.SameSiteLaxMode)
+	ctx.SetSameSite(http.SameSiteDefaultMode)
 	ctx.SetCookie(key, token, age, path, "", false, cookieHTTPOnly)
 }
