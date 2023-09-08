@@ -22,7 +22,8 @@ const LecturePractice = () => {
     const [showInCorrect, setShowInCorrect] = useState(false);
     const [questionAnswers, setQuestionAnswers] = useState([]);
     const lessonRender = (question, answer) => {
-        if (question.type === FILL) {
+        console.log(question);
+        if (question.answer_type === FILL) {
             return (
                 <>
                     <Row className={styles.question}>
@@ -41,6 +42,7 @@ const LecturePractice = () => {
                                 </Col>
                             </Row>
                         </Col>
+                        <Col className={styles.fillAnswer}>{question.answer_content[0]}</Col>
                     </Row>
                 </>
             );
@@ -53,16 +55,23 @@ const LecturePractice = () => {
                     <Row>
                         <Col className={styles.answer}>
                             {question.answer_content.map((item, idx) => (
-                                <Row
-                                    key={idx}
-                                    className={clsx([
-                                        styles.itemOption,
-                                        {
-                                            [styles.itemOptionActive]: answer.includes(item),
-                                        },
-                                    ])}
-                                >
-                                    {item}
+                                <Row key={idx}>
+                                    <Col
+                                        span={20}
+                                        className={clsx([
+                                            styles.itemOption,
+                                            {
+                                                [styles.itemOptionActive]: answer.includes(item),
+                                            },
+                                        ])}
+                                    >
+                                        {item}
+                                    </Col>
+                                    <Col className={styles.checkCorrect} span={4}>
+                                        {question.score[idx] > 0 && (
+                                            <img src="/images/check_correct.png" alt="check" visible={false} />
+                                        )}
+                                    </Col>
                                 </Row>
                             ))}
                         </Col>
@@ -204,8 +213,7 @@ const LecturePractice = () => {
                         <img width={15} src="/images/Back_arrow.svg" alt="back" />
                     </Link>
                     <Row>
-                        <Col span={20}>{render()}</Col>
-                        <Col span={4}></Col>
+                        <Col span={24}>{render()}</Col>
                     </Row>
                     <div className={styles.codeEditor}>
                         <CodeEditor />
