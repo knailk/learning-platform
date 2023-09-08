@@ -9,6 +9,7 @@ import NewPasswordPage from '../pages/user/NewPasswordPage';
 import MasterLayout from '../pages/theme/MasterLayout';
 import LecurePractice from 'pages/user/PracticePage/PracticeComponent/LecurePractice';
 import { SIDEBAR_TYPE } from './constant';
+import GamePage from 'pages/user/GamePage';
 
 export const ROUTERS = {
     MENU_NAV_BAR: [
@@ -39,13 +40,13 @@ export const ROUTERS = {
             img: '/images/ranking.png',
             type: SIDEBAR_TYPE.SIDEBAR,
         },
-        // {
-        //   title: "GAME",
-        //   path: "/game",
-        //   component: <GamePage />,
-        //   layout: MasterLayout,
-        //   inMenu: true,
-        // },
+        {
+            title: 'GAME',
+            path: '/game',
+            component: <GamePage />,
+            layout: MasterLayout,
+            inMenu: true,
+        },
         {
             title: 'HỒ SƠ',
             path: '/profile',

@@ -28,6 +28,7 @@ const LectureLayout = ({ ...props }) => {
     const [showInCorrect, setShowInCorrect] = useState(false);
     const [correctAnswer, setCorrectAnswer] = useState('');
     const [totalScore, setTotalScore] = useState(0);
+    const [questionAnswers, setQuestionAnswers] = useState([]);
     const lessonId = props.data.id;
     const lessonType = props.data.type;
 
@@ -83,6 +84,7 @@ const LectureLayout = ({ ...props }) => {
     };
     const handleCheckButton = (isSkip = false) => {
         const currentQuestion = questions[slideNumber];
+        let isTrue = false;
         switch (currentQuestion.answer_type) {
             case CHOOSE_ONE:
                 const score = currentQuestion.score[activeOption];
@@ -91,26 +93,38 @@ const LectureLayout = ({ ...props }) => {
                         setCorrectAnswer(currentQuestion.answer_content[idx]);
                     }
                 });
+
                 if (score > 0 && !isSkip) {
                     setShowCorrect(true);
                     setShowInCorrect(false);
                     setTypeButtonNext(true);
                     setTotalScore(totalScore + score);
                     setEnableButton(true);
+                    isTrue = true;
                 } else {
                     setShowCorrect(false);
                     setShowInCorrect(true);
                     setTypeButtonNext(true);
                     setEnableButton(true);
+                    isTrue = false;
                 }
+                const userAnswer = {
+                    question_id: currentQuestion.id,
+                    score: score,
+                    answer: [activeOption],
+                    is_true: isTrue,
+                };
+                setQuestionAnswers([...questionAnswers, userAnswer]);
                 break;
             case FILL:
+                let isTrue = false;
                 if (textInput === currentQuestion.answer_content) {
                     setShowCorrect(true);
                     setShowInCorrect(false);
                     setTypeButtonNext(true);
                     setTotalScore(totalScore + currentQuestion.score[0]);
                     setEnableButton(true);
+                    isTrue = true;
                 } else {
                     setShowCorrect(false);
                     setShowInCorrect(true);
