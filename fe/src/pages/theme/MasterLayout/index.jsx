@@ -5,9 +5,9 @@ import style from './style.module.css';
 const MasterLayout = ({ children, ...props }) => {
     return (
         <>
-            <Layout hasSider style={{ backgroundColor: 'white' }}>
-                <SideBar></SideBar>
-                <Layout className={style.container} style={{ backgroundColor: 'white' }}>
+            <Layout hasSider style={{ backgroundColor: '#F2F5F8' }}>
+                <SideBar ></SideBar>
+                <Layout className={style.container} style={{ backgroundColor: '#E6F7FF' }}>
                     {children}
                 </Layout>
             </Layout>

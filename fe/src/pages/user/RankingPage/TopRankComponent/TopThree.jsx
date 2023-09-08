@@ -35,10 +35,10 @@ const TopThree = ({ ...props }) => {
                 </div>
             </Row>
             <Row>
-                <h1>{data.name}</h1>
+                <h1 style={{ fontSize: '18px' }}>{data.name}</h1>
             </Row>
             <Row>
-                <h1>{data.score} Điểm</h1>
+                <h3>{data.score} Điểm</h3>
             </Row>
             <Modal title="" footer="" open={isModalOpen} closeIcon={false}>
                 <ModalDetailRanking userInfor={data} closeModal={handleCancel} />
