@@ -9,7 +9,6 @@ import request from 'utils/http';
 
 const Profile = () => {
     const [profile, setProfile] = useState(false);
-
     useEffect(() => {
         const fetchProfile = async () => {
             try {
