@@ -21,7 +21,7 @@ const LectureLayout = ({ ...props }) => {
     const [typeButtonNext, setTypeButtonNext] = useState(false);
     const [textInput, setTextInput] = useState('');
     const carousel = useRef();
-    const [lesson, setLesson] = useState([]);
+    const [lecture, setLecture] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [enableButton, setEnableButton] = useState(false);
     const [showCorrect, setShowCorrect] = useState(false);
@@ -31,12 +31,13 @@ const LectureLayout = ({ ...props }) => {
     const [questionAnswers, setQuestionAnswers] = useState([]);
     const lessonId = props.data.id;
     const lessonType = props.data.type;
-
+    console.log('lecture', lecture, questions);
     const getData = async () => {
         try {
             const response = await request.get('lessons/' + lessonId);
             const data = response.data.data;
-            lessonType === 'lecture' ? setLesson(data) : setQuestions(data.questions);
+            console.log('data', data);
+            lessonType === 'lecture' ? setLecture(data) : setQuestions(data.questions);
             setLengthSlide(lessonType === 'lecture' ? data.lectures.length : data.questions.length);
         } catch (error) {
             console.log(error);
@@ -84,16 +85,17 @@ const LectureLayout = ({ ...props }) => {
     };
     const handleCheckButton = (isSkip = false) => {
         const currentQuestion = questions[slideNumber];
+        let score = 0;
+        let userAnswer = {};
         let isTrue = false;
         switch (currentQuestion.answer_type) {
             case CHOOSE_ONE:
-                const score = currentQuestion.score[activeOption];
+                score = currentQuestion.score[activeOption];
                 currentQuestion.score.forEach((element, idx) => {
                     if (element > 0) {
                         setCorrectAnswer(currentQuestion.answer_content[idx]);
                     }
                 });
-
                 if (score > 0 && !isSkip) {
                     setShowCorrect(true);
                     setShowInCorrect(false);
@@ -106,23 +108,23 @@ const LectureLayout = ({ ...props }) => {
                     setShowInCorrect(true);
                     setTypeButtonNext(true);
                     setEnableButton(true);
-                    isTrue = false;
                 }
-                const userAnswer = {
+                userAnswer = {
                     question_id: currentQuestion.id,
                     score: score,
-                    answer: [activeOption],
+                    answer: currentQuestion.answer_content[activeOption],
                     is_true: isTrue,
                 };
                 setQuestionAnswers([...questionAnswers, userAnswer]);
                 break;
             case FILL:
-                let isTrue = false;
+                score = 0;
                 if (textInput === currentQuestion.answer_content) {
+                    score = currentQuestion.score[0];
                     setShowCorrect(true);
                     setShowInCorrect(false);
                     setTypeButtonNext(true);
-                    setTotalScore(totalScore + currentQuestion.score[0]);
+                    setTotalScore(totalScore + score);
                     setEnableButton(true);
                     isTrue = true;
                 } else {
@@ -132,10 +134,18 @@ const LectureLayout = ({ ...props }) => {
                     setTypeButtonNext(true);
                     setEnableButton(true);
                 }
+                userAnswer = {
+                    question_id: currentQuestion.id,
+                    score: score,
+                    answer: [textInput],
+                    is_true: isTrue,
+                };
+                setQuestionAnswers([...questionAnswers, userAnswer]);
                 break;
             case CHOOSE_MULTI:
                 let correctAnswers = [];
                 let tempTotalScore = 0;
+                let userMultiAnswer = [];
                 currentQuestion.score.forEach((score, idx) => {
                     if (score > 0) {
                         correctAnswers.push(idx);
@@ -159,12 +169,23 @@ const LectureLayout = ({ ...props }) => {
                     setTypeButtonNext(true);
                     setTotalScore(tempTotalScore + totalScore);
                     setEnableButton(true);
+                    isTrue = true;
                 } else {
                     setShowCorrect(false);
                     setShowInCorrect(true);
                     setTypeButtonNext(true);
                     setEnableButton(true);
                 }
+                selectionAnswer.forEach((value) => {
+                    userMultiAnswer.push(currentQuestion.answer_content[value]);
+                });
+                userAnswer = {
+                    question_id: currentQuestion.id,
+                    score: tempTotalScore,
+                    answer: selectionAnswer,
+                    is_true: isTrue,
+                };
+                setQuestionAnswers([...questionAnswers, userAnswer]);
                 break;
             default:
                 break;
@@ -263,7 +284,7 @@ const LectureLayout = ({ ...props }) => {
     };
     const render = () => {
         if (lessonType === 'lecture') {
-            return <Lecture data={lesson} />;
+            return <Lecture data={lecture} />;
         } else {
             return questions.map((question, idx) => {
                 return <div key={idx}>{lessonRender(question)}</div>;
@@ -286,13 +307,13 @@ const LectureLayout = ({ ...props }) => {
     };
     const confirm = (isCheck = false) => {
         if (isCheck) {
-            // props.nextState();
+            props.nextState();
             //send score to server
-            sendScore(lessonId, totalScore, []);
+            sendScore(lessonId, totalScore, questionAnswers);
         }
         props.onClose();
     };
-    if (questions.length != 0) {
+    if (questions.length != 0 || lecture.length != 0) {
         return (
             <>
                 <div className={styles.lectureLayoutWrapper}>

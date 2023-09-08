@@ -38,7 +38,6 @@ const LearningMenu = () => {
 
     const itemMenuLecture = [];
     const itemMenuPractice = [];
-    console.log(data_menu);
     data_menu.forEach((chapter) => {
         const itemSubMenuLecture = [];
         const itemSubMenuPractice = [];

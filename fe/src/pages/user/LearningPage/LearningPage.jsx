@@ -15,31 +15,27 @@ const LearningPage = () => {
     const nextState = () => {
         let flag = false;
         let isSet = false;
-        chapters.forEach((chapter) => {
+        for (let chapter of chapters) {
             if (isSet) {
-                return;
+                break;
             }
-            chapter.lessons.forEach((lesson) => {
+            for (const lesson of chapter.lessons) {
                 if (isSet) {
-                    return;
+                    break;
                 }
                 if (flag === true) {
                     let dataSave = lesson.id;
                     setCurrentLesson(dataSave);
                     isSet = true;
-                    return;
+                    break;
                 }
-                if (lesson.chapter_id === currentLesson) {
-                    if (lesson.id === currentLesson) {
-                        flag = true;
-                        let dataSave = [...finishState, currentLesson];
-                        setFinishState(dataSave);
-                    }
-                } else {
-                    return;
+                if (lesson.id === currentLesson) {
+                    flag = true;
+                    let dataSave = [...finishState, currentLesson];
+                    setFinishState(dataSave);
                 }
-            });
-        });
+            }
+        }
     };
     const getData = async () => {
         try {
@@ -48,28 +44,24 @@ const LearningPage = () => {
             const responseUser = await request.get('/auth/me');
             const dataCurrentLesson = responseUser.data.user.current_lesson;
             setChapters(dataChapter);
-            console.log(dataCurrentLesson);
-            console.log(dataChapter);
             if (dataCurrentLesson === dataNullLesson) {
                 setCurrentLesson(dataChapter[1].lessons[0].id);
             } else {
                 let isSet = false;
+                let flag = false;
                 for (let chapter of dataChapter) {
-                    console.log(chapter.lessons);
-                    if (isSet) {
+                    if (flag && isSet) {
                         break;
                     }
-                    for (const element of chapter.lessons) {
-                        let lesson = element;
-                        console.log(lesson);
-                        if (isSet) {
-                            console.log(lesson.id);
+                    for (const lesson of chapter.lessons) {
+                        if (flag) {
                             setCurrentLesson(lesson.id);
+                            isSet = true;
                             break;
                         }
                         finishState.push(lesson.id);
                         if (lesson.id === dataCurrentLesson) {
-                            isSet = true;
+                            flag = true;
                         }
                     }
                 }

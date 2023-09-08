@@ -63,7 +63,7 @@ export const ROUTERS = {
             layout: null,
             inMenu: false,
             img: '',
-            type: SIDEBAR_TYPE.MORE,
+            type: SIDEBAR_TYPE.NOTSIDEBAR,
         },
         {
             title: 'Quên mật khẩu',
@@ -72,7 +72,7 @@ export const ROUTERS = {
             layout: null,
             inMenu: false,
             img: '',
-            type: SIDEBAR_TYPE.MORE,
+            type: SIDEBAR_TYPE.NOTSIDEBAR,
         },
         {
             title: 'Mật khẩu mới',
@@ -91,6 +91,15 @@ export const ROUTERS = {
             inMenu: false,
             img: '',
             type: SIDEBAR_TYPE.NOTSIDEBAR,
+        },
+        {
+            title: 'Logout',
+            path: '/logout',
+            component: <></>,
+            layout: MasterLayout,
+            inMenu: false,
+            img: '',
+            type: SIDEBAR_TYPE.MORE,
         },
         // {
         //   title: "LOGIN",
