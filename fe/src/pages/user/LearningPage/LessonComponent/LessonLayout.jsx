@@ -31,6 +31,7 @@ const LectureLayout = ({ ...props }) => {
     const [questionAnswers, setQuestionAnswers] = useState([]);
     const lessonId = props.data.id;
     const lessonType = props.data.type;
+    const [currentQuestion, setCurrentQuestion] = useState('');
     const getData = async () => {
         try {
             const response = await request.get('lessons/' + lessonId);
@@ -72,6 +73,7 @@ const LectureLayout = ({ ...props }) => {
         setShowInCorrect(false);
         setTypeButtonNext(false);
         setTextInput('');
+        setSlideNumber(slideNumber + 1);
         if (slideNumber < lengthSlide - 1) {
             carousel.current.next();
             if (widthStyle < 700) {
@@ -83,6 +85,7 @@ const LectureLayout = ({ ...props }) => {
         }
     };
     const handleCheckButton = (isSkip = false) => {
+        console.log(slideNumber);
         const currentQuestion = questions[slideNumber];
         let score = 0;
         let userAnswer = {};
@@ -337,7 +340,7 @@ const LectureLayout = ({ ...props }) => {
                         <Col>
                             <Carousel
                                 ref={carousel}
-                                afterChange={(currentSlide) => setSlideNumber(currentSlide)}
+                                // afterChange={(currentSlide) => setSlideNumber(currentSlide)}
                                 dots={false}
                             >
                                 {render()}
