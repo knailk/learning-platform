@@ -31,7 +31,7 @@ const LectureLayout = ({ ...props }) => {
     const [questionAnswers, setQuestionAnswers] = useState([]);
     const lessonId = props.data.id;
     const lessonType = props.data.type;
-    console.log('lecture', lecture, questions);
+    const [currentQuestion, setCurrentQuestion] = useState('');
     const getData = async () => {
         try {
             const response = await request.get('lessons/' + lessonId);
@@ -73,6 +73,7 @@ const LectureLayout = ({ ...props }) => {
         setShowInCorrect(false);
         setTypeButtonNext(false);
         setTextInput('');
+        setSlideNumber(slideNumber + 1);
         if (slideNumber < lengthSlide - 1) {
             carousel.current.next();
             if (widthStyle < 700) {
@@ -84,6 +85,7 @@ const LectureLayout = ({ ...props }) => {
         }
     };
     const handleCheckButton = (isSkip = false) => {
+        console.log(slideNumber);
         const currentQuestion = questions[slideNumber];
         let score = 0;
         let userAnswer = {};
@@ -111,15 +113,15 @@ const LectureLayout = ({ ...props }) => {
                 }
                 userAnswer = {
                     question_id: currentQuestion.id,
-                    score: score,
-                    answer: currentQuestion.answer_content[activeOption],
+                    score: isSkip ? 0 : score,
+                    answer: [isSkip ? '' : currentQuestion.answer_content[activeOption]],
                     is_true: isTrue,
                 };
                 setQuestionAnswers([...questionAnswers, userAnswer]);
                 break;
             case FILL:
                 score = 0;
-                if (textInput === currentQuestion.answer_content) {
+                if (textInput === currentQuestion.answer_content[0]) {
                     score = currentQuestion.score[0];
                     setShowCorrect(true);
                     setShowInCorrect(false);
@@ -177,12 +179,12 @@ const LectureLayout = ({ ...props }) => {
                     setEnableButton(true);
                 }
                 selectionAnswer.forEach((value) => {
-                    userMultiAnswer.push(currentQuestion.answer_content[value]);
+                    userMultiAnswer.push(currentQuestion.answer_content[value].toString());
                 });
                 userAnswer = {
                     question_id: currentQuestion.id,
-                    score: tempTotalScore,
-                    answer: selectionAnswer,
+                    score: isSkip ? 0 : tempTotalScore,
+                    answer: isSkip ? [''] : userMultiAnswer,
                     is_true: isTrue,
                 };
                 setQuestionAnswers([...questionAnswers, userAnswer]);
@@ -291,12 +293,12 @@ const LectureLayout = ({ ...props }) => {
             });
         }
     };
-    const sendScore = async (lesson_id, score, question_answer) => {
+    const sendScore = async (lesson_id, score, question_answers) => {
         try {
             await request.post('lessons/answer', {
                 lesson_id,
                 score,
-                question_answer,
+                question_answers,
             });
         } catch (error) {
             console.log(error);
@@ -305,10 +307,12 @@ const LectureLayout = ({ ...props }) => {
             });
         }
     };
+    console.log(questionAnswers);
     const confirm = (isCheck = false) => {
         if (isCheck) {
             props.nextState();
             //send score to server
+            console.log(questionAnswers);
             sendScore(lessonId, totalScore, questionAnswers);
         }
         props.onClose();
@@ -336,7 +340,7 @@ const LectureLayout = ({ ...props }) => {
                         <Col>
                             <Carousel
                                 ref={carousel}
-                                afterChange={(currentSlide) => setSlideNumber(currentSlide)}
+                                // afterChange={(currentSlide) => setSlideNumber(currentSlide)}
                                 dots={false}
                             >
                                 {render()}

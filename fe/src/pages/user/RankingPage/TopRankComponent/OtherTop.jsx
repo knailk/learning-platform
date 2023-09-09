@@ -38,7 +38,7 @@ const OtherTop = ({ item, index, hasModal }) => {
             </Row>
             {hasModal && (
                 <Modal title="" footer="" open={isModalOpen} closeIcon={false}>
-                    <ModalDetailRanking userInfor={item} closeModal={handleCancel} />
+                    <ModalDetailRanking userInfo={item} closeModal={handleCancel} />
                 </Modal>
             )}
         </>

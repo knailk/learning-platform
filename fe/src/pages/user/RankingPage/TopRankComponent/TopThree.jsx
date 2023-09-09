@@ -41,7 +41,7 @@ const TopThree = ({ ...props }) => {
                 <h3>{data.score} Điểm</h3>
             </Row>
             <Modal title="" footer="" open={isModalOpen} closeIcon={false}>
-                <ModalDetailRanking userInfor={data} closeModal={handleCancel} />
+                <ModalDetailRanking userInfo={data} closeModal={handleCancel} />
             </Modal>
         </>
     );

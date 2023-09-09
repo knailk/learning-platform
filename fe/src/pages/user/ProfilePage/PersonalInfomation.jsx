@@ -1,7 +1,8 @@
 import style from './PersonalInfomation.module.scss';
 import common_style from './style.module.scss';
 import React, { memo, useState } from 'react';
-import { Row, Col, notification } from 'antd';
+import dayjs from 'dayjs';
+import { Row, Col, notification, DatePicker, Space } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCakeCandles,
@@ -23,18 +24,22 @@ function formatDate(dateString) {
 const PersonalInformation = (props) => {
     const { profile } = props;
     const [nameValue, setNameValue] = useState('');
+    const [birthValue, setBirthValue] = useState(profile.birth);
+    const [phoneNumber, setPhoneNumber] = useState(profile.phone);
     const [editProfile, setEditProfile] = useState(false);
-
+    console.log(profile);
     const handleEditButton = async () => {
         if (editProfile) {
             try {
-                await request.put('user/profile', { name: nameValue }).then(function () {
-                    setEditProfile(!editProfile);
-                    notification.success({ message: 'Thay đổi thông tin thành công' });
-                });
+                await request
+                    .put('user/profile', { name: nameValue, birth: birthValue, phone: phoneNumber })
+                    .then(function () {
+                        setEditProfile(!editProfile);
+                        notification.success({ message: 'Thay đổi thông tin thành công' });
+                    });
             } catch (error) {
                 console.log(error);
-                notification.error({ message: 'Thay đổi thông tin thất bại'});
+                notification.error({ message: 'Thay đổi thông tin thất bại' });
             }
         } else {
             setEditProfile(!editProfile);
@@ -76,13 +81,40 @@ const PersonalInformation = (props) => {
                         <span>
                             <FontAwesomeIcon icon={faCakeCandles} />
                         </span>
-                        {2023 - profile.age}
+                        {editProfile && (
+                            <Space direction="vertical" size={12}>
+                                <DatePicker
+                                    className={style.datePicker}
+                                    defaultValue={dayjs(
+                                        birthValue ? formatDate(birthValue) : formatDate(new Date()),
+                                        'DD/MM/YYYY',
+                                    )}
+                                    format={'DD/MM/YYYY'}
+                                    readOnly={true}
+                                    allowClear={false}
+                                    suffixIcon={false}
+                                    style={{ fontWeight: 'bold' }}
+                                    onChange={(__date, dateString) => setBirthValue(formatDate(dateString))}
+                                />
+                            </Space>
+                        )}
+                        {!editProfile && (birthValue ? formatDate(birthValue) : formatDate(new Date()))}
                     </Row>
                     <Row className={common_style.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faPhone}></FontAwesomeIcon>
                         </span>
-                        {profile.phone}
+                        {editProfile && (
+                            <input
+                                type="text"
+                                value={phoneNumber}
+                                className={style.inputPhone}
+                                onChange={(e) => {
+                                    setPhoneNumber(e.target.value);
+                                }}
+                            />
+                        )}
+                        {!editProfile && phoneNumber}
                     </Row>
                     <Row className={common_style.userInfo}>
                         <span>

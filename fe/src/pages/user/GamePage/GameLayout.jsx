@@ -5,15 +5,14 @@ import { Row, Col } from 'antd';
 import CodeControl from './CodeControl';
 import { Unity, useUnityContext } from 'react-unity-webgl';
 
-
-const GameLayout = () => {
+const GameLayout = ({ level }) => {
     const { unityProvider, sendMessage } = useUnityContext({
         loaderUrl: 'Build/Output.loader.js',
         dataUrl: 'Build/Output.data',
         frameworkUrl: 'Build/Output.framework.js',
         codeUrl: 'Build/Output.wasm',
     });
-
+    console.log(level);
     return (
         <>
             <Row>
@@ -39,4 +38,4 @@ const GameLayout = () => {
     );
 };
 
-export default memo(GameLayout);
+export default GameLayout;

@@ -5,10 +5,12 @@ import GameLayout from './GameLayout';
 const GamePage = () => {
     const [open, setOpen] = useState(false);
     const [size, setSize] = useState();
+    const [gameLevel, setGameLevel] = useState(1);
     const showDefaultDrawer = () => {
         setSize('default');
         setOpen(true);
     };
+    const level = [1, 2, 3];
     const onClose = () => {
         setOpen(false);
     };
@@ -16,9 +18,21 @@ const GamePage = () => {
     return (
         <>
             <Space>
-                <Button type="primary" onClick={showDefaultDrawer} id="top">
-                    Game
-                </Button>
+                {level.map((item, idx) => {
+                    return (
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                showDefaultDrawer();
+                                setGameLevel(item);
+                            }}
+                            id="top"
+                            key={idx}
+                        >
+                            Level {item}
+                        </Button>
+                    );
+                })}
             </Space>
             <Drawer
                 className={styles.gameDrawerWrapper}
@@ -29,7 +43,7 @@ const GamePage = () => {
                 onClose={onClose}
                 open={open}
             >
-                <GameLayout />
+                <GameLayout level={gameLevel} />
             </Drawer>
         </>
     );

@@ -114,6 +114,7 @@
     padding: 10px 40px;
     width: 100%;
     .otherTop {
+        background-color: white;
         cursor: pointer;
         transition: 0.3s ease-in-out;
         -webkit-transition: 0.3s ease-in-out;
@@ -131,6 +132,8 @@
 }
 
 .gameBoxWrapper {
+    background-color: white;
+
     margin-top: 8px;
     min-width: 300px;
     width: 100%;
@@ -157,6 +160,8 @@
 }
 
 .userRankingWrapper {
+    background-color: white;
+
     margin-top: 10px;
     min-width: 300px;
     width: 100%;

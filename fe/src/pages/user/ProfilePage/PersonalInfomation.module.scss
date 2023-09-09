@@ -60,7 +60,7 @@
                 word-break: break-word;
                 margin-bottom: calc(5px + 0.2em);
                 color: #4b4b4b !important;
-                background-color: #E6F7FF;
+                background-color: #e6f7ff;
             }
             .editInput {
                 appearance: none;
@@ -81,6 +81,24 @@
                 -ms-border-radius: 0.2em 0.2em 0 0;
                 -o-border-radius: 0.2em 0.2em 0 0;
             }
+        }
+        .datePicker {
+            padding: 0px;
+            appearance: none;
+            outline: none;
+            border: none;
+            background: rgba(#1cb0f6, 0.2);
+            margin: 0px;
+            height: 25px;
+        }
+        .inputPhone {
+            appearance: none;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            font-size: 17px;
+            color: #1cb0f6;
+            border-bottom: 0.2em solid #1cb0f6;
         }
     }
 

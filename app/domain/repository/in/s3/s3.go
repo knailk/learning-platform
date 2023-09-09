@@ -5,6 +5,6 @@ type UploadFile struct {
 	FileType string
 	FileData []byte
 	FileName string
-	FilePath string
+	// FilePath string
 	Bucket   string
 }

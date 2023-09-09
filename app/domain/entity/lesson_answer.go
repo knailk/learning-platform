@@ -14,5 +14,5 @@ type LessonAnswer struct {
 	UpdatedAt time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 	CreatedAt time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 
-	QuestionAnswers []QuestionAnswer `json:"question_answers,omitempty" gorm:"foreignKey:LessonAnswerID"`
+	QuestionAnswers []QuestionAnswer `json:"question_answers" gorm:"foreignKey:LessonAnswerID"`
 }

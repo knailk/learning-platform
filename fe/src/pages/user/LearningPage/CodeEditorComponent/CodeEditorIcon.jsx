@@ -29,7 +29,7 @@ const CodeEditorIcon = () => {
         <>
             <Space>
                 <div className={styles.pythonIcon} onClick={showDefaultDrawer}>
-                    <img src="images/python_icon.png" alt="python_icon" />
+                    <img src="/images/python_icon.png" alt="python_icon" />
                     <span className={styles.name}>Mở trình soạn thảo Code</span>
                 </div>
             </Space>
@@ -44,7 +44,7 @@ const CodeEditorIcon = () => {
             >
                 <PythonEditor handleEditorDidMount={handleEditorDidMount} />
                 <div type="primary" onClick={showInputOutputDrawer} className={styles.terminalIcon}>
-                    <img src="images/terminal.png" alt="terminal" />
+                    <img src="/images/terminal.png" alt="terminal" />
                 </div>
             </Drawer>
             <Drawer

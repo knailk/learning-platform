@@ -2,19 +2,39 @@ import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import styles from './style.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Row, Col } from 'antd';
-import { faCakeCandles, faUser, faUserGroup, faClock } from '@fortawesome/free-solid-svg-icons';
-import { FRIEND_TYPE } from 'utils/constant';
+import { Row, Col, notification } from 'antd';
+import { faCakeCandles, faUserGroup, faClock } from '@fortawesome/free-solid-svg-icons';
 import AvatarCpn from 'components/Avatar';
-import StatiscalCpn from 'components/Statistical';
+import StatisticalCpn from 'components/Statistical';
+import request from 'utils/http';
 
-const ModalDetailRanking = ({ userInfor, closeModal }) => {
-    const [addFriend, setAddFriend] = useState(userInfor.friend_type === FRIEND_TYPE.FRIEND);
+const ModalDetailRanking = ({ userInfo, closeModal }) => {
+    const [addFriend, setAddFriend] = useState(userInfo.isExist);
     const [addFriendText, setAddFriendText] = useState(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
     useEffect(() => {
         setAddFriendText(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
     }, [addFriend]);
-    const showButton = true;
+
+    const handlerFollow = async () => {
+        if (!addFriend) {
+            try {
+                await request.post('follows', { followed_id: userInfo.id });
+                notification.success({ message: 'Đã theo dõi' });
+            } catch (error) {
+                notification.error({ message: 'Lỗi hệ thống!', description: error.message });
+            }
+        } else {
+            try {
+                await request.delete('follows/' + userInfo.id);
+                notification.success({ message: 'Hủy theo dõi thành công' });
+            } catch (error) {
+                notification.error({ message: 'Lỗi hệ thống!', description: error.message });
+            }
+        }
+
+        setAddFriend(!addFriend);
+    };
+
     return (
         <>
             <div className={styles.modalTitle}>Thông tin cá nhân</div>
@@ -22,63 +42,61 @@ const ModalDetailRanking = ({ userInfor, closeModal }) => {
             <Row className={styles.personalInformationWrapper}>
                 <Col xl={6} lg={8} md={8}>
                     <div className={styles.avatarWrapper}>
-                        <AvatarCpn src={userInfor.avatar} fullName={userInfor.name} size={100} />
+                        <AvatarCpn src={userInfo.avatar} fullName={userInfo.name} size={100} />
                     </div>
                 </Col>
                 <Col className={styles.inforWrapper} xl={12} lg={12} md={16}>
-                    <Row className={styles.titleProfile}>{userInfor.name}</Row>
+                    <Row className={styles.titleProfile}>{userInfo.name}</Row>
                     <Row className={styles.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faCakeCandles} />
                         </span>
-                        {userInfor.birth}
+                        {userInfo.birth}
                     </Row>
                     <Row className={styles.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faClock} />
                         </span>
-                        Đã tham gia vào {userInfor.start_date}
+                        Đã tham gia vào {userInfo.start_date}
                     </Row>
                     <Row className={styles.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faUserGroup}></FontAwesomeIcon>
                         </span>
-                        {userInfor.follower} Người đang theo dõi
+                        {userInfo.follower} Người đang theo dõi
                     </Row>
                 </Col>
-                {showButton && (
-                    <Col xl={6} lg={4} md={24}>
+                <Col xl={6} lg={4} md={24}>
+                    <div
+                        className={styles.addButton}
+                        onClick={() => {
+                            handlerFollow();
+                        }}
+                    >
                         <div
-                            className={styles.addButton}
-                            onClick={() => {
-                                setAddFriend(!addFriend);
-                            }}
-                        >
-                            <div
-                                className={clsx(styles.plus, {
-                                    [styles.tick]: addFriend,
-                                })}
-                            ></div>
-                            <div className={styles.text}>
-                                <span>{addFriendText}</span>
-                            </div>
+                            className={clsx(styles.plus, {
+                                [styles.tick]: addFriend,
+                            })}
+                        ></div>
+                        <div className={styles.text}>
+                            <span>{addFriendText}</span>
                         </div>
-                    </Col>
-                )}
+                    </div>
+                </Col>
             </Row>
             <Row gutter={[16, 16]} style={{ marginBottom: 10 }}>
                 <Col span={12}>
-                    <StatiscalCpn
+                    <StatisticalCpn
                         title="Bài học"
-                        total={userInfor.total_lecture}
+                        total={userInfo.total_lecture}
                         img="/images/learning.png"
                         height={30}
                     />
                 </Col>
                 <Col span={12}>
-                    <StatiscalCpn
+                    <StatisticalCpn
                         title="Bài tập"
-                        total={userInfor.total_question}
+                        total={userInfo.total_question}
                         img="/images/practice.png"
                         height={30}
                     />
@@ -86,10 +104,10 @@ const ModalDetailRanking = ({ userInfor, closeModal }) => {
             </Row>
             <Row gutter={[16, 16]}>
                 <Col span={12}>
-                    <StatiscalCpn title="Tổng điểm" total={userInfor.score} img="/images/score.png" height={30} />
+                    <StatisticalCpn title="Tổng điểm" total={userInfo.score} img="/images/score.png" height={30} />
                 </Col>
                 <Col span={12}>
-                    <StatiscalCpn title="Xếp hạng" total={userInfor.ranking} img="/images/ranking.png" height={30} />
+                    <StatisticalCpn title="Xếp hạng" total={userInfo.ranking} img="/images/ranking.png" height={30} />
                 </Col>
             </Row>
             <div className={styles.closeButton} onClick={closeModal}>

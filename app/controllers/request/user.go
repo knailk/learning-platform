@@ -8,6 +8,13 @@ import (
 type ProfileRequest struct {
 	UserID uuid.UUID `json:"-"`
 	Name   string    `json:"name"`
-	Age    int       `json:"age"`
+	Birth  string    `json:"birth"`
 	Phone  string    `json:"phone"`
+}
+
+type UpdateAvatarRequest struct {
+	UserID   uuid.UUID `json:"-"`
+
+	FileData string `json:"file_data"`
+	FileName string `json:"file_name"`
 }

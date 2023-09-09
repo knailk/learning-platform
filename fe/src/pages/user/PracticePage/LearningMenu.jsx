@@ -1,27 +1,86 @@
 import clsx from 'clsx';
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import styles from './style.module.scss';
-import { Row, Col, Menu } from 'antd';
+import { Row, Col, Menu, notification } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import request from 'utils/http';
+
 const LearningMenu = () => {
-    const finishState = JSON.parse(localStorage.getItem('finish_state'));
-    const data_menu = [];
-    if (finishState) {
-        finishState.forEach(function (item, idx) {
-            let existing = data_menu.filter(function (v, i) {
-                return v.chapter.chapter_id === item.chapter.chapter_id;
-            });
-            if (existing.length) {
-                let existingIndex = data_menu.indexOf(existing[0]);
-                data_menu[existingIndex].lesson = data_menu[existingIndex].lesson.concat(item.lesson);
+    const dataNullLesson = '00000000-0000-0000-0000-000000000000';
+    let data_menu = [];
+    const [dataMenu, setDataMenu] = useState([]);
+    const getData = async () => {
+        try {
+            const responseChapter = await request.get('chapters');
+            const dataChapter = responseChapter.data.data;
+            const responseUser = await request.get('/auth/me');
+            const dataCurrentLesson = responseUser.data.user.current_lesson;
+
+            if (dataCurrentLesson === dataNullLesson || dataCurrentLesson === dataChapter[1].lessons[0].id) {
+                return;
             } else {
-                if (typeof item.lesson === 'object') item.lesson = [item.lesson];
-                data_menu.push(item);
+                let isSet = false;
+                let flag = false;
+                for (let chapter of dataChapter) {
+                    if (chapter.level === 0) {
+                        continue;
+                    }
+                    if (flag) {
+                        break;
+                    }
+                    let dataMenuChapter = {
+                        chapter_id: chapter.id,
+                        chapter_name: chapter.name,
+                        chapter_level: chapter.level,
+                    };
+                    let dataLessons = [];
+                    for (const lesson of chapter.lessons) {
+                        dataLessons.push({
+                            lesson_id: lesson.id,
+                            lesson_type: lesson.type,
+                            lesson_name: lesson.name,
+                        });
+                        if (lesson.id === dataCurrentLesson) {
+                            flag = true;
+                        }
+                        if (flag) {
+                            break;
+                        }
+                    }
+                    data_menu.push({
+                        chapter: dataMenuChapter,
+                        lessons: dataLessons,
+                    });
+                }
             }
-        });
-    }
+            setDataMenu(data_menu);
+        } catch (error) {
+            console.log(error);
+            notification.error({
+                message: 'Lỗi lấy dữ liệu',
+            });
+        }
+    };
+    useEffect(() => {
+        getData();
+    }, []);
+
+    // if (finishState) {
+    //     finishState.forEach(function (item, idx) {
+    //         let existing = data_menu.filter(function (v, i) {
+    //             return v.chapter.chapter_id === item.chapter.chapter_id;
+    //         });
+    //         if (existing.length) {
+    //             let existingIndex = data_menu.indexOf(existing[0]);
+    //             data_menu[existingIndex].lesson = data_menu[existingIndex].lesson.concat(item.lesson);
+    //         } else {
+    //             if (typeof item.lesson === 'object') item.lesson = [item.lesson];
+    //             data_menu.push(item);
+    //         }
+    //     });
+    // }
     const handleItemSelected = ({ item, key, keyPath, selectedKeys, domEvent }) => {
         console.log(key);
     };
@@ -35,17 +94,16 @@ const LearningMenu = () => {
             type,
         };
     };
-
     const itemMenuLecture = [];
     const itemMenuPractice = [];
-    data_menu.forEach((chapter) => {
+    dataMenu.forEach((chapter) => {
         const itemSubMenuLecture = [];
         const itemSubMenuPractice = [];
-        chapter.lesson.forEach((item) => {
+        chapter.lessons.forEach((item) => {
             let itemId = item.lesson_id;
             let itemUrl = <Link to={`/practice/${itemId}`}>{item.lesson_name}</Link>;
             if (item.lesson_type === 'lecture') itemSubMenuLecture.push(getItem(itemUrl, itemId));
-            if (item.lesson_type === 'practice') itemSubMenuPractice.push(getItem(item.lesson_name, item.lesson_id));
+            if (item.lesson_type === 'practice') itemSubMenuPractice.push(getItem(itemUrl, itemId));
         });
         itemMenuLecture.push(
             getItem(

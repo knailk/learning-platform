@@ -25,7 +25,7 @@ function BoardControl({ sendMessage }) {
     };
     const handleAddItem = (name) => {
         if (!play) {
-            let code = codeMoves;
+            let code = editorRef.current.getValue().trim() + '\n';
             let horse = horseMoves;
             switch (name) {
                 case 'L':
@@ -99,4 +99,4 @@ function BoardControl({ sendMessage }) {
     );
 }
 
-export default memo(BoardControl);
+export default BoardControl;

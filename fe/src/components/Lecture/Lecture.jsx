@@ -5,12 +5,10 @@ import clsx from 'clsx';
 
 const Lecture = ({ ...props }) => {
     const data = props.data;
-    console.log('mount');
-    console.log(data);
     return (
         <>
             {data.lectures && (
-                <Col className={clsx(styles.lectureWrapper)}>
+                <Col className={clsx(styles.lectureWrapper)} style={props.style}>
                     <Row className={styles.lectureTitle}>
                         <h1>{data.name}</h1>
                     </Row>
