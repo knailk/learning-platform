@@ -5,7 +5,7 @@ import { Col, Row } from 'antd';
 import clsx from 'clsx';
 import PythonEditor from '../LearningPage/CodeEditorComponent/PythonEditor';
 
-function BoardControl({sendMessage}) {
+function BoardControl({ sendMessage }) {
     const [play, setPlay] = useState(false);
     const [horseMoves, setHorseMoves] = useState('');
     const [codeMoves, setCodeMoves] = useState('#Move horse\n');
@@ -16,8 +16,12 @@ function BoardControl({sendMessage}) {
     };
     const getEditorValue = () => {
         // const code = editorRef.current.getValue();
-        //console.log(horseMoves);
         sendMessage("SonRice", "CreateStates", horseMoves);
+        console.log(horseMoves);
+    };
+    const reloadGame = () => {
+        sendMessage("GameManager", "ReLoadLevel", null);
+        console.log("Reloading");
     };
     const handleAddItem = (name) => {
         if (!play) {
@@ -84,7 +88,10 @@ function BoardControl({sendMessage}) {
                         />
                     </Col>
                     <Col className={clsx([styles.excuteButton])}>
-                        <img src="images/stop.png" alt="stop" onClick={() => setPlay(false)} />
+                        <img src="images/stop.png" alt="stop" onClick={() => {
+                            setPlay(false);
+                            reloadGame();
+                        }} />
                     </Col>
                 </Row>
             </Col>
