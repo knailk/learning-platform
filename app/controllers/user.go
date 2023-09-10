@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/google/uuid"
 	"github.com/knailk/learning-platform/app/controllers/request"
 	"github.com/knailk/learning-platform/app/models"
 
@@ -68,6 +69,23 @@ func (ctrl *UserController) GetRank(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": rank})
 }
+
+
+func (ctrl *UserController) GetUserInfoByID(ctx *gin.Context) {
+	_, err := ctrl.GetCurrentAuth(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in", "error": err.Error()})
+		return
+	}
+
+	userInfo, err := ctrl.UserModel.GetUserInfo(ctx, uuid.MustParse(ctx.Param("id")))
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get rank", "error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": userInfo})
+}
+
 
 func (ctrl *UserController) UploadAvatar(ctx *gin.Context) {
 	auth, err := ctrl.GetCurrentAuth(ctx)

@@ -3,7 +3,8 @@ import style from '../style.module.scss';
 import { Row, Col, Modal } from 'antd';
 import clsx from 'clsx';
 import AvatarCpn from '../../../../components/Avatar';
-import ModalDetailRanking from '../ModalDetailRanking';
+import ModalUserInfo from 'components/UserInfo';
+
 
 const OtherTop = ({ item, index, hasModal }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,7 +39,7 @@ const OtherTop = ({ item, index, hasModal }) => {
             </Row>
             {hasModal && (
                 <Modal title="" footer="" open={isModalOpen} closeIcon={false}>
-                    <ModalDetailRanking userInfo={item} closeModal={handleCancel} />
+                    <ModalUserInfo userInfo={item} closeModal={handleCancel} />
                 </Modal>
             )}
         </>

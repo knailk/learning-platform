@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/knailk/learning-platform/app/domain/entity"
+	"github.com/knailk/learning-platform/app/domain/repository"
 	"gorm.io/gen"
 )
 
@@ -23,6 +24,8 @@ func main() {
 		entity.QuestionAnswer{},
 		entity.LessonAnswer{},
 	)
+
+	g.ApplyInterface(func(repository.UserRepository) {}, entity.User{})
 
 	// Execute the generator
 	g.Execute()

@@ -17,8 +17,8 @@ const Statistical = (props) => {
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
                                     <img
-                                        alt=""
-                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg"
+                                        alt="learning"
+                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/goals/39f13d2de304cad2ac2f88b31a7e2ff4.svg"
                                     />
                                 </Col>
                                 <Col span={18}>
@@ -35,7 +35,7 @@ const Statistical = (props) => {
                                 <Col span={4} className={style.imgDetail}>
                                     <img
                                         alt=""
-                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg"
+                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/216ddc11afcbb98f44e53d565ccf479e.svg"
                                     />
                                 </Col>
                                 <Col span={18}>
@@ -52,8 +52,8 @@ const Statistical = (props) => {
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
                                     <img
-                                        alt=""
-                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg"
+                                        alt="score"
+                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/profile/01ce3a817dd01842581c3d18debcbc46.svg"
                                     />
                                 </Col>
                                 <Col span={18}>
@@ -70,8 +70,8 @@ const Statistical = (props) => {
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
                                     <img
-                                        alt=""
-                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/ba95e6081679d9d7e8c132da5cfce1ec.svg"
+                                        alt="rank"
+                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/192181672ada150becd83a74a4266ae9.svg"
                                     />
                                 </Col>
                                 <Col span={18}>

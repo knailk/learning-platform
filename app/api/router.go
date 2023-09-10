@@ -45,7 +45,8 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		/*** START USER ***/
 		user := &controllers.UserController{AuthController: auth, UserModel: &models.UserModel{Repo: repo, S3Repo: s3Repo}}
 		v1.PUT("/user/profile", user.UpdateProfile)
-		v1.GET("/user/rank", user.GetRank)
+		v1.GET("/user/ranks", user.GetRank)
+		v1.GET("/users/:id", user.GetUserInfoByID)
 		v1.POST("/user/avatar", user.UploadAvatar)
 
 		/*** START Chapter ***/

@@ -13,7 +13,7 @@ const RankingPage = () => {
 
     const fetchRanking = async () => {
         try {
-            const response = await request.get('user/rank');
+            const response = await request.get('user/ranks');
             setRanking(response.data.data);
         } catch (error) {
             console.log(error);
@@ -37,7 +37,7 @@ const RankingPage = () => {
     }, []);
 
     if (ranking.length !== 0) {
-        ranking.sort((a, b) => a.ranking - b.ranking);
+        // ranking.sort((a, b) => a.score - b.score);
 
         const followerIds = new Set(followers.map((follower) => follower.id));
         const data = ranking.slice(0, 10).map((user) => ({
@@ -65,7 +65,7 @@ const RankingPage = () => {
                     <Row className={style.otherTopWrapper} justify={'space-between'}>
                         <Col span={11}>
                             {data.slice(3).map((item, index) => {
-                                return <OtherTop item={item} index={index + 4} hasModal={true} />;
+                                return <OtherTop key={item.id} item={item} index={index + 4} hasModal={true} />;
                             })}
                         </Col>
                         <Col span={11}>

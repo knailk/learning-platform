@@ -7,7 +7,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/knailk/learning-platform/app/controllers/request"
-	"github.com/knailk/learning-platform/app/controllers/response"
 	"github.com/knailk/learning-platform/app/domain/entity"
 	cognitoRepo "github.com/knailk/learning-platform/app/domain/repository"
 	cognitoRepoIn "github.com/knailk/learning-platform/app/domain/repository/in/cognito"
@@ -79,7 +78,7 @@ func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (
 		ID:    uuid.New(),
 		Email: req.Email,
 		Name:  req.Name,
-		Birth:   req.Birth,
+		Birth: req.Birth,
 		Phone: req.Phone,
 	}
 
@@ -242,50 +241,20 @@ func (m *AuthModel) Refresh(ctx context.Context, refreshToken string) (*authjwt.
 	return token, nil
 }
 
-func (m *AuthModel) GetCurrentAuth(ctx context.Context, jwt string) (*response.UserInfo, error) {
+func (m *AuthModel) GetCurrentAuth(ctx context.Context, jwt string) (*entity.User, error) {
 	claims, err := m.verifyJWTToken(jwt)
 	if err != nil {
 		return nil, fmt.Errorf("error unauthorize :%w", err)
 	}
 
-	existedUser, err := m.Repo.User.WithContext(ctx).
+	user, err := m.Repo.User.WithContext(ctx).
 		Where(m.Repo.User.ID.Eq(uuid.MustParse(claims.UserID))).
 		First()
 	if err != nil {
 		return nil, err
 	}
 
-	numberOfLectures, err := m.Repo.LessonAnswer.WithContext(ctx).
-		Where(m.Repo.LessonAnswer.UserID.Eq(existedUser.ID)).
-		LeftJoin(m.Repo.Lesson, m.Repo.Lesson.ID.EqCol(m.Repo.LessonAnswer.LessonID)).
-		Where(m.Repo.Lesson.Type.Eq("lecture")).
-		Count()
-	if err != nil {
-		return nil, err
-	}
-
-	numberOfPractices, err := m.Repo.LessonAnswer.WithContext(ctx).
-		Where(m.Repo.LessonAnswer.UserID.Eq(existedUser.ID)).
-		LeftJoin(m.Repo.Lesson, m.Repo.Lesson.ID.EqCol(m.Repo.LessonAnswer.LessonID)).
-		Where(m.Repo.Lesson.Type.Eq("practice")).
-		Count()
-	if err != nil {
-		return nil, err
-	}
-
-	numberOfFollower, err := m.Repo.Follow.WithContext(ctx).Where(m.Repo.Follow.FollowedUserID.Eq(existedUser.ID)).Count()
-	if err != nil {
-		return nil, err
-	}
-
-	res := &response.UserInfo{
-		User:          *existedUser,
-		TotalLecture:  numberOfLectures,
-		TotalQuestion: numberOfPractices,
-		Follower:      numberOfFollower,
-	}
-
-	return res, nil
+	return user, nil
 }
 
 func (m *AuthModel) generateToken(userID uuid.UUID) (tokenPair *authjwt.TokenPair, err error) {

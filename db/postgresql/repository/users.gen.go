@@ -6,6 +6,7 @@ package repository
 
 import (
 	"context"
+	"strings"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,7 +17,10 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
+	"github.com/knailk/learning-platform/app/controllers/response"
 	"github.com/knailk/learning-platform/app/domain/entity"
+
+	"github.com/google/uuid"
 )
 
 func newUser(db *gorm.DB, opts ...gen.DOOption) user {
@@ -195,6 +199,62 @@ type IUserDo interface {
 	Returning(value interface{}, columns ...string) IUserDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
+
+	GetUserInfoByID(id uuid.UUID) (result response.UserInfo, err error)
+}
+
+// SELECT U.*,
+//
+//	F.FOLLOWER,
+//	Q.TOTAL_QUESTION,
+//	L.TOTAL_LECTURE,
+//	R.RANKING
+//
+// FROM USERS U
+// LEFT JOIN
+//
+//	(SELECT FOLLOWED_USER_ID,
+//			COUNT(*) AS FOLLOWER
+//		FROM FOLLOWS
+//		GROUP BY FOLLOWED_USER_ID) F ON U.ID = F.FOLLOWED_USER_ID
+//
+// LEFT JOIN
+//
+//	(SELECT LA.USER_ID,
+//			COUNT(*) AS TOTAL_QUESTION
+//		FROM LESSON_ANSWERS LA
+//		JOIN LESSONS LE ON LA.LESSON_ID = LE.ID
+//		WHERE LE.TYPE = 'practice'
+//		GROUP BY LA.USER_ID) Q ON U.ID = Q.USER_ID
+//
+// LEFT JOIN
+//
+//	(SELECT LA.USER_ID,
+//			COUNT(*) AS TOTAL_LECTURE
+//		FROM LESSON_ANSWERS LA
+//		JOIN LESSONS LE ON LA.LESSON_ID = LE.ID
+//		WHERE LE.TYPE = 'lecture'
+//		GROUP BY LA.USER_ID) L ON U.ID = L.USER_ID
+//
+// LEFT JOIN
+//
+//	(SELECT ID,
+//			RANK() OVER (ORDER BY SCORE DESC) AS RANKING
+//		FROM USERS) R ON U.ID = R.ID
+//
+// WHERE U.ID = @id
+func (u userDo) GetUserInfoByID(id uuid.UUID) (result response.UserInfo, err error) {
+	var params []interface{}
+
+	var generateSQL strings.Builder
+	params = append(params, id)
+	generateSQL.WriteString("SELECT U.*, F.FOLLOWER, Q.TOTAL_QUESTION, L.TOTAL_LECTURE, R.RANKING FROM USERS U LEFT JOIN (SELECT FOLLOWED_USER_ID, COUNT(*) AS FOLLOWER FROM FOLLOWS GROUP BY FOLLOWED_USER_ID) F ON U.ID = F.FOLLOWED_USER_ID LEFT JOIN (SELECT LA.USER_ID, COUNT(*) AS TOTAL_QUESTION FROM LESSON_ANSWERS LA JOIN LESSONS LE ON LA.LESSON_ID = LE.ID WHERE LE.TYPE = 'practice' GROUP BY LA.USER_ID) Q ON U.ID = Q.USER_ID LEFT JOIN (SELECT LA.USER_ID, COUNT(*) AS TOTAL_LECTURE FROM LESSON_ANSWERS LA JOIN LESSONS LE ON LA.LESSON_ID = LE.ID WHERE LE.TYPE = 'lecture' GROUP BY LA.USER_ID) L ON U.ID = L.USER_ID LEFT JOIN (SELECT ID, RANK() OVER (ORDER BY SCORE DESC) AS RANKING FROM USERS) R ON U.ID = R.ID WHERE U.ID = ? ")
+
+	var executeSQL *gorm.DB
+	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result) // ignore_security_alert
+	err = executeSQL.Error
+
+	return
 }
 
 func (u userDo) Debug() IUserDo {

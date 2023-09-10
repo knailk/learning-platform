@@ -8,24 +8,40 @@ import AvatarCpn from 'components/Avatar';
 import StatisticalCpn from 'components/Statistical';
 import request from 'utils/http';
 
-const ModalDetailRanking = ({ userInfo, closeModal }) => {
+const ModalUserInfo = ({ userInfo, closeModal }) => {
     const [addFriend, setAddFriend] = useState(userInfo.isExist);
     const [addFriendText, setAddFriendText] = useState(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
+    const [fetchUser, setFetchUser] = useState(userInfo);
+
     useEffect(() => {
         setAddFriendText(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
     }, [addFriend]);
 
+    useEffect(() => {
+        const getUserInfo = async () => {
+            try {
+                const res = await request.get('users/' + userInfo.id);
+                setFetchUser(res.data.data);
+            } catch (error) {
+                notification.error({ message: 'Lỗi hệ thống!', description: error.message });
+            }
+        
+        };
+
+        getUserInfo();
+    }, []);
+
     const handlerFollow = async () => {
         if (!addFriend) {
             try {
-                await request.post('follows', { followed_id: userInfo.id });
+                await request.post('follows', { followed_id: fetchUser.id });
                 notification.success({ message: 'Đã theo dõi' });
             } catch (error) {
                 notification.error({ message: 'Lỗi hệ thống!', description: error.message });
             }
         } else {
             try {
-                await request.delete('follows/' + userInfo.id);
+                await request.delete('follows/' + fetchUser.id);
                 notification.success({ message: 'Hủy theo dõi thành công' });
             } catch (error) {
                 notification.error({ message: 'Lỗi hệ thống!', description: error.message });
@@ -42,28 +58,28 @@ const ModalDetailRanking = ({ userInfo, closeModal }) => {
             <Row className={styles.personalInformationWrapper}>
                 <Col xl={6} lg={8} md={8}>
                     <div className={styles.avatarWrapper}>
-                        <AvatarCpn src={userInfo.avatar} fullName={userInfo.name} size={100} />
+                        <AvatarCpn src={fetchUser.avatar} fullName={fetchUser.name} size={100} />
                     </div>
                 </Col>
                 <Col className={styles.inforWrapper} xl={12} lg={12} md={16}>
-                    <Row className={styles.titleProfile}>{userInfo.name}</Row>
+                    <Row className={styles.titleProfile}>{fetchUser.name}</Row>
                     <Row className={styles.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faCakeCandles} />
                         </span>
-                        {userInfo.birth}
+                        {fetchUser.birth}
                     </Row>
                     <Row className={styles.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faClock} />
                         </span>
-                        Đã tham gia vào {userInfo.start_date}
+                        Đã tham gia vào {fetchUser.start_date}
                     </Row>
                     <Row className={styles.userInfo}>
                         <span>
                             <FontAwesomeIcon icon={faUserGroup}></FontAwesomeIcon>
                         </span>
-                        {userInfo.follower} Người đang theo dõi
+                        {fetchUser.follower} Người đang theo dõi
                     </Row>
                 </Col>
                 <Col xl={6} lg={4} md={24}>
@@ -88,7 +104,7 @@ const ModalDetailRanking = ({ userInfo, closeModal }) => {
                 <Col span={12}>
                     <StatisticalCpn
                         title="Bài học"
-                        total={userInfo.total_lecture}
+                        total={fetchUser.total_lecture}
                         img="/images/learning.png"
                         height={30}
                     />
@@ -96,7 +112,7 @@ const ModalDetailRanking = ({ userInfo, closeModal }) => {
                 <Col span={12}>
                     <StatisticalCpn
                         title="Bài tập"
-                        total={userInfo.total_question}
+                        total={fetchUser.total_question}
                         img="/images/practice.png"
                         height={30}
                     />
@@ -104,10 +120,10 @@ const ModalDetailRanking = ({ userInfo, closeModal }) => {
             </Row>
             <Row gutter={[16, 16]}>
                 <Col span={12}>
-                    <StatisticalCpn title="Tổng điểm" total={userInfo.score} img="/images/score.png" height={30} />
+                    <StatisticalCpn title="Tổng điểm" total={fetchUser.score} img="/images/score.png" height={30} />
                 </Col>
                 <Col span={12}>
-                    <StatisticalCpn title="Xếp hạng" total={userInfo.ranking} img="/images/ranking.png" height={30} />
+                    <StatisticalCpn title="Xếp hạng" total={fetchUser.ranking} img="/images/ranking.png" height={30} />
                 </Col>
             </Row>
             <div className={styles.closeButton} onClick={closeModal}>
@@ -117,4 +133,4 @@ const ModalDetailRanking = ({ userInfo, closeModal }) => {
     );
 };
 
-export default memo(ModalDetailRanking);
+export default memo(ModalUserInfo);

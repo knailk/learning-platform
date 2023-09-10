@@ -1,9 +1,10 @@
 import style from './PersonalInfomation.module.scss';
 import common_style from './style.module.scss';
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import dayjs from 'dayjs';
-import { Row, Col, notification, DatePicker, Space } from 'antd';
+import { Row, Col, notification, DatePicker, Space, Upload } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AvatarCpn from '../../../components/Avatar';
 import {
     faCakeCandles,
     faUser,
@@ -21,13 +22,21 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+const getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+};
+
 const PersonalInformation = (props) => {
     const { profile } = props;
     const [nameValue, setNameValue] = useState('');
     const [birthValue, setBirthValue] = useState(profile.birth);
     const [phoneNumber, setPhoneNumber] = useState(profile.phone);
+    const [loadingProfile, setLoadingProfile] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
-    console.log(profile);
+    const [imageUrl, setImageUrl] = useState();
+
     const handleEditButton = async () => {
         if (editProfile) {
             try {
@@ -50,15 +59,61 @@ const PersonalInformation = (props) => {
         setNameValue(e.target.value);
     };
 
+    const handleUploadAvatar = useCallback(
+        (info) => {
+            if (info.file.status === 'uploading') {
+                setLoadingProfile(true);
+                return;
+            }
+            if (info.file.status === 'done') {
+                getBase64(info.file.originFileObj, async (url) => {
+                    setLoadingProfile(true);
+                    try {
+                        const res = await request.post('user/avatar', {
+                            file_data: url,
+                            file_name: info.file.name,
+                        });
+                        setImageUrl(res?.avatar);
+                    } catch (error) {
+                        console.log('handleUploadAvatar()', error);
+                    } finally {
+                        setLoadingProfile(false);
+                    }
+                });
+            }
+        },
+        [imageUrl],
+    );
+
     return (
         <>
             <Row className={style.personalInformationWrapper}>
                 <Col xl={6} lg={8} md={8}>
                     <div className={style.avatarWrapper}>
-                        <div className={style.editAvatarButton}>
-                            <FontAwesomeIcon icon={faPen} />
-                        </div>
-                        <img alt="Minh Toàn" src="images/avatar.png" />
+                        <Upload
+                            disabled={loadingProfile}
+                            maxCount={1}
+                            name="avatar"
+                            showUploadList={false}
+                            onChange={handleUploadAvatar}
+                            customRequest={({ onSuccess }) =>
+                                setTimeout(() => {
+                                    onSuccess('ok', null);
+                                }, 0)
+                            }
+                        >
+                            <div className={style.editAvatarButton}>
+                                <FontAwesomeIcon icon={faPen} />
+                            </div>
+                        </Upload>
+                        <AvatarCpn
+                            src={imageUrl || profile?.avatar}
+                            fullName={profile.name}
+                            size={180}
+                            style={{
+                                position: 'inherit',
+                            }}
+                        />
                     </div>
                 </Col>
                 <Col className={style.inforWrapper} xl={14} lg={12} md={16}>
