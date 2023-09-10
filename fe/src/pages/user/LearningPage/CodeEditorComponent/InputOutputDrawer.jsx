@@ -15,11 +15,16 @@ const InputOutputDrawer = ({ ...props }) => {
                 <div className={styles.output}>
                     <textarea value={output} disabled></textarea>
                 </div>
-                <div className={styles.input}>
+                {/* <div className={styles.input}>
                     <textarea placeholder="Input here"></textarea>
-                </div>
-                <div onClick={getEditorValue} className={styles.executeBtn}>
+                </div> */}
+                {/* <div onClick={getEditorValue} className={styles.executeBtn}>
                     Compile and Execute
+                </div> */}
+                <div className={styles.executeBtnWrapper}>
+                    <div type="primary" onClick={getEditorValue} className={styles.executeBtn}>
+                        Run
+                    </div>
                 </div>
             </div>
         </>

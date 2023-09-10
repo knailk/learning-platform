@@ -42,20 +42,7 @@ const CodeEditorIcon = () => {
                 closable={false}
                 push={false}
             >
-                <PythonEditor handleEditorDidMount={handleEditorDidMount} />
-                <div type="primary" onClick={showInputOutputDrawer} className={styles.terminalIcon}>
-                    <img src="/images/terminal.png" alt="terminal" />
-                </div>
-            </Drawer>
-            <Drawer
-                headerStyle={{ display: 'none' }}
-                width={400}
-                closable={false}
-                open={inputOutputDrawer}
-                placement="left"
-                mask={false}
-                push={false}
-            >
+                <PythonEditor handleEditorDidMount={handleEditorDidMount} height="70%" />
                 <InputOutputDrawer editorRef={editorRef} />
             </Drawer>
         </>
