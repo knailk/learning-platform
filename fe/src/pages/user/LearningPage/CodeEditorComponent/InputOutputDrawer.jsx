@@ -4,9 +4,10 @@ import axios from 'axios';
 
 const InputOutputDrawer = ({ ...props }) => {
     const [output, setOutput] = useState('');
+    const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
     const getEditorValue = () => {
         const code = props.editorRef.current.getValue();
-        axios.post('http://localhost:80/python', { code }).then((data) => setOutput(data.data.data));
+        axios.post('http://localhost:80/python', { code, user_id: userId }).then((data) => setOutput(data.data.data));
     };
     return (
         <>

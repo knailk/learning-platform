@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { memo, useState, useRef } from 'react';
 import styles from './style.module.scss';
 import { Drawer, Space } from 'antd';
-import PythonEditor from './PythonEditor';
+import PythonEditor from 'components/PythonEditor';
 import InputOutputDrawer from './InputOutputDrawer';
 
 const CodeEditorIcon = () => {

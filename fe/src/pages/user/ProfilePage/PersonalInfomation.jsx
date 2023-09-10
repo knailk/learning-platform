@@ -78,7 +78,6 @@ const PersonalInformation = (props) => {
                         setImageUrl(res?.avatar);
                         const temp_file = info.file;
                         temp_file.preview = URL.createObjectURL(info.file.originFileObj);
-                        console.log(temp_file.preview);
                         setAvatar(temp_file);
                     } catch (error) {
                         console.log('handleUploadAvatar()', error);

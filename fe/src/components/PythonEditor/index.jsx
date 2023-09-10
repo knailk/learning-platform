@@ -1,5 +1,5 @@
 // import clsx from 'clsx';
-import React, { memo, useRef, useState } from 'react';
+import React, { memo } from 'react';
 import styles from './style.module.scss';
 import { Editor } from '@monaco-editor/react';
 const PythonEditor = ({ handleEditorDidMount, height = '100%' }) => {

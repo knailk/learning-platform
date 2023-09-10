@@ -7,16 +7,16 @@ import { faCakeCandles, faUserGroup, faClock } from '@fortawesome/free-solid-svg
 import AvatarCpn from 'components/Avatar';
 import StatisticalCpn from 'components/Statistical';
 import request from 'utils/http';
-// import { ProfileContext } from 'pages/user/ProfilePage/ProfilePage';
+import { ProfileContext } from 'pages/user/ProfilePage/ProfilePage';
 
 const ModalUserInfo = ({ userInfo, closeModal }) => {
     const [addFriend, setAddFriend] = useState(userInfo.followed);
     const [addFriendText, setAddFriendText] = useState(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
     const [fetchUser, setFetchUser] = useState(userInfo);
-    // const setIsAdd = useContext(ProfileContext);
+    const setIsAdd = useContext(ProfileContext);
     useEffect(() => {
         setAddFriendText(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
-        // setIsAdd(addFriend);
+        setIsAdd(addFriend);
     }, [addFriend]);
 
     useEffect(() => {

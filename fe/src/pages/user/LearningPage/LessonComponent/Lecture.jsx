@@ -5,8 +5,6 @@ import clsx from 'clsx';
 
 const Lecture = ({ ...props }) => {
     const data = props.data;
-    console.log('mount');
-    console.log(data);
     return (
         <>
             {data.lectures && (

@@ -22,3 +22,5 @@ cert/
 game/Library
 
 node_modules
+/fe/public/code
+/fe/public/code
