@@ -23,6 +23,10 @@ func main() {
 		entity.Lecture{},
 		entity.QuestionAnswer{},
 		entity.LessonAnswer{},
+
+		entity.Problem{},
+		entity.Solution{},
+		entity.Submission{},
 	)
 
 	g.ApplyInterface(func(repository.UserRepository) {}, entity.User{})

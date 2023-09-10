@@ -22,8 +22,11 @@ var (
 	Lecture        *lecture
 	Lesson         *lesson
 	LessonAnswer   *lessonAnswer
+	Problem        *problem
 	Question       *question
 	QuestionAnswer *questionAnswer
+	Solution       *solution
+	Submission     *submission
 	User           *user
 	UserToken      *userToken
 )
@@ -35,8 +38,11 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Lecture = &Q.Lecture
 	Lesson = &Q.Lesson
 	LessonAnswer = &Q.LessonAnswer
+	Problem = &Q.Problem
 	Question = &Q.Question
 	QuestionAnswer = &Q.QuestionAnswer
+	Solution = &Q.Solution
+	Submission = &Q.Submission
 	User = &Q.User
 	UserToken = &Q.UserToken
 }
@@ -49,8 +55,11 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Lecture:        newLecture(db, opts...),
 		Lesson:         newLesson(db, opts...),
 		LessonAnswer:   newLessonAnswer(db, opts...),
+		Problem:        newProblem(db, opts...),
 		Question:       newQuestion(db, opts...),
 		QuestionAnswer: newQuestionAnswer(db, opts...),
+		Solution:       newSolution(db, opts...),
+		Submission:     newSubmission(db, opts...),
 		User:           newUser(db, opts...),
 		UserToken:      newUserToken(db, opts...),
 	}
@@ -64,8 +73,11 @@ type Query struct {
 	Lecture        lecture
 	Lesson         lesson
 	LessonAnswer   lessonAnswer
+	Problem        problem
 	Question       question
 	QuestionAnswer questionAnswer
+	Solution       solution
+	Submission     submission
 	User           user
 	UserToken      userToken
 }
@@ -80,8 +92,11 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Lecture:        q.Lecture.clone(db),
 		Lesson:         q.Lesson.clone(db),
 		LessonAnswer:   q.LessonAnswer.clone(db),
+		Problem:        q.Problem.clone(db),
 		Question:       q.Question.clone(db),
 		QuestionAnswer: q.QuestionAnswer.clone(db),
+		Solution:       q.Solution.clone(db),
+		Submission:     q.Submission.clone(db),
 		User:           q.User.clone(db),
 		UserToken:      q.UserToken.clone(db),
 	}
@@ -103,8 +118,11 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Lecture:        q.Lecture.replaceDB(db),
 		Lesson:         q.Lesson.replaceDB(db),
 		LessonAnswer:   q.LessonAnswer.replaceDB(db),
+		Problem:        q.Problem.replaceDB(db),
 		Question:       q.Question.replaceDB(db),
 		QuestionAnswer: q.QuestionAnswer.replaceDB(db),
+		Solution:       q.Solution.replaceDB(db),
+		Submission:     q.Submission.replaceDB(db),
 		User:           q.User.replaceDB(db),
 		UserToken:      q.UserToken.replaceDB(db),
 	}
@@ -116,8 +134,11 @@ type queryCtx struct {
 	Lecture        ILectureDo
 	Lesson         ILessonDo
 	LessonAnswer   ILessonAnswerDo
+	Problem        IProblemDo
 	Question       IQuestionDo
 	QuestionAnswer IQuestionAnswerDo
+	Solution       ISolutionDo
+	Submission     ISubmissionDo
 	User           IUserDo
 	UserToken      IUserTokenDo
 }
@@ -129,8 +150,11 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Lecture:        q.Lecture.WithContext(ctx),
 		Lesson:         q.Lesson.WithContext(ctx),
 		LessonAnswer:   q.LessonAnswer.WithContext(ctx),
+		Problem:        q.Problem.WithContext(ctx),
 		Question:       q.Question.WithContext(ctx),
 		QuestionAnswer: q.QuestionAnswer.WithContext(ctx),
+		Solution:       q.Solution.WithContext(ctx),
+		Submission:     q.Submission.WithContext(ctx),
 		User:           q.User.WithContext(ctx),
 		UserToken:      q.UserToken.WithContext(ctx),
 	}
