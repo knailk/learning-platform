@@ -1,6 +1,6 @@
 import style from './PersonalInfomation.module.scss';
 import common_style from './style.module.scss';
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { Row, Col, notification, DatePicker, Space, Upload } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,6 +37,7 @@ const PersonalInformation = (props) => {
     const [loadingProfile, setLoadingProfile] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
     const [imageUrl, setImageUrl] = useState();
+    const [avatar, setAvatar] = useState('');
 
     const handleEditButton = async () => {
         if (editProfile) {
@@ -75,6 +76,10 @@ const PersonalInformation = (props) => {
                             file_name: info.file.name,
                         });
                         setImageUrl(res?.avatar);
+                        const temp_file = info.file;
+                        temp_file.preview = URL.createObjectURL(info.file.originFileObj);
+                        console.log(temp_file.preview);
+                        setAvatar(temp_file);
                     } catch (error) {
                         console.log('handleUploadAvatar()', error);
                     } finally {
@@ -85,6 +90,12 @@ const PersonalInformation = (props) => {
         },
         [imageUrl],
     );
+
+    useEffect(() => {
+        return () => {
+            avatar && URL.revokeObjectURL(avatar.preview);
+        };
+    }, [avatar]);
 
     return (
         <>
@@ -108,7 +119,7 @@ const PersonalInformation = (props) => {
                             </div>
                         </Upload>
                         <AvatarCpn
-                            src={imageUrl || profile?.avatar}
+                            src={avatar.preview || profile?.avatar}
                             fullName={profile.name}
                             size={180}
                             style={{
