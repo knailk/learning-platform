@@ -6,7 +6,6 @@ import ModalUserInfo from 'components/UserInfo';
 const Follow = (props) => {
     const { user } = props;
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -32,7 +31,7 @@ const Follow = (props) => {
                 </Row>
             </div>
             <Modal title="" footer="" open={isModalOpen} closeIcon={false} onCancel={handleCancel}>
-                <ModalUserInfo userInfo={({ ...user, isExist: true })} closeModal={handleCancel} />
+                <ModalUserInfo userInfo={{ ...user, isExist: true }} closeModal={handleCancel} />
             </Modal>
         </>
     );

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import styles from './style.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,14 +7,16 @@ import { faCakeCandles, faUserGroup, faClock } from '@fortawesome/free-solid-svg
 import AvatarCpn from 'components/Avatar';
 import StatisticalCpn from 'components/Statistical';
 import request from 'utils/http';
+import { ProfileContext } from 'pages/user/ProfilePage/ProfilePage';
 
 const ModalUserInfo = ({ userInfo, closeModal }) => {
     const [addFriend, setAddFriend] = useState(userInfo.isExist);
     const [addFriendText, setAddFriendText] = useState(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
     const [fetchUser, setFetchUser] = useState(userInfo);
-
+    const setIsAdd = useContext(ProfileContext);
     useEffect(() => {
         setAddFriendText(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
+        setIsAdd(addFriend);
     }, [addFriend]);
 
     useEffect(() => {
@@ -25,7 +27,6 @@ const ModalUserInfo = ({ userInfo, closeModal }) => {
             } catch (error) {
                 notification.error({ message: 'Lỗi hệ thống!', description: error.message });
             }
-        
         };
 
         getUserInfo();
