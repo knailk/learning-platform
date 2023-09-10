@@ -43,8 +43,12 @@ func (m *UserModel) GetRank(ctx context.Context, userID uuid.UUID) ([]*entity.Us
 	return users, nil
 }
 
-func (m *UserModel) GetUserInfo(ctx context.Context, userID uuid.UUID) (response.UserInfo, error) {
-	return m.Repo.User.WithContext(ctx).GetUserInfoByID(userID)
+func (m *UserModel) GetUserInfo(ctx context.Context, userID uuid.UUID, currentUserID uuid.UUID) (response.UserInfo, error) {
+	return m.Repo.User.WithContext(ctx).GetUserInfoByID(userID, currentUserID)
+}
+
+func (m *UserModel) GetUsers(ctx context.Context, query string) ([]*entity.User, error) {
+	return m.Repo.User.WithContext(ctx).Where(m.Repo.User.Name.Like("%" + query + "%")).Or(m.Repo.User.Email.Like("%" + query + "%")).Limit(10).Find()
 }
 
 func (m *UserModel) UpdateAvatar(ctx context.Context, req request.UpdateAvatarRequest) (user *entity.User, err error) {

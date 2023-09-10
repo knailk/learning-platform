@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AvatarCpn from '../../../components/Avatar';
 import {
     faCakeCandles,
-    faUser,
+    faEnvelope,
     faUserPen,
     faPen,
     faPhone,
@@ -140,9 +140,9 @@ const PersonalInformation = (props) => {
                     </Row>
                     <Row className={common_style.userInfo}>
                         <span>
-                            <FontAwesomeIcon icon={faUser} />
+                            <FontAwesomeIcon icon={faEnvelope} />
                         </span>
-                        {profile.id}
+                        {profile.email}
                     </Row>
                     <Row className={common_style.userInfo}>
                         <span>

@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect, createContext } from 'react';
 import { Row, Col, Spin, notification } from 'antd';
+import { Helmet } from 'react-helmet';
 import PersonalInformation from './PersonalInfomation';
 import Statistical from './Statistical/Statistical';
 import Friend from './Friend/Friend';
@@ -12,7 +13,7 @@ const Profile = () => {
     const [profile, setProfile] = useState(false);
     const [follows, setFollows] = useState(false);
     const [isAdd, setIsAdd] = useState(false);
-    console.log(isAdd);
+
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -43,26 +44,31 @@ const Profile = () => {
 
     if (profile && follows) {
         return (
-            <ProfileContext.Provider value={setIsAdd}>
-                <div className={common_style.content}>
-                    <Row style={{ width: '100%' }}>
-                        <PersonalInformation profile={profile} follows={follows} />
-                    </Row>
-                    <Row>
-                        <Col span={16}>
-                            <Row>
-                                <Statistical profile={profile} />
-                            </Row>
-                            <Row>
-                                <FindFriend />
-                            </Row>
-                        </Col>
-                        <Col span={8}>
-                            <Friend showTittle={true} follows={follows} />
-                        </Col>
-                    </Row>
-                </div>
-            </ProfileContext.Provider>
+            <>
+                <Helmet>
+                    <title>Trang cá nhân</title>
+                </Helmet>
+                <ProfileContext.Provider value={setIsAdd}>
+                    <div className={common_style.content}>
+                        <Row style={{ width: '100%' }}>
+                            <PersonalInformation profile={profile} follows={follows} />
+                        </Row>
+                        <Row>
+                            <Col span={16}>
+                                <Row>
+                                    <Statistical profile={profile} />
+                                </Row>
+                                <Row>
+                                    <FindFriend />
+                                </Row>
+                            </Col>
+                            <Col span={8}>
+                                <Friend showTittle={true} follows={follows} />
+                            </Col>
+                        </Row>
+                    </div>
+                </ProfileContext.Provider>
+            </>
         );
     } else {
         return <Spin />;

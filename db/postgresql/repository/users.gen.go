@@ -200,7 +200,7 @@ type IUserDo interface {
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetUserInfoByID(id uuid.UUID) (result response.UserInfo, err error)
+	GetUserInfoByID(id1 uuid.UUID, id2 uuid.UUID) (result response.UserInfo, err error)
 }
 
 // SELECT U.*,
@@ -208,47 +208,50 @@ type IUserDo interface {
 //	F.FOLLOWER,
 //	Q.TOTAL_QUESTION,
 //	L.TOTAL_LECTURE,
-//	R.RANKING
+//	R.RANKING,
+//	CASE
+//	    WHEN F1.following_user_id IS NOT NULL THEN 1 ELSE 0 END AS FOLLOWED,
+//	CASE
+//	    WHEN F2.followed_user_id IS NOT NULL THEN 1 ELSE 0 END AS FOLLOWING
 //
 // FROM USERS U
-// LEFT JOIN
 //
-//	(SELECT FOLLOWED_USER_ID,
-//			COUNT(*) AS FOLLOWER
-//		FROM FOLLOWS
-//		GROUP BY FOLLOWED_USER_ID) F ON U.ID = F.FOLLOWED_USER_ID
+//	   LEFT JOIN (
+//	       SELECT followed_user_id, COUNT(*) AS FOLLOWER
+//			   FROM FOLLOWS
+//			   GROUP BY followed_user_id) F ON U.ID = F.followed_user_id
+//	   LEFT JOIN (
+//	       SELECT LA.USER_ID, COUNT(*) AS TOTAL_QUESTION FROM LESSON_ANSWERS LA
+//	           JOIN LESSONS LE ON LA.LESSON_ID = LE.ID
+//	       WHERE LE.TYPE = 'practice'
+//	       GROUP BY LA.USER_ID) Q ON U.ID = Q.USER_ID
+//	   LEFT JOIN (
+//	       SELECT LA.USER_ID,
+//	           COUNT(*) AS TOTAL_LECTURE
+//	       FROM LESSON_ANSWERS LA
+//	           JOIN LESSONS LE ON LA.LESSON_ID = LE.ID
+//	       WHERE LE.TYPE = 'lecture'
+//	       GROUP BY LA.USER_ID) L ON U.ID = L.USER_ID
+//	   LEFT JOIN (
+//	       SELECT ID,
+//	           RANK() OVER (
+//	               ORDER BY SCORE DESC
+//	           ) AS RANKING
+//	       FROM USERS) R ON U.ID = R.ID
+//	   LEFT JOIN FOLLOWS F1 ON U.ID = F1.followed_user_id
+//	   AND F1.following_user_id = @id2
+//	   LEFT JOIN FOLLOWS F2 ON U.ID = F2.following_user_id
+//	   AND F2.followed_user_id = @id2
 //
-// LEFT JOIN
-//
-//	(SELECT LA.USER_ID,
-//			COUNT(*) AS TOTAL_QUESTION
-//		FROM LESSON_ANSWERS LA
-//		JOIN LESSONS LE ON LA.LESSON_ID = LE.ID
-//		WHERE LE.TYPE = 'practice'
-//		GROUP BY LA.USER_ID) Q ON U.ID = Q.USER_ID
-//
-// LEFT JOIN
-//
-//	(SELECT LA.USER_ID,
-//			COUNT(*) AS TOTAL_LECTURE
-//		FROM LESSON_ANSWERS LA
-//		JOIN LESSONS LE ON LA.LESSON_ID = LE.ID
-//		WHERE LE.TYPE = 'lecture'
-//		GROUP BY LA.USER_ID) L ON U.ID = L.USER_ID
-//
-// LEFT JOIN
-//
-//	(SELECT ID,
-//			RANK() OVER (ORDER BY SCORE DESC) AS RANKING
-//		FROM USERS) R ON U.ID = R.ID
-//
-// WHERE U.ID = @id
-func (u userDo) GetUserInfoByID(id uuid.UUID) (result response.UserInfo, err error) {
+// WHERE U.ID = @id1
+func (u userDo) GetUserInfoByID(id1 uuid.UUID, id2 uuid.UUID) (result response.UserInfo, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
-	params = append(params, id)
-	generateSQL.WriteString("SELECT U.*, F.FOLLOWER, Q.TOTAL_QUESTION, L.TOTAL_LECTURE, R.RANKING FROM USERS U LEFT JOIN (SELECT FOLLOWED_USER_ID, COUNT(*) AS FOLLOWER FROM FOLLOWS GROUP BY FOLLOWED_USER_ID) F ON U.ID = F.FOLLOWED_USER_ID LEFT JOIN (SELECT LA.USER_ID, COUNT(*) AS TOTAL_QUESTION FROM LESSON_ANSWERS LA JOIN LESSONS LE ON LA.LESSON_ID = LE.ID WHERE LE.TYPE = 'practice' GROUP BY LA.USER_ID) Q ON U.ID = Q.USER_ID LEFT JOIN (SELECT LA.USER_ID, COUNT(*) AS TOTAL_LECTURE FROM LESSON_ANSWERS LA JOIN LESSONS LE ON LA.LESSON_ID = LE.ID WHERE LE.TYPE = 'lecture' GROUP BY LA.USER_ID) L ON U.ID = L.USER_ID LEFT JOIN (SELECT ID, RANK() OVER (ORDER BY SCORE DESC) AS RANKING FROM USERS) R ON U.ID = R.ID WHERE U.ID = ? ")
+	params = append(params, id2)
+	params = append(params, id2)
+	params = append(params, id1)
+	generateSQL.WriteString("SELECT U.*, F.FOLLOWER, Q.TOTAL_QUESTION, L.TOTAL_LECTURE, R.RANKING, CASE WHEN F1.following_user_id IS NOT NULL THEN 1 ELSE 0 END AS FOLLOWED, CASE WHEN F2.followed_user_id IS NOT NULL THEN 1 ELSE 0 END AS FOLLOWING FROM USERS U LEFT JOIN ( SELECT followed_user_id, COUNT(*) AS FOLLOWER FROM FOLLOWS GROUP BY followed_user_id) F ON U.ID = F.followed_user_id LEFT JOIN ( SELECT LA.USER_ID, COUNT(*) AS TOTAL_QUESTION FROM LESSON_ANSWERS LA JOIN LESSONS LE ON LA.LESSON_ID = LE.ID WHERE LE.TYPE = 'practice' GROUP BY LA.USER_ID) Q ON U.ID = Q.USER_ID LEFT JOIN ( SELECT LA.USER_ID, COUNT(*) AS TOTAL_LECTURE FROM LESSON_ANSWERS LA JOIN LESSONS LE ON LA.LESSON_ID = LE.ID WHERE LE.TYPE = 'lecture' GROUP BY LA.USER_ID) L ON U.ID = L.USER_ID LEFT JOIN ( SELECT ID, RANK() OVER ( ORDER BY SCORE DESC ) AS RANKING FROM USERS) R ON U.ID = R.ID LEFT JOIN FOLLOWS F1 ON U.ID = F1.followed_user_id AND F1.following_user_id = ? LEFT JOIN FOLLOWS F2 ON U.ID = F2.following_user_id AND F2.followed_user_id = ? WHERE U.ID = ? ")
 
 	var executeSQL *gorm.DB
 	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result) // ignore_security_alert
