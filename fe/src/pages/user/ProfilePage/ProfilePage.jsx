@@ -43,7 +43,7 @@ const Profile = () => {
         return (
             <div className={common_style.content}>
                 <Row style={{ width: '100%' }}>
-                    <PersonalInformation profile={profile} />
+                    <PersonalInformation profile={profile} follows={follows}/>
                 </Row>
                 <Row>
                     <Col span={16}>

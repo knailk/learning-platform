@@ -13,6 +13,7 @@ import {
     faPhone,
     faClock,
     faFloppyDisk,
+    faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
 import request from 'utils/http';
@@ -29,7 +30,7 @@ const getBase64 = (img, callback) => {
 };
 
 const PersonalInformation = (props) => {
-    const { profile } = props;
+    const { profile, follows } = props;
     const [nameValue, setNameValue] = useState('');
     const [birthValue, setBirthValue] = useState(profile.birth);
     const [phoneNumber, setPhoneNumber] = useState(profile.phone);
@@ -176,6 +177,12 @@ const PersonalInformation = (props) => {
                             <FontAwesomeIcon icon={faClock} />
                         </span>
                         Đã tham gia vào {formatDate(profile.created_at)}
+                    </Row>
+                    <Row className={common_style.userInfo}>
+                        <span>
+                            <FontAwesomeIcon icon={faUserGroup}></FontAwesomeIcon>
+                        </span>
+                        Đang theo dõi {follows.followed_users.length}/{follows.following_users.length} Người theo dõi
                     </Row>
                 </Col>
                 <Col xl={4} lg={4} md={24}>

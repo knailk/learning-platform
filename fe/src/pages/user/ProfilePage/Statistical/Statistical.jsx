@@ -1,10 +1,26 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import style from './Statistical.module.scss';
-import { Row, Col } from 'antd';
+import { Row, Col, notification } from 'antd';
 import common_style from '../style.module.scss';
+import request from 'utils/http';
 
 const Statistical = (props) => {
     const { profile } = props;
+    const [fetchUser, setFetchUser] = useState(profile);
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+            try {
+                const res = await request.get('users/' + profile.id);
+                setFetchUser(res.data.data);
+            } catch (error) {
+                notification.error({ message: 'Lỗi hệ thống!', description: error.message });
+            }
+        
+        };
+
+        getUserInfo();
+    }, []);
     return (
         <>
             <div className={style.statisticalWrapper}>
@@ -23,7 +39,7 @@ const Statistical = (props) => {
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
-                                        <h1>Bài học: {profile.total_lecture}</h1>
+                                        <h1>Bài học: {fetchUser.total_lecture}</h1>
                                     </Row>
                                 </Col>
                             </Row>
@@ -40,12 +56,11 @@ const Statistical = (props) => {
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
-                                        <h1>Bài tập: {profile.total_question}</h1>
+                                        <h1>Bài tập: {fetchUser.total_question}</h1>
                                     </Row>
                                 </Col>
                             </Row>
                         </div>
-                        {/* Da hoan thanh 50 bai tap luyen */}
                     </Col>
                     <Col xs={24} sm={12} lg={12}>
                         <div className={style.detail}>
@@ -58,7 +73,7 @@ const Statistical = (props) => {
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
-                                        <h1>Số điểm: {profile.score}</h1>
+                                        <h1>Số điểm: {fetchUser.score}</h1>
                                     </Row>
                                 </Col>
                             </Row>
@@ -76,7 +91,7 @@ const Statistical = (props) => {
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
-                                        <h1>Xếp hạng: {profile.ranking}</h1>
+                                        <h1>Xếp hạng: {fetchUser.ranking}</h1>
                                     </Row>
                                 </Col>
                             </Row>
