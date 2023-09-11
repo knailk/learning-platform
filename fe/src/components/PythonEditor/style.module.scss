@@ -1,0 +1,8 @@
+.codeEditor {
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    padding: 0px;
+    * {
+        font-family: Consolas, 'Courier New', monospace;
+    }
+}

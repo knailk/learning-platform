@@ -31,8 +31,8 @@ const SideBar = () => {
             <div className={style.sideBar}>
                 <div className={style.logo}>
                     <img
-                        src="https://d35aaqx5ub95lt.cloudfront.net/vendor/70a4be81077a8037698067f583816ff9.svg"
-                        alt="asd"
+                        src="https://softenmind.com/images/logo.svg"
+                        alt="logo"
                     />
                 </div>
                 <div className="nav"></div>

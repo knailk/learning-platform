@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/knailk/learning-platform/app/controllers/request"
-	"github.com/knailk/learning-platform/app/controllers/response"
+	"github.com/knailk/learning-platform/app/domain/entity"
 	"github.com/knailk/learning-platform/app/models"
 	"github.com/knailk/learning-platform/pkg/log"
 )
@@ -226,7 +226,7 @@ func (ctrl *AuthController) Refresh(ctx *gin.Context) {
 }
 
 // GetCurrentAuth returns the current auth
-func (ctrl *AuthController) GetCurrentAuth(ctx *gin.Context) (*response.UserInfo, error) {
+func (ctrl *AuthController) GetCurrentAuth(ctx *gin.Context) (*entity.User, error) {
 	token, err := ctrl.GetAccessToken(ctx)
 	if err != nil {
 		return nil, err

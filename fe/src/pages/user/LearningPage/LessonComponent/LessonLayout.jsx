@@ -36,7 +36,6 @@ const LectureLayout = ({ ...props }) => {
         try {
             const response = await request.get('lessons/' + lessonId);
             const data = response.data.data;
-            console.log('data', data);
             lessonType === 'lecture' ? setLecture(data) : setQuestions(data.questions);
             setLengthSlide(lessonType === 'lecture' ? data.lectures.length : data.questions.length);
         } catch (error) {
@@ -85,7 +84,6 @@ const LectureLayout = ({ ...props }) => {
         }
     };
     const handleCheckButton = (isSkip = false) => {
-        console.log(slideNumber);
         const currentQuestion = questions[slideNumber];
         let score = 0;
         let userAnswer = {};
@@ -307,12 +305,10 @@ const LectureLayout = ({ ...props }) => {
             });
         }
     };
-    console.log(questionAnswers);
     const confirm = (isCheck = false) => {
         if (isCheck) {
             props.nextState();
             //send score to server
-            console.log(questionAnswers);
             sendScore(lessonId, totalScore, questionAnswers);
         }
         props.onClose();

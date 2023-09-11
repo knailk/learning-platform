@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { memo, useState, useRef } from 'react';
 import styles from './style.module.scss';
 import { Drawer, Space } from 'antd';
-import PythonEditor from './PythonEditor';
+import PythonEditor from 'components/PythonEditor';
 import InputOutputDrawer from './InputOutputDrawer';
 
 const CodeEditorIcon = () => {
@@ -42,20 +42,7 @@ const CodeEditorIcon = () => {
                 closable={false}
                 push={false}
             >
-                <PythonEditor handleEditorDidMount={handleEditorDidMount} />
-                <div type="primary" onClick={showInputOutputDrawer} className={styles.terminalIcon}>
-                    <img src="/images/terminal.png" alt="terminal" />
-                </div>
-            </Drawer>
-            <Drawer
-                headerStyle={{ display: 'none' }}
-                width={400}
-                closable={false}
-                open={inputOutputDrawer}
-                placement="left"
-                mask={false}
-                push={false}
-            >
+                <PythonEditor handleEditorDidMount={handleEditorDidMount} height="70%" />
                 <InputOutputDrawer editorRef={editorRef} />
             </Drawer>
         </>

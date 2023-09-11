@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import style from '../style.module.scss';
 import { Row, Col, Modal } from 'antd';
 import AvatarCpn from '../../../../components/Avatar';
-import ModalDetailRanking from '../ModalDetailRanking';
+import ModalUserInfo from 'components/UserInfo';
 const TopThree = ({ ...props }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
@@ -13,7 +13,6 @@ const TopThree = ({ ...props }) => {
     };
 
     const data = props.data;
-    console.log(data);
     return (
         <>
             <Row
@@ -41,7 +40,7 @@ const TopThree = ({ ...props }) => {
                 <h3>{data.score} Điểm</h3>
             </Row>
             <Modal title="" footer="" open={isModalOpen} closeIcon={false}>
-                <ModalDetailRanking userInfo={data} closeModal={handleCancel} />
+                <ModalUserInfo userInfo={data} closeModal={handleCancel} />
             </Modal>
         </>
     );

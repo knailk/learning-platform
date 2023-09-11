@@ -2,8 +2,9 @@ import React, { memo, useState } from 'react';
 import style from '../style.module.scss';
 import { Row, Col, Modal } from 'antd';
 import clsx from 'clsx';
-import AvatarCpn from '../../../../components/Avatar';
-import ModalDetailRanking from '../ModalDetailRanking';
+import AvatarCpn from 'components/Avatar';
+import ModalUserInfo from 'components/UserInfo';
+
 
 const OtherTop = ({ item, index, hasModal }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +23,6 @@ const OtherTop = ({ item, index, hasModal }) => {
                             <h1 style={{ fontSize: '26px' }}>{index}</h1>
                         </Col>
                         <Col className={style.avatar} span={4}>
-                            {/* <img src={item.avatar} alt="avatar" /> */}
                             <AvatarCpn src={item.avatar} fullName={item.name} size={60} />
                         </Col>
                         <Col span={12} className={style.information}>
@@ -38,7 +38,7 @@ const OtherTop = ({ item, index, hasModal }) => {
             </Row>
             {hasModal && (
                 <Modal title="" footer="" open={isModalOpen} closeIcon={false}>
-                    <ModalDetailRanking userInfo={item} closeModal={handleCancel} />
+                    <ModalUserInfo userInfo={item} closeModal={handleCancel} />
                 </Modal>
             )}
         </>

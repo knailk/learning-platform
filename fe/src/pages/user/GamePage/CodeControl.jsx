@@ -3,7 +3,7 @@ import { GridContextProvider, GridDropZone, GridItem, swap } from 'react-grid-dn
 import styles from './style.module.scss';
 import { Col, Row } from 'antd';
 import clsx from 'clsx';
-import PythonEditor from '../LearningPage/CodeEditorComponent/PythonEditor';
+import PythonEditor from 'components/PythonEditor';
 
 function CodeControl({ sendMessage, level }) {
     const [play, setPlay] = useState(false);

@@ -22,7 +22,6 @@ const LecturePractice = () => {
     const [showInCorrect, setShowInCorrect] = useState(false);
     const [questionAnswers, setQuestionAnswers] = useState([]);
     const lessonRender = (question, answer) => {
-        console.log(question);
         if (question.answer_type === FILL) {
             return (
                 <>
@@ -172,8 +171,6 @@ const LecturePractice = () => {
     const [lessonId, setLessonId] = useState(useParams().lesson_id);
     const [lectureData, setLectureData] = useState({ lectures: [] });
     const [questionData, setQuestions] = useState([]);
-    console.log(questionData);
-    console.log(dataUserAnswer);
     const [lessonType, setLessonType] = useState('');
     const dataNullLesson = '00000000-0000-0000-0000-000000000000';
     let style = {

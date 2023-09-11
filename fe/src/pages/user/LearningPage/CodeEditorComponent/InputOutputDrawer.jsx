@@ -4,9 +4,10 @@ import axios from 'axios';
 
 const InputOutputDrawer = ({ ...props }) => {
     const [output, setOutput] = useState('');
+    const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
     const getEditorValue = () => {
         const code = props.editorRef.current.getValue();
-        axios.post('http://localhost:80/python', { code }).then((data) => setOutput(data.data.data));
+        axios.post('http://localhost:80/python', { code, user_id: userId }).then((data) => setOutput(data.data.data));
     };
     return (
         <>
@@ -15,11 +16,16 @@ const InputOutputDrawer = ({ ...props }) => {
                 <div className={styles.output}>
                     <textarea value={output} disabled></textarea>
                 </div>
-                <div className={styles.input}>
+                {/* <div className={styles.input}>
                     <textarea placeholder="Input here"></textarea>
-                </div>
-                <div onClick={getEditorValue} className={styles.executeBtn}>
+                </div> */}
+                {/* <div onClick={getEditorValue} className={styles.executeBtn}>
                     Compile and Execute
+                </div> */}
+                <div className={styles.executeBtnWrapper}>
+                    <div type="primary" onClick={getEditorValue} className={styles.executeBtn}>
+                        Run
+                    </div>
                 </div>
             </div>
         </>

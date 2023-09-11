@@ -10,6 +10,7 @@ import MasterLayout from '../pages/theme/MasterLayout';
 import LecurePractice from 'pages/user/PracticePage/PracticeComponent/LecurePractice';
 import { SIDEBAR_TYPE } from './constant';
 import GamePage from 'pages/user/GamePage';
+import CodePractice from 'pages/user/CodePracticePage/CodePracticePage';
 
 export const ROUTERS = {
     MENU_NAV_BAR: [
@@ -100,6 +101,13 @@ export const ROUTERS = {
             inMenu: false,
             img: '',
             type: SIDEBAR_TYPE.MORE,
+        },
+        {
+            title: 'codePractice',
+            path: '/code-practice',
+            component: <CodePractice />,
+            layout: null,
+            inMenu: true,
         },
         // {
         //   title: "LOGIN",
