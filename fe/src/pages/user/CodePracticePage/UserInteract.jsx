@@ -1,53 +1,35 @@
-import { useRef, useState } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Tabs } from 'antd';
 import styles from './style.module.scss';
-import clsx from 'clsx';
 import PythonEditor from 'components/PythonEditor';
-import { Tabs } from 'antd';
-import axios from 'axios';
+import Splitter, { SplitDirection } from '@devbookhq/splitter';
+import TestCase from './TabComponent/TestCase';
 
-const UserInteract = () => {
-    const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
-    const [showConsole, setShowConsole] = useState(false);
-    const practiceId = 'Bai1';
-    const editorRef = useRef(null);
-    const handleEditorDidMount = (editor, monaco) => {
-        editorRef.current = editor;
-    };
-    const getEditorValue = () => {
-        const code = editorRef.current.getValue();
-        axios
-            .post('http://localhost:80/code-practice', { code, user_id: userId, practice_code_id: practiceId })
-            .then((data) => console.log(data));
-    };
+const UserInteract = ({ handleEditorDidMount }) => {
     const itemsTab = [
         {
             key: '1',
-            label: 'Tab 1',
-            children: <div className={styles.contentConsole}>Content of Tab Pane 1</div>,
+            label: 'Test case',
+            children: (
+                <div className={styles.contentConsole}>
+                    <TestCase />
+                </div>
+            ),
         },
         {
             key: '2',
-            label: 'Tab 2',
+            label: 'Kết quả',
             children: <div className={styles.contentConsole}>Content of Tab Pane 2</div>,
         },
     ];
 
     return (
         <>
-            <Row className={styles.codeEditor}>
+            <Splitter direction={SplitDirection.Vertical} minHeights={[200, 200]} initialSizes={[60, 40]}>
                 <PythonEditor handleEditorDidMount={handleEditorDidMount} />
-            </Row>
-            <Row className={styles.consoleWrapper}>{showConsole && <Tabs defaultActiveKey="1" items={itemsTab} />}</Row>
-            <Row className={styles.btnWrapper}>
-                <div className={clsx([styles.btnShowConsole])} onClick={() => setShowConsole(!showConsole)}>
-                    Console
-                </div>
-                <div className={clsx([styles.btn, styles.btnRun])} onClick={getEditorValue}>
-                    Run
-                </div>
-                <button className={clsx([styles.btn, styles.btnSubmit])}>Submit</button>
-            </Row>
+                <Row className={styles.consoleWrapper}>
+                    <Tabs defaultActiveKey="1" items={itemsTab} />
+                </Row>
+            </Splitter>
         </>
     );
 };

@@ -1,4 +1,3 @@
-// import clsx from 'clsx';
 import React, { memo } from 'react';
 import styles from './style.module.scss';
 import { Editor } from '@monaco-editor/react';
