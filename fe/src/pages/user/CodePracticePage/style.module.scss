@@ -11,17 +11,18 @@
     height: 60%;
     border: 1px solid;
 }
-.userInteract {
+.codePracticeWrapper {
     position: relative;
-    height: 100vh;
-    border: 1px solid;
-    width: 100%;
-    .consoleWrapper {
-        padding-left: 10px;
+    .userInteract {
+        height: 100vh;
+        border: 1px solid;
         width: 100%;
-        .contentConsole {
+        .consoleWrapper {
+            padding-left: 10px;
             width: 100%;
-            height: 200px;
+            .contentConsole {
+                width: 100%;
+            }
         }
     }
     .btnWrapper {
@@ -31,6 +32,9 @@
         bottom: 0;
         width: 100%;
         .btnShowConsole {
+            position: absolute;
+            bottom: 5px;
+            right: 500px;
             cursor: pointer;
             font-weight: bold;
         }
