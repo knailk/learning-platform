@@ -1,11 +1,11 @@
-import React, { memo, useRef, useState } from 'react';
+import React, { memo, useRef, useState, useEffect} from 'react';
 import { GridContextProvider, GridDropZone, GridItem, swap } from 'react-grid-dnd';
 import styles from './style.module.scss';
 import { Col, Row } from 'antd';
 import clsx from 'clsx';
 import PythonEditor from '../LearningPage/CodeEditorComponent/PythonEditor';
 
-function BoardControl({ sendMessage }) {
+function CodeControl({ sendMessage, level }) {
     const [play, setPlay] = useState(false);
     const [horseMoves, setHorseMoves] = useState('');
     const [codeMoves, setCodeMoves] = useState('#Move horse\n');
@@ -14,15 +14,18 @@ function BoardControl({ sendMessage }) {
         console.log(editor);
         editorRef.current = editor;
     };
-    const getEditorValue = () => {
-        // const code = editorRef.current.getValue();
+    const CreateStates = () => {
         sendMessage("SonRice", "CreateStates", horseMoves);
-        console.log(horseMoves);
     };
     const reloadGame = () => {
-        sendMessage("GameManager", "ReLoadLevel", null);
-        console.log("Reloading");
+        sendMessage("SonRice", "ReLoadLevel");
+        console.warn("Reloading", level);
     };
+
+    useEffect(() => {
+        sendMessage("GameManager", "LoadLevel", level);
+    });
+
     const handleAddItem = (name) => {
         if (!play) {
             let code = editorRef.current.getValue().trim() + '\n';
@@ -38,7 +41,7 @@ function BoardControl({ sendMessage }) {
                     break;
                 case 'T':
                     code += 'horse.TurnTop()';
-                    horse += 'T';
+                    horse += 'U';
                     break;
                 case 'D':
                     code += 'horse.TurnDown()';
@@ -83,7 +86,7 @@ function BoardControl({ sendMessage }) {
                             alt="execute"
                             onClick={() => {
                                 setPlay(true);
-                                getEditorValue();
+                                CreateStates();
                             }}
                         />
                     </Col>
@@ -99,4 +102,4 @@ function BoardControl({ sendMessage }) {
     );
 }
 
-export default BoardControl;
+export default CodeControl;

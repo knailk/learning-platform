@@ -1,4 +1,4 @@
-import React, { memo, Fragment } from 'react';
+import React, { Fragment, useCallback, useEffect } from 'react';
 import styles from './style.module.scss';
 import { Row, Col } from 'antd';
 // import BoardControl from './BoardControl';
@@ -6,13 +6,27 @@ import CodeControl from './CodeControl';
 import { Unity, useUnityContext } from 'react-unity-webgl';
 
 const GameLayout = ({ level }) => {
-    const { unityProvider, sendMessage } = useUnityContext({
-        loaderUrl: 'Build/Output.loader.js',
-        dataUrl: 'Build/Output.data',
-        frameworkUrl: 'Build/Output.framework.js',
-        codeUrl: 'Build/Output.wasm',
+    const {unityProvider, sendMessage, addEventListener, removeEventListener}=useUnityContext({
+        loaderUrl: 'Unity/Build/Unity.loader.js',
+        dataUrl: 'Unity/Build/Unity.data',
+        frameworkUrl: 'Unity/Build/Unity.framework.js',
+        codeUrl: 'Unity/Build/Unity.wasm',
     });
-    console.log(level);
+    
+    const UnityCallReact = useCallback((message, value) => {
+        // Win(): message: "WIN" value: 1
+        // Lose(): message: "LOST" value: 0
+        // NotEnough(): message: "NOTENOUGH" value: 2
+        console.warn(`Message: ${message}, Value: ${value} => From Unity`);
+    }, []);
+    
+    useEffect(() => {
+        addEventListener("UnityCallReact", UnityCallReact);
+        return () => {
+            removeEventListener("UnityCallReact", UnityCallReact);
+        };
+    }, [addEventListener, removeEventListener, UnityCallReact]);
+
     return (
         <>
             <Row>
@@ -32,7 +46,7 @@ const GameLayout = ({ level }) => {
                     </Row>
                     <Col></Col>
                 </Col>
-                <CodeControl sendMessage={sendMessage} />
+                <CodeControl sendMessage={sendMessage} level={level}/>
             </Row>
         </>
     );
