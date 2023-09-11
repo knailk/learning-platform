@@ -29,7 +29,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 
 	v1 := r.Group("/v1")
 	{
-		/*** START AUTH ***/
+		/****** START AUTH ******/
 		auth := &controllers.AuthController{AuthModel: &models.AuthModel{Repo: repo, CognitoRepo: cognitoRepo}}
 		v1.GET("/auth/me", auth.CurrentUser)
 		v1.POST("/auth/login", auth.Login)
@@ -42,7 +42,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		v1.POST("/auth/change-password", auth.ChangePassword)
 		v1.POST("/auth/refresh", auth.Refresh)
 
-		/*** START USER ***/
+		/****** START USER ******/
 		user := &controllers.UserController{AuthController: auth, UserModel: &models.UserModel{Repo: repo, S3Repo: s3Repo}}
 		v1.PUT("/user/profile", user.UpdateProfile)
 		v1.GET("/user/ranks", user.GetRank)
@@ -50,12 +50,12 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		v1.GET("/users/:id", user.GetUserInfoByID)
 		v1.POST("/user/avatar", user.UploadAvatar)
 
-		/*** START Chapter ***/
+		/****** START Chapter ******/
 		chapter := &controllers.ChapterController{AuthController: auth, ChapterModel: &models.ChapterModel{Repo: repo}}
 		v1.GET("/chapters", chapter.List)
 		v1.GET("/chapters/:id", chapter.Get)
 
-		/*** START Chapter ***/
+		/****** START Lesson ******/
 		lesson := &controllers.LessonController{AuthController: auth, LessonModel: &models.LessonModel{Repo: repo}}
 		v1.GET("/lessons", lesson.List)
 		v1.POST("/lessons/answer", lesson.CreateLessonsAnswer)
@@ -63,11 +63,23 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		v1.GET("/lessons/:id", lesson.Get)
 		v1.GET("/chapters/:id/lessons", lesson.ListByChapterID)
 
-		/*** START Chapter ***/
+		/****** START Follow ******/
 		follow := &controllers.FollowController{AuthController: auth, FollowModel: &models.FollowModel{Repo: repo}}
 		v1.GET("/follows", follow.GetFollow)
 		v1.POST("/follows", follow.CreateFollow)
 		v1.DELETE("/follows/:following_id", follow.DeleteFollow)
+
+		/****** START Problem ******/
+		problem := &controllers.ProblemController{AuthController: auth, ProblemModel: &models.ProblemModel{Repo: repo}}
+		v1.GET("/problems", problem.List)
+		v1.GET("/problems/:id", problem.Get)
+
+		/****** START Submission ******/
+		submission := &controllers.SubmissionController{AuthController: auth, SubmissionModel: &models.SubmissionModel{Repo: repo}}
+		v1.GET("/submissions/users/:id", submission.GetMostRecent)
+		v1.GET("/submissions/:id", submission.Get)
+		v1.GET("/submissions/users", submission.ListByUserID)
+		v1.POST("/submissions", submission.Create)
 	}
 
 	// route not found

@@ -16,6 +16,8 @@ type Problem struct {
 	AvailableCode string       `json:"available_code"`
 	UpdatedAt     time.Time    `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 	CreatedAt     time.Time    `json:"created_at" gorm:"default:CURRENT_TIMESTAMP()"`
+
+	Solution Solution `json:"solution" gorm:"foreignKey:ProblemID"`
 }
 
 type ProblemLevel string
