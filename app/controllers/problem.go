@@ -5,32 +5,36 @@ import (
 
 	"github.com/gin-gonic/gin"
 	uuid "github.com/google/uuid"
+	"github.com/knailk/learning-platform/app/domain/entity"
 	"github.com/knailk/learning-platform/app/models"
 	"github.com/knailk/learning-platform/pkg/log"
 )
 
-type ChapterController struct {
+type ProblemController struct {
 	*AuthController
-	ChapterModel *models.ChapterModel
+	ProblemModel *models.ProblemModel
 }
 
-func (ctrl *ChapterController) List(ctx *gin.Context) {
+func (ctrl *ProblemController) List(ctx *gin.Context) {
 	_, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
 		return
 	}
 
-	chapters, err := ctrl.ChapterModel.List(ctx)
+	problems, err := ctrl.ProblemModel.List(ctx, entity.Problem{
+		Level: entity.ProblemLevel(ctx.Query("level")),
+		URL:   ctx.Query("url"),
+	})
 	if err != nil {
-		log.Error("error listing chapters", err)
+		log.Error("error listing problems", err)
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Invalid chapter", "err": err})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"data": chapters})
+	ctx.JSON(http.StatusOK, gin.H{"data": problems})
 }
 
-func (ctrl *ChapterController) Get(ctx *gin.Context) {
+func (ctrl *ProblemController) Get(ctx *gin.Context) {
 	_, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
@@ -43,11 +47,11 @@ func (ctrl *ChapterController) Get(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Parse id error", "err": err})
 	}
 
-	chapter, err := ctrl.ChapterModel.Get(ctx, id)
+	problem, err := ctrl.ProblemModel.Get(ctx, id)
 	if err != nil {
-		log.Error("error get chapter", err)
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Invalid chapter", "err": err})
+		log.Error("error get problem", err)
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Invalid problem", "err": err})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"data": chapter})
+	ctx.JSON(http.StatusOK, gin.H{"data": problem})
 }

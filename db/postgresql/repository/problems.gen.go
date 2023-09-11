@@ -35,6 +35,11 @@ func newProblem(db *gorm.DB, opts ...gen.DOOption) problem {
 	_problem.AvailableCode = field.NewString(tableName, "available_code")
 	_problem.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_problem.CreatedAt = field.NewTime(tableName, "created_at")
+	_problem.Solution = problemHasOneSolution{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Solution", "entity.Solution"),
+	}
 
 	_problem.fillFieldMap()
 
@@ -53,6 +58,7 @@ type problem struct {
 	AvailableCode field.String
 	UpdatedAt     field.Time
 	CreatedAt     field.Time
+	Solution      problemHasOneSolution
 
 	fieldMap map[string]field.Expr
 }
@@ -101,7 +107,7 @@ func (p *problem) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *problem) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 8)
+	p.fieldMap = make(map[string]field.Expr, 9)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["title"] = p.Title
 	p.fieldMap["description"] = p.Description
@@ -110,6 +116,7 @@ func (p *problem) fillFieldMap() {
 	p.fieldMap["available_code"] = p.AvailableCode
 	p.fieldMap["updated_at"] = p.UpdatedAt
 	p.fieldMap["created_at"] = p.CreatedAt
+
 }
 
 func (p problem) clone(db *gorm.DB) problem {
@@ -120,6 +127,77 @@ func (p problem) clone(db *gorm.DB) problem {
 func (p problem) replaceDB(db *gorm.DB) problem {
 	p.problemDo.ReplaceDB(db)
 	return p
+}
+
+type problemHasOneSolution struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a problemHasOneSolution) Where(conds ...field.Expr) *problemHasOneSolution {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a problemHasOneSolution) WithContext(ctx context.Context) *problemHasOneSolution {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a problemHasOneSolution) Session(session *gorm.Session) *problemHasOneSolution {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a problemHasOneSolution) Model(m *entity.Problem) *problemHasOneSolutionTx {
+	return &problemHasOneSolutionTx{a.db.Model(m).Association(a.Name())}
+}
+
+type problemHasOneSolutionTx struct{ tx *gorm.Association }
+
+func (a problemHasOneSolutionTx) Find() (result *entity.Solution, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a problemHasOneSolutionTx) Append(values ...*entity.Solution) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a problemHasOneSolutionTx) Replace(values ...*entity.Solution) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a problemHasOneSolutionTx) Delete(values ...*entity.Solution) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a problemHasOneSolutionTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a problemHasOneSolutionTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type problemDo struct{ gen.DO }

@@ -8,7 +8,7 @@ import (
 
 // Submission represents the "submissions" table in the database.
 type Submission struct {
-	ID         uuid.UUID        `json:"id" gorm:"type:uuid;primary_key"`
+	ID         uuid.UUID        `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
 	UserID     uuid.UUID        `json:"user_id"`
 	ProblemID  uuid.UUID        `json:"problem_id"`
 	SolutionID uuid.UUID        `json:"solution_id"`
