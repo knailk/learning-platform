@@ -16,12 +16,17 @@ const ForgotPasswordPage = () => {
 
     const handleSubmit = useCallback(async (formValues) => {
         const { email } = formValues;
-        const response = await request.post('auth/forgot-password', {
-            email: email,
-        });
-        if (response) {
-            cookies.set('forgot_email', email)
-            navigate('/new-password');
+        try {
+            const response = await request.post('auth/forgot-password', {
+                email: email,
+            });
+
+            if (response) {
+                cookies.set('forgot_email', email);
+                navigate('/new-password');
+            }
+        } catch (error) {
+            notification({ message: 'Đã có lỗi xảy ra, vui lòng thử lại!' });
         }
     }, []);
 

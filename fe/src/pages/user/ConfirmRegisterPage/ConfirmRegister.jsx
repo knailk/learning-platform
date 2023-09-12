@@ -19,11 +19,15 @@ const ConfirmRegisterPage = () => {
     const confirmationCode = Form.useWatch('confirmation_code', form);
 
     const handleSubmit = async (formValues) => {
-        const response = await request.post('auth/register/confirm', {
-            email: cookies.get('email'),
-            confirmation_code: confirmationCode,
-        });
-        if (response) navigate('/');
+        try {
+            const response = await request.post('auth/register/confirm', {
+                email: cookies.get('email'),
+                confirmation_code: confirmationCode,
+            });
+            if (response) navigate('/');
+        } catch (error) {
+            notification({ message: 'Mã xác nhận không chính xác' });
+        }
     };
 
     const handleReSendCode = useCallback(async () => {
