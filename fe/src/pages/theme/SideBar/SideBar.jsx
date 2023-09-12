@@ -4,6 +4,7 @@ import ItemSideBar from './ItemSideBar';
 import { ROUTERS } from '../../../utils/router';
 import { useLocation } from 'react-router-dom';
 import { Popover } from 'antd';
+import { Link } from 'react-router-dom';
 import { SIDEBAR_TYPE } from 'utils/constant';
 
 const SideBar = () => {
@@ -29,12 +30,12 @@ const SideBar = () => {
     return (
         <>
             <div className={style.sideBar}>
-                <div className={style.logo}>
+                <Link to="/" title="logo" className={style.logo}>
                     <img
-                        src="https://softenmind.com/images/logo.svg"
+                        src="https://learning-platform-bucket.s3.ap-southeast-1.amazonaws.com/icon%20new.png"
                         alt="logo"
                     />
-                </div>
+                </Link>
                 <div className="nav"></div>
                 <div className="navbar">
                     {ROUTERS.MENU_NAV_BAR.map((item, index) => {
