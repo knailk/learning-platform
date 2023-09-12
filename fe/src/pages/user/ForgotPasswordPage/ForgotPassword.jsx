@@ -26,7 +26,7 @@ const ForgotPasswordPage = () => {
                 navigate('/new-password');
             }
         } catch (error) {
-            notification({ message: 'Đã có lỗi xảy ra, vui lòng thử lại!' });
+            notification.error({ message: 'Đã có lỗi xảy ra, vui lòng thử lại!' });
         }
     }, []);
 
