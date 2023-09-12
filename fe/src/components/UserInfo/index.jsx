@@ -16,7 +16,9 @@ const ModalUserInfo = ({ userInfo, closeModal }) => {
     const setIsAdd = useContext(ProfileContext);
     useEffect(() => {
         setAddFriendText(addFriend ? 'Hủy Theo Dõi' : 'Theo Dõi');
-        setIsAdd(addFriend);
+        try {
+            setIsAdd(addFriend);
+        } catch (error) {}
     }, [addFriend]);
 
     useEffect(() => {

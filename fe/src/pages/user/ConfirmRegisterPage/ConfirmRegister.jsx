@@ -26,7 +26,7 @@ const ConfirmRegisterPage = () => {
             });
             if (response) navigate('/');
         } catch (error) {
-            notification({ message: 'Mã xác nhận không chính xác' });
+            notification.error({ message: 'Mã xác nhận không chính xác' });
         }
     };
 
