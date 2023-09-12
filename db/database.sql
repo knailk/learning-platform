@@ -160,7 +160,7 @@ CREATE TABLE "solutions" (
     "code" text NOT NULL,
     "language" varchar(20) NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (now()),
-    "updated_at" timestamp NOT NULL DEFAULT (now()),
+    "updated_at" timestamp NOT NULL DEFAULT (now())
 );
 CREATE TABLE "submissions" (
     "id" char(36) PRIMARY KEY,
@@ -178,7 +178,7 @@ CREATE TABLE "submissions" (
     "time" real NOT NULL,
     "memory" real NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (now()),
-    "updated_at" timestamp NOT NULL DEFAULT (now()),
+    "updated_at" timestamp NOT NULL DEFAULT (now())
 );
 ALTER TABLE "solutions"
 ADD FOREIGN KEY (problem_id) REFERENCES "problems" (id);

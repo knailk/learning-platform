@@ -1,3 +1,4 @@
+import React from 'react';
 import { Row, Tabs } from 'antd';
 import styles from './style.module.scss';
 import PythonEditor from 'components/PythonEditor';
