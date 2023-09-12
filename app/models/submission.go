@@ -35,5 +35,6 @@ func (m *SubmissionModel) ListByUserID(ctx context.Context, userID uuid.UUID) ([
 }
 
 func (m *SubmissionModel) Create(ctx context.Context, submission entity.Submission) error {
+	submission.ID = uuid.New()
 	return m.Repo.Submission.WithContext(ctx).Create(&submission)
 }

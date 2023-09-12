@@ -16,19 +16,13 @@ type SubmissionController struct {
 }
 
 func (ctrl *SubmissionController) GetMostRecent(ctx *gin.Context) {
-	_, err := ctrl.GetCurrentAuth(ctx)
+	auth, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
 		return
 	}
 
-	userID, err := uuid.Parse(ctx.Param("user_id"))
-	if err != nil {
-		log.Error("parse id error: ", err)
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Parse id error", "err": err})
-	}
-
-	submissions, err := ctrl.SubmissionModel.GetMostRecent(ctx, userID)
+	submissions, err := ctrl.SubmissionModel.GetMostRecent(ctx, auth.ID)
 	if err != nil {
 		log.Error("error listing submissions", err)
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Submit error", "err": err})
@@ -60,19 +54,13 @@ func (ctrl *SubmissionController) Get(ctx *gin.Context) {
 }
 
 func (ctrl *SubmissionController) ListByUserID(ctx *gin.Context) {
-	_, err := ctrl.GetCurrentAuth(ctx)
+	auth, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
 		return
 	}
 
-	userID, err := uuid.Parse(ctx.Param("user_id"))
-	if err != nil {
-		log.Error("parse id error: ", err)
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Parse id error", "err": err})
-	}
-
-	submissions, err := ctrl.SubmissionModel.ListByUserID(ctx, userID)
+	submissions, err := ctrl.SubmissionModel.ListByUserID(ctx, auth.ID)
 	if err != nil {
 		log.Error("error listing submissions", err)
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Submit error", "err": err})

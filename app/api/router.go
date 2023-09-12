@@ -76,7 +76,7 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 
 		/****** START Submission ******/
 		submission := &controllers.SubmissionController{AuthController: auth, SubmissionModel: &models.SubmissionModel{Repo: repo}}
-		v1.GET("/submissions/users/:id", submission.GetMostRecent)
+		v1.GET("/submissions/users/recent", submission.GetMostRecent)
 		v1.GET("/submissions/:id", submission.Get)
 		v1.GET("/submissions/users", submission.ListByUserID)
 		v1.POST("/submissions", submission.Create)
