@@ -1,0 +1,63 @@
+.itemTestCase {
+    position: relative;
+    width: 70px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    &:hover {
+        background-color: #c3ecff;
+    }
+    &:nth-last-child(-n + 2) {
+        margin-right: 5px;
+    }
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+}
+.itemTestCaseActive {
+    background-color: rgb(144, 220, 255);
+    &:hover {
+        background-color: rgba(144, 220, 255, 0.7);
+    }
+}
+.deleteTestCaseBtn {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -5px;
+    right: -5px;
+    padding: 0px;
+    width: 13px;
+    height: 13px;
+    background-color: rgb(149, 221, 255);
+    color: rgb(69, 196, 255);
+    &:hover {
+        background-color: rgba(149, 221, 255, 0.6);
+        color: rgba(69, 196, 255, 0.6);
+    }
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+.addTestCaseBtn {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    .addIcon {
+        cursor: pointer;
+        &:hover {
+            color: rgba(0, 0, 0, 0.5);
+        }
+    }
+}
