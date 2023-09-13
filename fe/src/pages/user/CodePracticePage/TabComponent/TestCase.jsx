@@ -88,6 +88,12 @@ const TestCase = () => {
                 </Row>
                 <Row>{testCaseState.testCase.id}</Row>
                 <Row>target</Row>
+                <Row>target</Row>
+                <Row>target</Row>
+                <Row>target</Row>
+                <Row>target</Row>
+                <Row>target</Row>
+                <Row>target</Row>
             </Col>
         </>
     );

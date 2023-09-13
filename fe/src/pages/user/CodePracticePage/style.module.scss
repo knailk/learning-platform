@@ -9,21 +9,39 @@
 
 .codeEditor {
     height: 60%;
-    border: 1px solid;
 }
 .codePracticeWrapper {
     position: relative;
     .userInteract {
-        height: 100vh;
-        border: 1px solid;
+        height: calc(100vh - 45px);
         width: 100%;
         .consoleWrapper {
-            padding-left: 10px;
             width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none;
+            .tabBarHeader {
+                position: sticky;
+                top: 0px;
+                overflow: hidden;
+                background-color: rgb(202, 238, 255);
+                font-weight: bold;
+                padding-left: 10px;
+                z-index: 100;
+                margin-bottom: 10px;
+            }
             .contentConsole {
+                padding: 0px 10px 0px 10px;
                 width: 100%;
             }
         }
+        margin-bottom: 45px;
     }
     .btnWrapper {
         padding-left: 10px;

@@ -22,13 +22,17 @@ const UserInteract = ({ handleEditorDidMount }) => {
             children: <div className={styles.contentConsole}>Content of Tab Pane 2</div>,
         },
     ];
-
+    const renderTabBar = (props, DefaultTabBar) => (
+        <div className={styles.tabBarHeader}>
+            <DefaultTabBar {...props} style={{}} />
+        </div>
+    );
     return (
         <>
             <Splitter direction={SplitDirection.Vertical} minHeights={[200, 200]} initialSizes={[60, 40]}>
                 <PythonEditor handleEditorDidMount={handleEditorDidMount} />
                 <Row className={styles.consoleWrapper}>
-                    <Tabs defaultActiveKey="1" items={itemsTab} />
+                    <Tabs defaultActiveKey="1" items={itemsTab} renderTabBar={renderTabBar} />
                 </Row>
             </Splitter>
         </>
