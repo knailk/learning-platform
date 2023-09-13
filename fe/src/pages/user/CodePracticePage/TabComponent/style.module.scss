@@ -11,6 +11,9 @@
     margin-bottom: 10px;
     &:hover {
         background-color: #c3ecff;
+        .deleteTestCaseBtn {
+            display: flex;
+        }
     }
     &:nth-last-child(-n + 2) {
         margin-right: 5px;
@@ -29,7 +32,9 @@
 }
 .deleteTestCaseBtn {
     position: absolute;
+    z-index: 100;
     display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     top: -5px;
