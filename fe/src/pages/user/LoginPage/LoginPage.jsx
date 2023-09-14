@@ -114,7 +114,7 @@ const LoginPage = () => {
                                     <Divider>Hoặc đăng nhập bằng</Divider>
                                     <ul className={styles.socials}>
                                         <li>
-                                            <Link to="fb.com">
+                                            <Link>
                                                 <FontAwesomeIcon
                                                     icon={faFacebook}
                                                     style={{ color: '#4267B2' }}
@@ -124,7 +124,7 @@ const LoginPage = () => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="google.com">
+                                            <Link>
                                                 <FontAwesomeIcon
                                                     icon={faGoogle}
                                                     size="2xl"
@@ -134,7 +134,7 @@ const LoginPage = () => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="twitter.com">
+                                            <Link>
                                                 <FontAwesomeIcon
                                                     icon={faTwitter}
                                                     style={{ color: '#1DA1F2' }}
@@ -144,7 +144,7 @@ const LoginPage = () => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="github.com">
+                                            <Link>
                                                 <FontAwesomeIcon
                                                     icon={faGithub}
                                                     style={{ color: '#6cc644' }}
@@ -154,7 +154,7 @@ const LoginPage = () => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="http://apple.com">
+                                            <Link>
                                                 <FontAwesomeIcon
                                                     icon={faApple}
                                                     style={{ color: '#555555' }}

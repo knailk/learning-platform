@@ -2,10 +2,7 @@ import React from 'react';
 import LearningPage from '../pages/user/LearningPage';
 import PracticePage from '../pages/user/PracticePage';
 import RankingPage from '../pages/user/RankingPage';
-import ConfirmRegisterPage from '../pages/user/ConfirmRegisterPage';
 import ProfilePage from '../pages/user/ProfilePage';
-import ForgotPasswordPage from '../pages/user/ForgotPasswordPage';
-import NewPasswordPage from '../pages/user/NewPasswordPage';
 import MasterLayout from '../pages/theme/MasterLayout';
 import LecurePractice from 'pages/user/PracticePage/PracticeComponent/LecurePractice';
 import { SIDEBAR_TYPE } from './constant';
@@ -57,33 +54,33 @@ export const ROUTERS = {
             img: '/images/profile.png',
             type: SIDEBAR_TYPE.SIDEBAR,
         },
-        {
-            title: 'Xác nhận đăng ký',
-            path: '/confirm-register',
-            component: <ConfirmRegisterPage />,
-            layout: null,
-            inMenu: false,
-            img: '',
-            type: SIDEBAR_TYPE.NOTSIDEBAR,
-        },
-        {
-            title: 'Quên mật khẩu',
-            path: '/forgot-password',
-            component: <ForgotPasswordPage />,
-            layout: null,
-            inMenu: false,
-            img: '',
-            type: SIDEBAR_TYPE.NOTSIDEBAR,
-        },
-        {
-            title: 'Mật khẩu mới',
-            path: '/new-password',
-            component: <NewPasswordPage />,
-            layout: null,
-            inMenu: false,
-            img: '',
-            type: SIDEBAR_TYPE.MORE,
-        },
+        // {
+        //     title: 'Xác nhận đăng ký',
+        //     path: '/confirm-register',
+        //     component: <ConfirmRegisterPage />,
+        //     layout: null,
+        //     inMenu: false,
+        //     img: '',
+        //     type: SIDEBAR_TYPE.NOTSIDEBAR,
+        // },
+        // {
+        //     title: 'Quên mật khẩu',
+        //     path: '/forgot-password',
+        //     component: <ForgotPasswordPage />,
+        //     layout: null,
+        //     inMenu: false,
+        //     img: '',
+        //     type: SIDEBAR_TYPE.NOTSIDEBAR,
+        // },
+        // {
+        //     title: 'Mật khẩu mới',
+        //     path: '/new-password',
+        //     component: <NewPasswordPage />,
+        //     layout: null,
+        //     inMenu: false,
+        //     img: '',
+        //     type: SIDEBAR_TYPE.MORE,
+        // },
         {
             title: '',
             path: '/practice/:lesson_id',
