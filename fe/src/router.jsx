@@ -4,14 +4,16 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import LoginPage from './pages/user/LoginPage';
 import RegisterPage from './pages/user/RegisterPage';
+import ConfirmRegisterPage from './pages/user/ConfirmRegisterPage';
+import ForgotPasswordPage from './pages/user/ForgotPasswordPage';
+import NewPasswordPage from './pages/user/NewPasswordPage';
 
 const cookies = new Cookies();
 
 function PrivateRoute({ children, path }) {
   const isLogin = cookies.get('is_login');
 
-  // Check if the requested path is not /login or /forgot-password, and the user is not logged in
-  if (path !== '/login' && path !== '/forgot-password' && path !== '/new-password'&& !isLogin) {
+  if (!isLogin) {
       return <Navigate to="/login" />;
   }
   
@@ -22,6 +24,9 @@ const RouterCustom = () => {
         <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/confirm-register" element={<ConfirmRegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/new-password" element={<NewPasswordPage />} />
             {CONST_ROUTERS.MENU_NAV_BAR.map((item, index) => {
                 let Layout = item?.layout === null ? Fragment : item?.layout;
                 return (
