@@ -1,8 +1,13 @@
+@font-face {
+    font-family: 'Consolas';
+    src: url('../../../public/fonts/CONSOLA.TTF') format('truetype');
+    font-size: 20px;
+}
 .codeEditor {
     width: calc(100% - 2px);
     height: calc(100% - 2px);
     padding: 0px;
     * {
-        font-family: Consolas, 'Courier New', monospace;
+        font-family: Consolas, 'Courier New', monospace !important;
     }
 }

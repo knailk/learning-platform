@@ -9,14 +9,12 @@
     font-weight: bold;
     margin-right: 10px;
     margin-bottom: 10px;
+    background-color: #262626;
     &:hover {
-        background-color: #c3ecff;
+        background-color: rgba(73, 73, 73, 0.7);
         .deleteTestCaseBtn {
             display: flex;
         }
-    }
-    &:nth-last-child(-n + 2) {
-        margin-right: 5px;
     }
     border-radius: 7px;
     -webkit-border-radius: 7px;
@@ -25,9 +23,9 @@
     -o-border-radius: 7px;
 }
 .itemTestCaseActive {
-    background-color: rgb(144, 220, 255);
+    background-color: rgb(73, 73, 73);
     &:hover {
-        background-color: rgba(144, 220, 255, 0.7);
+        background-color: rgba(73, 73, 73, 0.7);
     }
 }
 .deleteTestCaseBtn {
@@ -42,11 +40,11 @@
     padding: 0px;
     width: 13px;
     height: 13px;
-    background-color: rgb(149, 221, 255);
-    color: rgb(69, 196, 255);
+    background-color: rgb(73, 73, 73);
+    color: rgb(255, 255, 255);
     &:hover {
-        background-color: rgba(149, 221, 255, 0.6);
-        color: rgba(69, 196, 255, 0.6);
+        background-color: rgba(73, 73, 73, 0.7);
+        color: rgba(255, 255, 255, 0.7);
     }
     border-radius: 50%;
     -webkit-border-radius: 50%;
@@ -54,7 +52,6 @@
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
 }
-
 .addTestCaseBtn {
     display: flex;
     align-items: center;
@@ -62,11 +59,34 @@
     .addIcon {
         cursor: pointer;
         &:hover {
-            color: rgba(0, 0, 0, 0.5);
+            color: rgba(255, 255, 255, 0.7);
         }
     }
 }
-
-.ant-tabs-tab {
-    color: blue;
+.inputWrapper,
+.expectWrapper {
+    flex-direction: column;
+    span {
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    input {
+        height: 40px;
+        color: white;
+        background-color: #ffffff1a;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        border-color: transparent;
+        font-weight: bold;
+        border-radius: 0.5rem;
+        -webkit-border-radius: 0.5rem;
+        -moz-border-radius: 0.5rem;
+        -ms-border-radius: 0.5rem;
+        -o-border-radius: 0.5rem;
+    }
+}
+.expectWrapper {
+    margin-top: 10px;
 }
