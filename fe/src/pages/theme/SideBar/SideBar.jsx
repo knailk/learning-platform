@@ -32,7 +32,7 @@ const SideBar = () => {
             <div className={style.sideBar}>
                 <Link to="/" title="logo" className={style.logo}>
                     <img
-                        src="https://learning-platform-bucket.s3.ap-southeast-1.amazonaws.com/icon%20new.png"
+                        src="https://learning-platform-bucket.s3.ap-southeast-1.amazonaws.com/logo-cpp.svg"
                         alt="logo"
                     />
                 </Link>
