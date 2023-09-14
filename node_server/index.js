@@ -67,15 +67,19 @@ app.post('/code-practice', (req, res) => {
             pythonOptions: ['-u'],
             args: [1, 2, 3],
         };
-        PythonShell.run(file_path + '/' + file_name, options)
-            .then((messages) => {
-                res.send({ data: messages.join('\r\n') });
-                fs.unlinkSync(file_name);
-            })
-            .catch((err) => {
-                res.send({ data: err.traceback });
-                fs.unlinkSync(file_name);
-            });
+        if (req.body.run) {
+            PythonShell.run(file_path + '/' + file_name, options)
+                .then((messages) => {
+                    res.send({ data: messages.join('\r\n') });
+                    fs.unlinkSync(file_name);
+                })
+                .catch((err) => {
+                    res.send({ data: err.traceback });
+                    fs.unlinkSync(file_name);
+                });
+        } else {
+            res.send({ data: 'success' });
+        }
     } catch (error) {
         res.send({ data: 'Lỗi hệ thống, vui lòng thử lại sau' });
         fs.unlinkSync(file_name);

@@ -17,15 +17,23 @@ const CodePractice = () => {
     const handleRunBtn = () => {
         const code = editorRef.current.getValue();
         axios
-            .post('http://localhost:80/code-practice', { code, user_id: userId, practice_code_id: practiceId })
+            .post('http://localhost:80/code-practice', {
+                code,
+                user_id: userId,
+                practice_code_id: practiceId,
+                run: true,
+            })
             .then((data) => console.log(data));
     };
 
     const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
-    const practiceId = 'Bai1';
+    const practiceId = '1de43a84-07fc-4a1c-9848-ccd0e8b6a250';
 
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
+        var myBinding = editor.addCommand(monaco.KeyMod.Ctrl | monaco.KeyCode.KEY_S, function () {
+            alert('SAVE pressed!');
+        });
     };
 
     useEffect(() => {
@@ -78,7 +86,11 @@ const CodePractice = () => {
                                 <ProblemDescription problem={problem} />
                             </Col>
                             <Col className={styles.userInteract}>
-                                <UserInteract handleEditorDidMount={handleEditorDidMount} />
+                                <UserInteract
+                                    handleEditorDidMount={handleEditorDidMount}
+                                    problem={problem}
+                                    editorRef={editorRef}
+                                />
                             </Col>
                         </Splitter>
                     </Row>
