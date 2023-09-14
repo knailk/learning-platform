@@ -1,9 +1,10 @@
 import React from 'react';
 import { Row, Tabs } from 'antd';
-import styles from './style.module.scss';
 import PythonEditor from 'components/PythonEditor';
 import Splitter, { SplitDirection } from '@devbookhq/splitter';
 import TestCase from './TabComponent/TestCase';
+import styles from './style.module.scss';
+import './customStyle.scss';
 
 const UserInteract = ({ handleEditorDidMount }) => {
     const itemsTab = [
@@ -30,10 +31,15 @@ const UserInteract = ({ handleEditorDidMount }) => {
     return (
         <>
             <Splitter direction={SplitDirection.Vertical} minHeights={[200, 200]} initialSizes={[60, 40]}>
-                <PythonEditor handleEditorDidMount={handleEditorDidMount} />
-                <Row className={styles.consoleWrapper}>
+                <div className={styles.pythonEditor}>
+                    <div className={styles.header}>header</div>
+                    <PythonEditor handleEditorDidMount={handleEditorDidMount} height={'calc( 100% - 50px )'} />
+                    <div className={styles.footer}>header</div>
+                </div>
+                <div className={styles.consoleWrapper}>
                     <Tabs defaultActiveKey="1" items={itemsTab} renderTabBar={renderTabBar} />
-                </Row>
+                </div>
+                {/* <Row className={styles.consoleWrapper}></Row> */}
             </Splitter>
         </>
     );

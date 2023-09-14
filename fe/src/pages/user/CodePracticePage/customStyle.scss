@@ -1,0 +1,11 @@
+.ant-tabs-nav {
+    margin: 0px !important;
+    &::before {
+        border: none !important;
+    }
+}
+.ant-tabs-tab-active {
+    * {
+        color: white !important;
+    }
+}

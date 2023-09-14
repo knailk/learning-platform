@@ -7,6 +7,8 @@ import styles from './style.module.scss';
 import UserInteract from './UserInteract';
 import ProblemDescription from './ProblemDescription';
 import request from 'utils/http';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faCloudArrowUp, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 const CodePractice = () => {
     const editorRef = useRef(null);
@@ -46,26 +48,39 @@ const CodePractice = () => {
         return (
             <>
                 <Col className={styles.codePracticeWrapper}>
-                    <Row style={{ width: '100%', height: '100%' }}>
+                    <Row className={styles.problemHeader}>
+                        <Col span={8} className={styles.btnBackWrapper}>
+                            <span className={styles.btnBack}>
+                                <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: 4 }} />
+                                Quay về
+                            </span>
+                        </Col>
+                        <Col span={8} className={styles.btnExecuteWrapper}>
+                            <span className={clsx([styles.btn, styles.btnRun])} onClick={handleRunBtn}>
+                                <FontAwesomeIcon icon={faPlay} style={{ marginRight: 4 }} />
+                                Chạy thử
+                            </span>
+                            <span className={clsx([styles.btn, styles.btnSubmit])}>
+                                <FontAwesomeIcon icon={faCloudArrowUp} style={{ marginRight: 4 }} />
+                                Nộp bài
+                            </span>
+                        </Col>
+                        <Col span={8}></Col>
+                    </Row>
+                    <Row style={{ width: '100%' }}>
                         <Splitter
                             direction={SplitDirection.Horizontal}
-                            initialSizes={[55, 45]}
+                            initialSizes={[50, 50]}
                             minWidths={[400, 400]}
                             gutterClassName={styles.gutterSplit}
                         >
-                            <Col className={styles.tile}>
+                            <Col className={styles.problemDetail}>
                                 <ProblemDescription problem={problem} />
                             </Col>
                             <Col className={styles.userInteract}>
                                 <UserInteract handleEditorDidMount={handleEditorDidMount} />
                             </Col>
                         </Splitter>
-                    </Row>
-                    <Row className={styles.btnWrapper}>
-                        <div className={clsx([styles.btn, styles.btnRun])} onClick={handleRunBtn}>
-                            Run
-                        </div>
-                        <button className={clsx([styles.btn, styles.btnSubmit])}>Submit</button>
                     </Row>
                 </Col>
             </>
