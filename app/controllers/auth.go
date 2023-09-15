@@ -275,11 +275,5 @@ func (ctrl *AuthController) ExpireJWTCookie(ctx *gin.Context) {
 
 func (ctrl *AuthController) setTokenWithAge(ctx *gin.Context, key, path, token string, age int) {
 	// ctx.SetSameSite(http.SameSiteDefaultMode)
-	domain := ""
-	if ctx.Request.Host == "localhost:8080" {
-		domain = "localhost"
-	} else {
-		domain = "ec2-3-0-139-245.ap-southeast-1.compute.amazonaws.com"
-	}
-	ctx.SetCookie(key, token, age, path, domain, false, cookieHTTPOnly)
+	ctx.SetCookie(key, token, age, path, "", false, cookieHTTPOnly)
 }
