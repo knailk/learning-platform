@@ -43,3 +43,4 @@ networks:
   default:
     external:
       name: production1_network
+      external: true
