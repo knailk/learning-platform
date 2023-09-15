@@ -1,13 +1,23 @@
 import React, { memo, useState } from 'react';
 import styles from './style.module.scss';
 import axios from 'axios';
+import { notification } from 'antd';
 
 const InputOutputDrawer = ({ ...props }) => {
     const [output, setOutput] = useState('');
     const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
     const getEditorValue = () => {
         const code = props.editorRef.current.getValue();
-        axios.post('http://localhost:80/python', { code, user_id: userId }).then((data) => setOutput(data.data.data));
+        try {
+            axios
+                .post('http://localhost:80/python', { code, user_id: userId })
+                .then((data) => setOutput(data.data.data))
+                .catch((e) => {
+                    notification.error({ message: 'Lỗi hệ thống!' });
+                });
+        } catch (error) {
+            notification.error({ message: 'Lỗi hệ thống!' });
+        }
     };
     return (
         <>

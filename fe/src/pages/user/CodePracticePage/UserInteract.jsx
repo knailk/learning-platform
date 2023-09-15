@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, Spin } from 'antd';
+import { Tabs, Spin, notification } from 'antd';
 import PythonEditor from 'components/PythonEditor';
 import Splitter, { SplitDirection } from '@devbookhq/splitter';
 import TestCase from './TabComponent/TestCase';
@@ -44,19 +44,29 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount }) => {
             //save code
             const code = editorRef.current.getValue();
             setLoad(true);
-            !load &&
-                axios
-                    .post('http://localhost:80/code-practice', {
-                        code,
-                        user_id: userId,
-                        practice_code_id: problem.id,
-                        run: false,
-                    })
-                    .then((data) =>
-                        setTimeout(() => {
+            try {
+                !load &&
+                    axios
+                        .post('http://localhost:80/code-practice', {
+                            code,
+                            user_id: userId,
+                            practice_code_id: problem.id,
+                            run: false,
+                        })
+                        .then((data) =>
+                            setTimeout(() => {
+                                setLoad(false);
+                            }, 500),
+                        )
+                        .catch((e) => {
+                            notification.error({ message: 'Lỗi hệ thống!' });
                             setLoad(false);
-                        }, 500),
-                    );
+                        });
+            } catch (e) {
+                console.log(e);
+                notification.error({ message: 'Lỗi hệ thống!' });
+                setLoad(false);
+            }
         }
     };
     return (

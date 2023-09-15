@@ -1,41 +1,43 @@
-.ant-tabs-nav {
-    margin: 0px !important;
-    &::before {
-        border: none !important;
+.codePracticeWrapperCustom {
+    .ant-tabs-nav {
+        margin: 0px !important;
+        &::before {
+            border: none !important;
+        }
     }
-}
-.ant-tabs-tab-active {
-    * {
-        color: white !important;
+    .ant-tabs-tab-active {
+        * {
+            color: white !important;
+        }
     }
-}
 
-.ant-tabs-tab {
-    &:hover {
-        color: white !important;
+    .ant-tabs-tab {
+        &:hover {
+            color: white !important;
+        }
+        &:focus {
+            color: white !important;
+        }
+        &:active {
+            color: white !important;
+        }
     }
-    &:focus {
-        color: white !important;
+    .ant-tabs-tab-btn {
+        &:hover {
+            color: white !important;
+        }
+        &:focus {
+            color: white !important;
+        }
+        &:active {
+            color: white !important;
+        }
     }
-    &:active {
-        color: white !important;
+    .ant-tabs-ink-bar {
+        background: rgba(255, 255, 255, 0.6) !important;
     }
-}
-.ant-tabs-tab-btn {
-    &:hover {
-        color: white !important;
-    }
-    &:focus {
-        color: white !important;
-    }
-    &:active {
-        color: white !important;
-    }
-}
-.ant-tabs-ink-bar {
-    background: rgba(255, 255, 255, 0.6) !important;
-}
 
-.ant-spin-dot-item {
-    background-color: rgba(255, 255, 255, 0.6) !important;
+    .ant-spin-dot-item {
+        background-color: rgba(255, 255, 255, 0.6) !important;
+    }
 }

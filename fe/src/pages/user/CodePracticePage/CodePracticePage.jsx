@@ -16,14 +16,21 @@ const CodePractice = () => {
 
     const handleRunBtn = () => {
         const code = editorRef.current.getValue();
-        axios
-            .post('http://localhost:80/code-practice', {
-                code,
-                user_id: userId,
-                practice_code_id: practiceId,
-                run: true,
-            })
-            .then((data) => console.log(data));
+        try {
+            axios
+                .post('http://localhost:80/code-practice', {
+                    code,
+                    user_id: userId,
+                    practice_code_id: practiceId,
+                    run: true,
+                })
+                .then((data) => console.log(data))
+                .catch((e) => {
+                    notification.error({ message: 'Lỗi hệ thống!' });
+                });
+        } catch (error) {
+            notification.error({ message: 'Lỗi hệ thống!' });
+        }
     };
 
     const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
@@ -55,7 +62,7 @@ const CodePractice = () => {
     } else {
         return (
             <>
-                <Col className={styles.codePracticeWrapper}>
+                <Col className={clsx([styles.codePracticeWrapper, 'codePracticeWrapperCustom'])}>
                     <Row className={styles.problemHeader}>
                         <Col span={8} className={styles.btnBackWrapper}>
                             <span className={styles.btnBack}>
