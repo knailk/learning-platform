@@ -1,7 +1,13 @@
 import React, { memo, useState } from 'react';
 import styles from './style.module.scss';
 import { Editor } from '@monaco-editor/react';
-const PythonEditor = ({ handleEditorDidMount, height = '100%', defaultValue = '#Here is some python text' }) => {
+const PythonEditor = ({
+    handleEditorDidMount,
+    height = '100%',
+    width = '100%',
+    defaultValue = '#Here is some python text',
+    theme = 'dark_vs.json',
+}) => {
     //SETTING FOR RESIZE OBSERVERS
     // Save a reference to the original ResizeObserver
     const OriginalResizeObserver = window.ResizeObserver;
@@ -37,7 +43,7 @@ const PythonEditor = ({ handleEditorDidMount, height = '100%', defaultValue = '#
     const handleEditorWillMount = (monaco) => {
         //set theme heere
         console.log('will mount');
-        fetch('themes/dark_vs.json', {
+        fetch(`/themes/${theme}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -47,17 +53,17 @@ const PythonEditor = ({ handleEditorDidMount, height = '100%', defaultValue = '#
                 return res.json();
             })
             .then((myJson) => {
-                monaco.editor.defineTheme('dark-vs-custom', myJson);
-                setOption({ ...option, theme: 'dark-vs-custom' });
+                monaco.editor.defineTheme('custom-theme', myJson);
+                setOption({ ...option, theme: 'custom-theme' });
             })
             .catch((err) => {
                 console.log(err);
             });
     };
-  
+
     return (
         <>
-            <div className={styles.codeEditor} style={{ height: height }}>
+            <div className={styles.codeEditor} style={{ height: height, width: width }}>
                 <Editor
                     width="100%"
                     height="100%"

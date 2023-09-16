@@ -8,6 +8,8 @@ import LecurePractice from 'pages/user/PracticePage/PracticeComponent/LecurePrac
 import { SIDEBAR_TYPE } from './constant';
 import GamePage from 'pages/user/GamePage';
 import CodePractice from 'pages/user/CodePracticePage/CodePracticePage';
+import GameCodePage from 'pages/user/GameCodePage/GameCodePage';
+import GameLevel from 'pages/user/GameCodePage/GameLevel/GameLevel';
 
 export const ROUTERS = {
     MENU_NAV_BAR: [
@@ -103,6 +105,29 @@ export const ROUTERS = {
             title: 'codePractice',
             path: '/code-practice',
             component: <CodePractice />,
+            layout: null,
+            inMenu: true,
+        },
+        {
+            title: 'Game Map',
+            path: '/play/map',
+            component: <GameCodePage />,
+            layout: null,
+            inMenu: true,
+        },
+        {
+            title: '',
+            path: '/practice/:lesson_id',
+            component: <LecurePractice />,
+            layout: MasterLayout,
+            inMenu: false,
+            img: '',
+            type: SIDEBAR_TYPE.NOTSIDEBAR,
+        },
+        {
+            title: '',
+            path: '/play/level/:level',
+            component: <GameLevel />,
             layout: null,
             inMenu: true,
         },

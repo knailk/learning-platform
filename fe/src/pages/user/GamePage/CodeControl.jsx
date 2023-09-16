@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState, useEffect} from 'react';
+import React, { memo, useRef, useState, useEffect } from 'react';
 import { GridContextProvider, GridDropZone, GridItem, swap } from 'react-grid-dnd';
 import styles from './style.module.scss';
 import { Col, Row } from 'antd';
@@ -15,15 +15,15 @@ function CodeControl({ sendMessage, level }) {
         editorRef.current = editor;
     };
     const CreateStates = () => {
-        sendMessage("SonRice", "CreateStates", horseMoves);
+        sendMessage('SonRice', 'CreateStates', horseMoves);
     };
     const reloadGame = () => {
-        sendMessage("SonRice", "ReLoadLevel");
-        console.warn("Reloading", level);
+        sendMessage('SonRice', 'ReLoadLevel');
+        console.warn('Reloading', level);
     };
 
     useEffect(() => {
-        sendMessage("GameManager", "LoadLevel", level);
+        sendMessage('GameManager', 'LoadLevel', level);
     });
 
     const handleAddItem = (name) => {
@@ -82,7 +82,7 @@ function CodeControl({ sendMessage, level }) {
                 <Row className={styles.buttonControl}>
                     <Col className={clsx([styles.excuteButton])}>
                         <img
-                            src={play ? 'images/pause.png' : 'images/execute.png'}
+                            src={play ? '/images/pause.png' : '/appimages/execute.png'}
                             alt="execute"
                             onClick={() => {
                                 setPlay(true);
@@ -91,10 +91,14 @@ function CodeControl({ sendMessage, level }) {
                         />
                     </Col>
                     <Col className={clsx([styles.excuteButton])}>
-                        <img src="images/stop.png" alt="stop" onClick={() => {
-                            setPlay(false);
-                            reloadGame();
-                        }} />
+                        <img
+                            src="/images/stop.png"
+                            alt="stop"
+                            onClick={() => {
+                                setPlay(false);
+                                reloadGame();
+                            }}
+                        />
                     </Col>
                 </Row>
             </Col>

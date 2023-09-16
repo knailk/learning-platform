@@ -1,0 +1,115 @@
+.gameCodePageWrapper {
+    width: 100vw;
+    height: 100vh;
+    background: rgb(68, 54, 45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.gameMap {
+    width: 1180px;
+    height: calc(0.9 * 100vh);
+    background-image: url('../../../../public/images/game/Dungeon_Map.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: relative;
+    .linearLeft {
+        position: absolute;
+        height: calc(0.9 * 100vh);
+        width: 70px;
+        left: 0px;
+        background-image: linear-gradient(to left, rgba(68, 54, 45, 0) 0%, rgb(68, 54, 45) 100%);
+        z-index: 2;
+    }
+    .linearRight {
+        position: absolute;
+        height: calc(0.9 * 100vh);
+        width: 70px;
+        right: 0px;
+        background-image: linear-gradient(to right, rgba(68, 54, 45, 0) 0%, rgb(68, 54, 45) 100%);
+        z-index: 2;
+    }
+    .linearTop {
+        position: absolute;
+        width: 100%;
+        height: 70px;
+        top: 0px;
+        background-image: linear-gradient(to top, rgba(68, 54, 45, 0) 0%, rgb(68, 54, 45) 100%);
+        z-index: 2;
+    }
+    .linearBottom {
+        position: absolute;
+        width: 100%;
+        height: 70px;
+        bottom: 0px;
+        background-image: linear-gradient(to bottom, rgba(68, 54, 45, 0) 0%, rgb(68, 54, 45) 100%);
+        z-index: 2;
+    }
+}
+
+.itemMap {
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    background-color: rgb(193, 193, 193);
+    position: absolute;
+    z-index: 3;
+    border: 2px groove #fff;
+    transform: scaleY(0.75);
+    &:hover {
+        scale: 1.2;
+    }
+    -webkit-transform: scaleY(0.75);
+    -moz-transform: scaleY(0.75);
+    -ms-transform: scaleY(0.75);
+    -o-transform: scaleY(0.75);
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    transition: 0.1s all linear;
+    -webkit-transition: 0.1s all linear;
+    -moz-transition: 0.1s all linear;
+    -ms-transition: 0.1s all linear;
+    -o-transition: 0.1s all linear;
+}
+.mapItemDescription {
+    width: 320px;
+    height: 100%;
+    padding: 10px;
+    background-color: #d0c7ad;
+    .titleDescription {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .description {
+        color: #555;
+        font-weight: 500;
+    }
+    .buttonPlay {
+        width: 150px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+        color: white;
+        font-weight: bold;
+        border: 4px solid black;
+        background-color: #00a651;
+        margin-bottom: 10px;
+        cursor: pointer;
+        &:hover {
+            background-color: rgba(0, 166, 81, 0.5);
+            scale: 1.05;
+        }
+        transition: all 0.1s linear;
+        -webkit-transition: all 0.1s linear;
+        -moz-transition: all 0.1s linear;
+        -ms-transition: all 0.1s linear;
+        -o-transition: all 0.1s linear;
+    }
+}

@@ -3,7 +3,7 @@ const cors = require('cors');
 const express = require('express');
 const PythonShell = require('python-shell').PythonShell;
 const defaultPath = './code';
-const PORT = 80;
+const PORT = 3001;
 const app = express();
 
 app.use(cors());
