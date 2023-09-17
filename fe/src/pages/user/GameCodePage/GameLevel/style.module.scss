@@ -4,7 +4,7 @@
     background-size: 100% 100%;
     background-color: rgb(68, 54, 45);
     .gameLayout {
-        width: 100%;
+        width: 1024px;
         height: 576px;
         border: 1px solid;
         background-color: white;
@@ -95,12 +95,20 @@
     .header {
         position: absolute;
         z-index: 5;
-        background: url('../../../../../public/images/game/code_editor_top_bar_wood_background.png') no-repeat;
+        background-image: url('../../../../../public/images/game/code_editor_top_bar_wood_background.png') no-repeat;
         background-size: 100% 100%;
         background-color: transparent;
         top: 0px;
         width: 100%;
         height: 70px;
+        .pythonIcon {
+            background-image: url('../../../../../public/images/game/python_small.png');
+            background-size: 100% 100%;
+            background-color: transparent;
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
     }
     .codeEditor {
         position: absolute;
@@ -131,7 +139,7 @@
             padding-right: 20px;
             .playBtn,
             .reloadBtn {
-                width: 200px;
+                width: 170px;
                 height: 40px;
                 background: url('../../../../../public/images/game/code_toolbar_run_button_active.png') no-repeat;
                 background-size: 100% 100%;
@@ -176,6 +184,11 @@
             color: #f3a931;
             padding: 2px 5px;
             overflow: scroll;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none;
             .possibleItem {
                 cursor: pointer;
                 border: 1px solid transparent;
@@ -183,6 +196,63 @@
                     border: 1px solid #f3a931;
                 }
             }
+        }
+        .content {
+        }
+    }
+}
+
+.resultModal {
+    border: 0px solid rgba(0, 0, 0, 0);
+    border-style: solid;
+    border-image: url('../../../../../public/images/game/victory_modal_border_background.png') 250 0 100 0 fill round;
+    border-width: 250px 0 100px 0;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    -ms-border-radius: 12px;
+    -o-border-radius: 12px;
+    height: 100px;
+    width: 700px;
+    position: relative;
+    .modalTitle {
+        font-weight: bold;
+        position: absolute;
+        top: -175px;
+        width: 100%;
+        text-align: center;
+        color: #fcc935;
+        font-size: 60px;
+        text-shadow: #000 8px 8px 0, #000 -8px -8px 0, #000 8px -8px 0, #000 -8px 8px 0, #000 8px 0px 0, #000 0px -8px 0,
+            #000 -8px 0px 0, #000 0px 8px 0;
+    }
+    .btnWrapper {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        bottom: -80px;
+        .btnClose {
+            background: url('../../../../../public/images/game/button-background-warning-active-border.png') no-repeat;
+            background-size: 100% 100%;
+            background-color: transparent;
+            width: 150px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            &:hover {
+                color: rgba(255, 255, 255, 1);
+            }
+            transition: all 0.1s linear;
+            -webkit-transition: all 0.1s linear;
+            -moz-transition: all 0.1s linear;
+            -ms-transition: all 0.1s linear;
+            -o-transition: all 0.1s linear;
         }
     }
 }

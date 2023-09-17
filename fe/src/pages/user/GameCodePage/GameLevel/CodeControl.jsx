@@ -1,9 +1,8 @@
-import React, { memo, useRef, useState, useEffect } from 'react';
-import { GridContextProvider, GridDropZone, GridItem, swap } from 'react-grid-dnd';
+import React, { useRef, useState, useEffect } from 'react';
 import styles from './style.module.scss';
-import { Col, Row } from 'antd';
-import clsx from 'clsx';
+import { Col, Popover, Row } from 'antd';
 import PythonEditor from 'components/PythonEditor';
+import PossibleMove from './PossibleMove';
 
 const possibleMove = ['hero.moveLeft(steps)', 'hero.moveRight(steps)', 'hero.moveUp(steps)', 'hero.moveDown(steps)'];
 
@@ -47,7 +46,7 @@ function CodeControl({ sendMessage, level }) {
         });
     };
     const CreateStates = () => {
-        sendMessage('SonRice', 'CreateStates', horseMoves);
+        sendMessage('SonRice', 'CreateStates', 'RUR');
     };
     const reloadGame = () => {
         sendMessage('SonRice', 'ReLoadLevel');
@@ -55,13 +54,16 @@ function CodeControl({ sendMessage, level }) {
     };
 
     useEffect(() => {
-        sendMessage('GameManager', 'LoadLevel', level);
+        sendMessage('GameManager', 'LoadLevel', parseInt(level));
     });
 
     return (
         <>
             <div className={styles.codeControlWrapper}>
-                <div className={styles.header}>Hãy điều khiển Thánh Gióng bằng những câu lệnh</div>
+                <div className={styles.header}>
+                    <div className={styles.pythonIcon}></div>
+                    Điều khiển Thánh Gióng bằng các câu lệnh
+                </div>
                 <div className={styles.codeEditor}>
                     <PythonEditor
                         handleEditorDidMount={handleEditorDidMount}
@@ -70,16 +72,20 @@ function CodeControl({ sendMessage, level }) {
                         theme={'game.json'}
                     />
                     <div className={styles.buttonWrapper}>
-                        <div className={styles.playBtn}>CHẠY</div>
-                        <div className={styles.reloadBtn}>LOAD LẠI</div>
+                        <div className={styles.playBtn} onClick={CreateStates}>
+                            CHẠY
+                        </div>
+                        <div className={styles.reloadBtn} onClick={reloadGame}>
+                            LOAD LẠI
+                        </div>
                     </div>
                 </div>
                 <div className={styles.possibleMoveWrapper}>
                     <div className={styles.possibleMove}>
                         {possibleMove.map((item, idx) => {
                             return (
-                                <div key={idx} className={styles.possibleItem}>
-                                    {item}
+                                <div key={idx}>
+                                    <PossibleMove item={item} />
                                 </div>
                             );
                         })}

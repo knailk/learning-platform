@@ -7,3 +7,16 @@
         background-position: center center;
     }
 }
+.resultModalContainer {
+    display: flex;
+    justify-content: center;
+    .ant-modal-content {
+        background: none !important;
+        border: none;
+        box-shadow: none;
+        width: 700px;
+    }
+    .ant-progress-inner {
+        border: 4px solid;
+    }
+}
