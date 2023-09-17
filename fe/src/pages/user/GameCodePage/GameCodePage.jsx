@@ -19,6 +19,9 @@ const GameCodePage = () => {
                     <div className={styles.linearTop}></div>
                     <div className={styles.linearBottom}></div>
                     <ItemMap left={'9%'} bottom={'25.5%'} data={itemMap} />
+                    <ItemMap left={'20%'} bottom={'20.5%'} data={itemMap} />
+                    <ItemMap left={'30%'} bottom={'20.5%'} data={itemMap} />
+                    <ItemMap left={'40%'} bottom={'22.5%'} data={itemMap} />
                 </div>
             </div>
         </>
