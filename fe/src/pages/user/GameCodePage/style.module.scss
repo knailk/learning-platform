@@ -5,26 +5,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 .gameMap {
-    width: 1180px;
-    height: calc(0.9 * 100vh);
-    background-image: url('../../../../public/images/game/Dungeon_Map.jpg');
+    // background-image: url('../../../../public/images/game/Dungeon_Map.jpg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
     position: relative;
+    img {
+        max-width: 100%;
+        max-height: 100vh;
+        margin: auto;
+    }
     .linearLeft {
         position: absolute;
-        height: calc(0.9 * 100vh);
+        height: 100vh;
         width: 70px;
         left: 0px;
+        top: 0px;
         background-image: linear-gradient(to left, rgba(68, 54, 45, 0) 0%, rgb(68, 54, 45) 100%);
         z-index: 2;
     }
     .linearRight {
         position: absolute;
-        height: calc(0.9 * 100vh);
+        height: 100vh;
+        top: 0px;
         width: 70px;
         right: 0px;
         background-image: linear-gradient(to right, rgba(68, 54, 45, 0) 0%, rgb(68, 54, 45) 100%);

@@ -13,8 +13,11 @@ const GameCodePage = () => {
         <>
             <div className={styles.gameCodePageWrapper}>
                 <div className={styles.gameMap}>
+                    <img src="/images/game/Dungeon_Map.jpg" alt="" />
                     <div className={styles.linearLeft}></div>
                     <div className={styles.linearRight}></div>
+                    <div className={styles.linearTop}></div>
+                    <div className={styles.linearBottom}></div>
                     <ItemMap left={'9%'} bottom={'25.5%'} data={itemMap} />
                 </div>
             </div>
