@@ -93,7 +93,7 @@ export const ROUTERS = {
             type: SIDEBAR_TYPE.NOTSIDEBAR,
         },
         {
-            title: 'Logout',
+            title: 'ĐĂNG XUẤT',
             path: '/logout',
             component: <></>,
             layout: MasterLayout,
@@ -102,19 +102,24 @@ export const ROUTERS = {
             type: SIDEBAR_TYPE.MORE,
         },
         {
-            title: 'codePractice',
-            path: '/code-practice',
-            component: <CodePractice />,
-            layout: null,
-            inMenu: true,
-        },
-        {
-            title: 'Game Map',
+            title: 'TRÒ CHƠI',
             path: '/play/map',
             component: <GameCodePage />,
             layout: null,
             inMenu: true,
+            img: '/images/game_sidebar.png',
+            type: SIDEBAR_TYPE.SIDEBAR,
         },
+        {
+            title: 'LUYỆN TƯ DUY',
+            path: '/code-practice',
+            component: <CodePractice />,
+            layout: null,
+            inMenu: true,
+            img: '/images/code_sidebar.png',
+            type: SIDEBAR_TYPE.SIDEBAR,
+        },
+
         {
             title: '',
             path: '/practice/:lesson_id',
