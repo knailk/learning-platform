@@ -195,7 +195,7 @@ func (ctrl *AuthController) ChangePassword(ctx *gin.Context) {
 	ctrl.SetAccessCookie(ctx, authToken.AccessToken.Token)
 	ctrl.SetRefreshCookie(ctx, authToken.RefreshToken.Token)
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Confirm forgot password request OK", "error": err})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Change password successfully", "error": err})
 }
 
 // Logout ...
