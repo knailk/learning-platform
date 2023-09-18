@@ -13,12 +13,12 @@ services:
   frontend:
     build:
       context: ./fe
-    # environment:
-    #   VIRTUAL_HOST: 'giongedu.store'
-    #   VIRTUAL_NETWORK: 'nginx-proxy'
-    #   VIRTUAL_PORT: 3000
-    #   LETSENCRYPT_HOST: 'giongedu.store'
-    #   LETSENCRYPT_EMAIL: 'tiendung3719@gmail.com'
+    environment:
+      VIRTUAL_HOST: 'giongedu.store'
+      VIRTUAL_NETWORK: 'nginx-proxy'
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: 'giongedu.store'
+      LETSENCRYPT_EMAIL: 'tiendung3719@gmail.com'
 networks:
   default:
     external:
