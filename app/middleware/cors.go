@@ -1,27 +1,23 @@
 package middleware
 
 import (
-	"fmt"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 // CORSMiddleware ...
 // CORS (Cross-Origin Resource Sharing)
 func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding, x-access-token")
-		c.Writer.Header().Set("Access-Control-Expose-Headers", "Content-Length")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-
-		if c.Request.Method == "OPTIONS" {
-			fmt.Println("OPTIONS")
-			c.AbortWithStatus(200)
-		} else {
-			c.Next()
-		}
+	corsCfg := cors.Config{
+		AllowOrigins: []string{"http://localhost:3000", "https://giongedu.store"},
+		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders: []string{"Content-Length", "Origin", "cookie", "access-control-allow-origin",
+			"authorization, origin, content-type, accept", "X-CSRF-Token", "Pragma"},
+		ExposeHeaders:    []string{"Content-Length", "Content-Disposition"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
 	}
+	return cors.New(corsCfg)
 }

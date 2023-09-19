@@ -73,7 +73,7 @@ func (ctrl *LessonController) CreateLessonsAnswer(ctx *gin.Context) {
 	var createAnswerRequest entity.LessonAnswer
 	if err := ctx.ShouldBindJSON(&createAnswerRequest); err != nil {
 		log.Error("bind json error: ", err)
-		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "bind json error"})
+		ctx.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "bind json error", "error": err.Error()})
 		return
 	}
 
@@ -100,7 +100,7 @@ func (ctrl *LessonController) GetLessonsAnswer(ctx *gin.Context) {
 	lessonAnswer, err := ctrl.LessonModel.GetAnswer(ctx, auth.ID, lessonID)
 	if err != nil {
 		log.Error("create lesson answer error: ", err)
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Create lesson answer error", "err": err.Error()})
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Create lesson answer error", "err": err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": lessonAnswer})
