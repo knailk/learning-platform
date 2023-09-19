@@ -12,8 +12,11 @@ RUN npm install --legacy-peer-deps
 # Copy the app source code to the container
 COPY . .
 
+# Expose the port of your application to bind with the host port
+EXPOSE 3000
+
 # Build the React app for production
 RUN npm run build
 
 # Define the command to start your React app
-CMD ["npm", "--max-old-space-size=512" ,"start"]
+CMD ["npm", "--max-old-space-size=900" ,"start"]

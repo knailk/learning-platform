@@ -38,7 +38,7 @@ const CodePractice = () => {
 
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
-        var myBinding = editor.addCommand(monaco.KeyMod.Ctrl | monaco.KeyCode.KEY_S, function () {
+        let myBinding = editor.addCommand(monaco.KeyMod.Ctrl | monaco.KeyCode.KEY_S, function () {
             alert('SAVE pressed!');
         });
     };

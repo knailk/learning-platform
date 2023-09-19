@@ -1,4 +1,8 @@
-npm-debug.log
 Dockerfile
 yarn-error.log
 node_modules
+npm-debug.log
+build
+.git
+*.md
+.gitignore
