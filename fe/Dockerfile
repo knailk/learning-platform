@@ -16,4 +16,4 @@ COPY . .
 RUN npm run build
 
 # Define the command to start your React app
-CMD ["npm", "start"]
+CMD ["npm", "--max-old-space-size=512" ,"start"]
