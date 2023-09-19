@@ -3,6 +3,9 @@ FROM node:16-alpine
 # Set the working directory in the container
 WORKDIR /app
 
+# Set the maximum heap memory size for Node.js
+ENV NODE_OPTIONS="--max-old-space-size=900"
+
 # Copy package.json and package-lock.json to the container
 COPY package.json ./
 
