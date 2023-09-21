@@ -16,3 +16,9 @@ export const SIDEBAR_TYPE = {
     NOTSIDEBAR: 'not_sidebar',
     SIDEBAR: 'sidebar',
 };
+
+export const VARIABLE_TYPE = {
+    NUMBER: 'number',
+    STRING: 'string',
+    ARRAY: 'array',
+};

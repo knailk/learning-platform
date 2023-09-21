@@ -1,31 +1,106 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, createContext, useReducer } from 'react';
 import clsx from 'clsx';
 import { Row, Col, notification, Spin } from 'antd';
-import axios from 'axios';
 import Splitter, { SplitDirection } from '@devbookhq/splitter';
 import styles from './style.module.scss';
 import UserInteract from './UserInteract';
 import ProblemDescription from './ProblemDescription';
-import request from 'utils/http';
+import request, { request_node } from 'utils/http';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCloudArrowUp, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { VARIABLE_TYPE } from 'utils/constant';
+
+export const CodePracticeContext = createContext();
+
+const initTestCase = {
+    id: 0,
+    input: { type: VARIABLE_TYPE.ARRAY, value: '[2,7,11,15]' },
+    target: { type: VARIABLE_TYPE.NUMBER, value: '9' },
+};
+const initState = {
+    testCase: initTestCase,
+    idIncrement: 0,
+    allTestCases: [initTestCase],
+};
+const ADD_ACTION = 'add';
+const REMOVE_ACTION = 'remove';
+const SET_ACTIVE = 'active';
+const UPDATE_TESTCASE = 'update';
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case ADD_ACTION:
+            const newId = state.idIncrement + 1;
+            const newCase = { ...state.testCase, id: newId };
+            return {
+                testCase: newCase,
+                idIncrement: newId,
+                allTestCases: [...state.allTestCases, newCase],
+            };
+        case REMOVE_ACTION:
+            let idxRemove = -1;
+            const temp = state.allTestCases.filter((testCase, idx) => {
+                if (state.testCase.id === action.testCaseId && testCase.id === action.testCaseId) {
+                    idxRemove = idx > 0 ? idx - 1 : 0;
+                }
+                return testCase.id !== action.testCaseId;
+            });
+            const testCase = idxRemove === -1 ? state.testCase : temp[idxRemove];
+            return { ...state, testCase, allTestCases: temp };
+        case SET_ACTIVE:
+            return { ...state, testCase: action.testCase };
+        case UPDATE_TESTCASE:
+            const newTestCase = {
+                ...state.testCase,
+                target: { ...state.testCase.target, value: action.targetValue },
+                input: { ...state.testCase.input, value: action.inputValue },
+            };
+            const newArrTestCase = state.allTestCases.map((value) => {
+                if (value.id === newTestCase.id) {
+                    return newTestCase;
+                } else return value;
+            });
+            return {
+                ...state,
+                testCase: newTestCase,
+                allTestCases: newArrTestCase,
+            };
+        default:
+            break;
+    }
+};
 
 const CodePractice = () => {
     const editorRef = useRef(null);
     const [problem, setProblem] = useState(null);
+    const [defaultValue, setDefaultValue] = useState(null);
+    const [load, setLoad] = useState(false);
+    const [tab, setTab] = useState('1');
+    const [testCaseState, dispatch] = useReducer(reducer, initState);
 
     const handleRunBtn = () => {
         const code = editorRef.current.getValue();
+        console.log(testCaseState);
         try {
-            axios
-                .post('http://localhost:80/code-practice', {
+            setLoad(true);
+            request_node
+                .post('/code-practice', {
                     code,
                     user_id: userId,
                     practice_code_id: practiceId,
                     run: true,
+                    test_case: testCaseState.allTestCases,
+                    function_name: problem.function,
                 })
-                .then((data) => console.log(data))
+                .then((data) =>
+                    setTimeout(() => {
+                        setLoad(false);
+                        setTab('2');
+                        console.log(data);
+                    }, 500),
+                )
                 .catch((e) => {
+                    setLoad(false);
                     notification.error({ message: 'Lỗi hệ thống!' });
                 });
         } catch (error) {
@@ -47,8 +122,22 @@ const CodePractice = () => {
         const fetchProblem = async () => {
             try {
                 const response = await request.get('problems/1de43a84-07fc-4a1c-9848-ccd0e8b6a250');
-                console.log(response.data.data);
-                setProblem(response.data.data);
+                let data = {
+                    ...response.data.data,
+                    args: '["nums" ,"target"]',
+                    available_code:
+                        'def twoSum(self, nums, target):\n    """\n    :type nums: List[int]\n    :type target: int\n    :rtype: List[int]\n    """',
+                    function: 'twoSum',
+                };
+                setProblem({ ...data, args: JSON.parse(data.args) });
+                const node_response = await request_node.get('/code-practice/get-saved-file', {
+                    params: {
+                        user_id: 'c5c10397-37c3-4e96-a9c6-ab6ac47dd700',
+                        problem_id: response.data.data.id,
+                    },
+                });
+                console.log(node_response.data);
+                setDefaultValue(node_response.data.data ? node_response.data.data : data.available_code);
             } catch (error) {
                 notification.error({ message: 'Lỗi hệ thống!' });
             }
@@ -61,7 +150,9 @@ const CodePractice = () => {
         return <Spin />;
     } else {
         return (
-            <>
+            <CodePracticeContext.Provider
+                value={{ dispatch: dispatch, testCaseState: testCaseState, problem: problem }}
+            >
                 <Col className={clsx([styles.codePracticeWrapper, 'codePracticeWrapperCustom'])}>
                     <Row className={styles.problemHeader}>
                         <Col span={8} className={styles.btnBackWrapper}>
@@ -73,7 +164,8 @@ const CodePractice = () => {
                         <Col span={8} className={styles.btnExecuteWrapper}>
                             <span className={clsx([styles.btn, styles.btnRun])} onClick={handleRunBtn}>
                                 <FontAwesomeIcon icon={faPlay} style={{ marginRight: 4 }} />
-                                Chạy thử
+                                {!load && 'Chạy thử'}
+                                {load && <Spin />}
                             </span>
                             <span className={clsx([styles.btn, styles.btnSubmit])}>
                                 <FontAwesomeIcon icon={faCloudArrowUp} style={{ marginRight: 4 }} />
@@ -97,12 +189,15 @@ const CodePractice = () => {
                                     handleEditorDidMount={handleEditorDidMount}
                                     problem={problem}
                                     editorRef={editorRef}
+                                    defaultEditorValue={defaultValue}
+                                    tab={tab}
+                                    setTab={setTab}
                                 />
                             </Col>
                         </Splitter>
                     </Row>
                 </Col>
-            </>
+            </CodePracticeContext.Provider>
         );
     }
 };

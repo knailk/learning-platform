@@ -7,20 +7,18 @@ import styles from './style.module.scss';
 import './customStyle.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+import { request_node } from 'utils/http';
 
-const UserInteract = ({ editorRef, problem, handleEditorDidMount }) => {
+const UserInteract = ({ editorRef, problem, handleEditorDidMount, defaultEditorValue, tab, setTab }) => {
     const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
     const [load, setLoad] = useState(false);
-    const defaultEditorValue =
-        'class Solution(object):\n    def twoSum(self, nums, target):\n        """\n        :type nums: List[int]\n        :type target: int\n        :rtype: List[int]\n        """\n';
     const itemsTab = [
         {
             key: '1',
             label: 'Test case',
             children: (
                 <div className={styles.contentConsole}>
-                    <TestCase />
+                    <TestCase args={problem.args} />
                 </div>
             ),
         },
@@ -46,8 +44,8 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount }) => {
             setLoad(true);
             try {
                 !load &&
-                    axios
-                        .post('http://localhost:80/code-practice', {
+                    request_node
+                        .post('/code-practice', {
                             code,
                             user_id: userId,
                             practice_code_id: problem.id,
@@ -56,6 +54,7 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount }) => {
                         .then((data) =>
                             setTimeout(() => {
                                 setLoad(false);
+                                setTab('2');
                             }, 500),
                         )
                         .catch((e) => {
@@ -69,6 +68,7 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount }) => {
             }
         }
     };
+
     return (
         <>
             <Splitter direction={SplitDirection.Vertical} minHeights={[200, 200]} initialSizes={[55, 45]}>
@@ -88,7 +88,12 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount }) => {
                     </div>
                 </div>
                 <div className={styles.consoleWrapper}>
-                    <Tabs defaultActiveKey="1" items={itemsTab} renderTabBar={renderTabBar} />
+                    <Tabs
+                        activeKey={tab}
+                        items={itemsTab}
+                        renderTabBar={renderTabBar}
+                        onTabClick={(key) => setTab(key)}
+                    />
                 </div>
             </Splitter>
         </>

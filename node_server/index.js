@@ -2,12 +2,33 @@ const fs = require('fs');
 const cors = require('cors');
 const express = require('express');
 const PythonShell = require('python-shell').PythonShell;
-const defaultPath = './code';
+const defaultPath = './data/code';
 const PORT = 3001;
 const app = express();
+const NUMBER = 'number';
+const STRING = 'string';
+const ARRAY = 'array';
+const utils = require('./utils/save');
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
+
+function convert_type(value, type) {
+    switch (type) {
+        case NUMBER:
+            return parseInt(value);
+        case ARRAY:
+            return JSON.parse(value);
+        default:
+            return value;
+    }
+}
 
 app.post('/python', (req, res) => {
     let file_name = Date.now() + '.py';
@@ -18,16 +39,8 @@ app.post('/python', (req, res) => {
         file_path += date.getMonth() + '_';
         file_path += date.getDate();
 
-        //check if folder exist
-        if (!fs.existsSync(file_path)) {
-            fs.mkdirSync(file_path, { recursive: true });
-        }
-        //add file
-        fs.appendFile(file_name, '', function (err) {
-            if (err) throw err;
-        });
-        //write file
-        fs.writeFile(file_path + '/' + file_name, req.body.code);
+        utils.saveFileCode(file_path, file_name, req.body.code);
+
         let options = {
             mode: 'text',
             pythonOptions: ['-u'],
@@ -49,40 +62,58 @@ app.post('/python', (req, res) => {
 });
 
 app.post('/code-practice', (req, res) => {
-    let file_name = req.body.practice_code_id + '.py';
+    let file_name = 'Solution.py';
     try {
-        let file_path = defaultPath + '/' + req.body.user_id + '/code_practice';
-        //check if folder exist
-        if (!fs.existsSync(file_path)) {
-            fs.mkdirSync(file_path, { recursive: true });
-        }
-        //add file
-        fs.appendFile(file_name, '', function (err) {
-            if (err) throw err;
-        });
-        //write file
-        fs.writeFileSync(file_path + '/' + file_name, req.body.code);
-        let options = {
-            mode: 'text',
-            pythonOptions: ['-u'],
-            args: [1, 2, 3],
-        };
-        if (req.body.run) {
-            PythonShell.run(file_path + '/' + file_name, options)
-                .then((messages) => {
-                    res.send({ data: messages.join('\r\n') });
-                    fs.unlinkSync(file_name);
-                })
-                .catch((err) => {
-                    res.send({ data: err.traceback });
-                    fs.unlinkSync(file_name);
+        let file_path = defaultPath + '/' + req.body.user_id + '/code_practice/' + req.body.practice_code_id;
+
+        utils.saveFileCode(file_path, file_name, req.body.code);
+        utils.saveFileCode(file_path, 'main.py', `from Solution import Solution\nimport sys\nprint(Solution().${req.body.function_name}(*sys.argv[1:]))`);
+
+        if (req.body.run === true) {
+            let test_case = req.body.test_case;
+            let input_output = test_case.map((value) => {
+                return [convert_type(value.input.value, value.input.type), convert_type(value.target.value, value.target.type)];
+            });
+            const run_test_case = () => {
+                let return_value = [];
+                let error = false;
+                input_output.forEach(async (element, index) => {
+                    console.log(element);
+                    let options = {
+                        mode: 'text',
+                        pythonOptions: ['-u'],
+                        args: element,
+                    };
+                    await PythonShell.run(file_path + '/' + 'main.py', options)
+                        .then((messages) => {
+                            return_value.push(messages[0]);
+                            console.log(return_value);
+                        })
+                        .catch((err) => {
+                            return_value = err.traceback;
+                            error = true;
+                        });
+                    if (index === input_output.length - 1 || error === true) {
+                        res.send({ data: return_value });
+                    }
                 });
+            };
+            run_test_case();
         } else {
             res.send({ data: 'success' });
         }
     } catch (error) {
         res.send({ data: 'Lỗi hệ thống, vui lòng thử lại sau' });
         fs.unlinkSync(file_name);
+    }
+});
+app.get('/code-practice/get-saved-file', (req, res) => {
+    let path = defaultPath + '/' + req.query.user_id + '/code_practice' + '/' + req.query.problem_id + '/Solution.py';
+    if (!fs.existsSync(path)) {
+        res.send({ data: '' });
+    } else {
+        let data_content = fs.readFileSync(path, 'utf8');
+        res.send({ data: data_content });
     }
 });
 

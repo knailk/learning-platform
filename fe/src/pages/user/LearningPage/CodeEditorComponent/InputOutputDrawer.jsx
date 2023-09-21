@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 import styles from './style.module.scss';
 import axios from 'axios';
 import { notification } from 'antd';
+import { request_node } from 'utils/http';
 
 const InputOutputDrawer = ({ ...props }) => {
     const [output, setOutput] = useState('');
@@ -9,8 +10,8 @@ const InputOutputDrawer = ({ ...props }) => {
     const getEditorValue = () => {
         const code = props.editorRef.current.getValue();
         try {
-            axios
-                .post('http://localhost:80/python', { code, user_id: userId })
+            request_node
+                .post('/python', { code, user_id: userId })
                 .then((data) => setOutput(data.data.data))
                 .catch((e) => {
                     notification.error({ message: 'Lỗi hệ thống!' });

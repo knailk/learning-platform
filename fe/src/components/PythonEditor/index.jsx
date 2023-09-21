@@ -42,7 +42,6 @@ const PythonEditor = ({
     });
     const handleEditorWillMount = (monaco) => {
         //set theme heere
-        console.log('will mount');
         fetch(`/themes/${theme}`, {
             headers: {
                 'Content-Type': 'application/json',
