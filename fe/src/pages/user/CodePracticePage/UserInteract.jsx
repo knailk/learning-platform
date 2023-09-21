@@ -3,6 +3,7 @@ import { Tabs, Spin, notification } from 'antd';
 import PythonEditor from 'components/PythonEditor';
 import Splitter, { SplitDirection } from '@devbookhq/splitter';
 import TestCase from './TabComponent/TestCase';
+import Result from './TabComponent/Result';
 import styles from './style.module.scss';
 import './customStyle.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +26,11 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, defaultEditorV
         {
             key: '2',
             label: 'Kết quả',
-            children: <div className={styles.contentConsole}>Content of Tab Pane 2</div>,
+            children: (
+                <div className={styles.contentConsole}>
+                    <Result />
+                </div>
+            ),
         },
     ];
     const renderTabBar = (props, DefaultTabBar) => (

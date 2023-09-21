@@ -72,28 +72,29 @@ app.post('/code-practice', (req, res) => {
         if (req.body.run === true) {
             let test_case = req.body.test_case;
             let input_output = test_case.map((value) => {
-                return [convert_type(value.input.value, value.input.type), convert_type(value.target.value, value.target.type)];
+                return { id: value.id, input: [convert_type(value.input.value, value.input.type), convert_type(value.target.value, value.target.type)] };
             });
+            console.log(input_output);
             const run_test_case = () => {
                 let return_value = [];
                 let error = false;
                 input_output.forEach(async (element, index) => {
-                    console.log(element);
                     let options = {
                         mode: 'text',
                         pythonOptions: ['-u'],
-                        args: element,
+                        args: element.input,
                     };
                     await PythonShell.run(file_path + '/' + 'main.py', options)
                         .then((messages) => {
-                            return_value.push(messages[0]);
-                            console.log(return_value);
+                            return_value.push({ id: element.id, value: { input: element.input, output: messages[0] } });
                         })
                         .catch((err) => {
                             return_value = err.traceback;
                             error = true;
                         });
+                    console.log(index, return_value);
                     if (index === input_output.length - 1 || error === true) {
+                        console.log('final:', return_value);
                         res.send({ data: return_value });
                     }
                 });

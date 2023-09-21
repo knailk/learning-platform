@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, createContext, useReducer } from 'react';
+import React, { useRef, useEffect, useState, createContext, useReducer, useMemo } from 'react';
 import clsx from 'clsx';
 import { Row, Col, notification, Spin } from 'antd';
 import Splitter, { SplitDirection } from '@devbookhq/splitter';
@@ -77,6 +77,7 @@ const CodePractice = () => {
     const [load, setLoad] = useState(false);
     const [tab, setTab] = useState('1');
     const [testCaseState, dispatch] = useReducer(reducer, initState);
+    const [result, setResult] = useState([]);
 
     const handleRunBtn = () => {
         const code = editorRef.current.getValue();
@@ -96,7 +97,7 @@ const CodePractice = () => {
                     setTimeout(() => {
                         setLoad(false);
                         setTab('2');
-                        console.log(data);
+                        setResult(data.data.data);
                     }, 500),
                 )
                 .catch((e) => {
@@ -145,14 +146,14 @@ const CodePractice = () => {
 
         fetchProblem();
     }, []);
-
+    const valueProvider = useMemo(() => {
+        return { dispatch: dispatch, testCaseState: testCaseState, problem: problem, result: result };
+    }, [testCaseState, result]);
     if (!problem) {
         return <Spin />;
     } else {
         return (
-            <CodePracticeContext.Provider
-                value={{ dispatch: dispatch, testCaseState: testCaseState, problem: problem }}
-            >
+            <CodePracticeContext.Provider value={valueProvider}>
                 <Col className={clsx([styles.codePracticeWrapper, 'codePracticeWrapperCustom'])}>
                     <Row className={styles.problemHeader}>
                         <Col span={8} className={styles.btnBackWrapper}>
