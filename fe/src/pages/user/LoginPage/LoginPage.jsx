@@ -11,6 +11,7 @@ import { Button, Form, Input, Divider, notification } from 'antd';
 
 import { useAuth } from 'contexts/AuthContext';
 import styles from './Login.module.css';
+import clsx from 'clsx';
 
 const cookies = new Cookies();
 
@@ -53,7 +54,7 @@ const LoginPage = () => {
             <Helmet>
                 <title>Đăng nhập || CPP</title>
             </Helmet>
-            <div className={styles.main}>
+            <div className={clsx([styles.main],"loginPage")}>
                 <section className={styles.login}>
                     <div className={styles['login-container']}>
                         <div className={styles['login-content']}>

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Col, Row } from 'antd';
 import styles from './style.module.scss';
+import './customStyle.scss';
 
 const ProblemDescription = ({ problem }) => {
     return (
         <>
             <Row className={styles.problemDescription}>
-                <div dangerouslySetInnerHTML={{ __html: problem.description }} />
+                <div className="detailDescription" dangerouslySetInnerHTML={{ __html: problem.description }} />
             </Row>
         </>
     );

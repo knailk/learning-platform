@@ -67,10 +67,11 @@ body {
     }
     .problemDetail {
         height: calc(100vh - 65px);
-        padding: 20px;
+        padding: 20px 0px 20px 20px;
         border: 1px solid;
         background-color: #262626;
         .problemDescription {
+            height: 100%;
             color: white;
         }
         border-radius: 10px;

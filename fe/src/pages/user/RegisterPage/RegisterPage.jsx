@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import Cookies from 'universal-cookie';
 import { faUser, faLock, faEnvelope, faPhone, faKey } from '@fortawesome/free-solid-svg-icons';
 import { Button, Form, Input, Divider, notification } from 'antd';
-
+import clsx from 'clsx';
 import { useAuth } from 'contexts/AuthContext';
 import request, { setAuthToken } from 'utils/http';
 import styles from './Register.module.css';
@@ -62,7 +62,7 @@ const RegisterPage = () => {
             <Helmet>
                 <title>Đăng ký tài khoản</title>
             </Helmet>
-            <div className={styles.main}>
+            <div className={clsx([styles.main, 'registerPage'])}>
                 <section className={styles.register}>
                     <div className={styles['register-container']}>
                         <div className={styles['register-content']}>
