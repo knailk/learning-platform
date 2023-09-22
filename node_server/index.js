@@ -58,6 +58,8 @@ app.post('/code-practice', (req, res) => {
             const run_test_case = () => {
                 let return_value = [];
                 let error = false;
+                let count = 0;
+                let total = input_output.length;
                 input_output.forEach(async (element, index) => {
                     let options = {
                         mode: 'text',
@@ -66,14 +68,19 @@ app.post('/code-practice', (req, res) => {
                     };
                     await PythonShell.run(file_path + '/' + 'main.py', options)
                         .then((messages) => {
+                            count++;
                             return_value.push({ id: element.id, value: { input: element.original_input, output: messages[0] } });
                         })
                         .catch((err) => {
                             return_value = err.traceback;
                             error = true;
                         });
-                    if (index === input_output.length - 1 || error === true) {
-                        res.send({ data: return_value });
+                    if (count === total || error === true) {
+                        if (error) {
+                            res.status(400).send({ error: utils.customErrorReturn(return_value) });
+                        } else {
+                            res.send({ data: return_value });
+                        }
                     }
                 });
             };

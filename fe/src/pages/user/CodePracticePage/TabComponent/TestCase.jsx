@@ -6,13 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { CodePracticeContext } from '../CodePracticePage';
 
-const TestCase = ({ args }) => {
+const TestCase = () => {
     const ADD_ACTION = 'add';
     const REMOVE_ACTION = 'remove';
     const SET_ACTIVE = 'active';
     const UPDATE_TESTCASE = 'update';
     const CodePractice = useContext(CodePracticeContext);
-    //useReducer for data testcase
     return (
         <>
             <Col>

@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Menlo';
+    src: url('../../../../../public/fonts/Menlo-Regular.ttf') format('truetype');
+}
+
 .itemTestCase {
     position: relative;
     width: 70px;
@@ -170,4 +175,45 @@
     .expectedWrapper {
         color: rgb(44 187 93);
     }
+}
+
+.failedResultWrapper {
+    .errorTitle {
+        margin-top: 10px;
+        color: rgb(239 71 67);
+        font-weight: 500;
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        white-space: nowrap;
+    }
+    .errorDetail {
+        margin-top: 20px;
+        color: white;
+        background-color: #ef47431f;
+        display: flex;
+        align-items: center;
+        padding: 15px 10px;
+        border-color: transparent;
+        border-radius: 0.5rem;
+        -webkit-border-radius: 0.5rem;
+        -moz-border-radius: 0.5rem;
+        -ms-border-radius: 0.5rem;
+        -o-border-radius: 0.5rem;
+        pre {
+            color: rgb(241 99 95);
+            font-size: 0.75rem;
+            line-height: 1rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-family: Menlo, sans-serif !important;
+        }
+    }
+}
+.runCodeFirst {
+    color: #ebebf54d;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

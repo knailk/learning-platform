@@ -34,4 +34,12 @@ const convertTestCase = (test_cases) => {
     return result;
 };
 
-module.exports = { saveFileCode, convertTestCase };
+const customErrorReturn = (traceback) => {
+    let regex = / {2}File ".*", line/g;
+    let data = traceback.split('\r\n').slice(3);
+    data[0] = data[0].replace(regex, 'Error occured at Line');
+    console.log(data);
+    return data.join('\r\n');
+};
+
+module.exports = { saveFileCode, convertTestCase, customErrorReturn };

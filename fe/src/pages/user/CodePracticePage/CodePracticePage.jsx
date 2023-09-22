@@ -80,7 +80,7 @@ const CodePractice = () => {
     const [load, setLoad] = useState(false);
     const [tab, setTab] = useState('1');
     const [testCaseState, dispatch] = useReducer(reducer, initState);
-    const [result, setResult] = useState([]);
+    const [result, setResult] = useState({ status: '', data: [] });
 
     const handleRunBtn = () => {
         const code = editorRef.current.getValue();
@@ -99,12 +99,17 @@ const CodePractice = () => {
                     setTimeout(() => {
                         setLoad(false);
                         setTab('2');
-                        setResult(data.data.data);
+                        setResult({ status: 'success', value: data.data.data });
                     }, 500),
                 )
                 .catch((e) => {
                     setLoad(false);
-                    notification.error({ message: 'Lỗi hệ thống!' });
+                    try {
+                        setResult({ status: 'error', value: e.response.data.error });
+                        setTab('2');
+                    } catch (error) {
+                        notification.error({ message: 'Lỗi hệ thống!' });
+                    }
                 });
         } catch (error) {
             notification.error({ message: 'Lỗi hệ thống!' });
@@ -144,7 +149,6 @@ const CodePractice = () => {
                 notification.error({ message: 'Lỗi hệ thống!' });
             }
         };
-
         fetchProblem();
     }, []);
     const valueProvider = useMemo(() => {
