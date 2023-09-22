@@ -1,5 +1,5 @@
 import styles from './style.module.scss';
-import { Col, Row } from 'antd';
+import { Col, Row, notification } from 'antd';
 import clsx from 'clsx';
 import { CodePracticeContext } from '../CodePracticePage';
 import { useContext, useState } from 'react';
@@ -10,9 +10,14 @@ const SET_ACTIVE = 'active';
 const UPDATE_TESTCASE = 'update';
 const Result = () => {
     const CodePractice = useContext(CodePracticeContext);
-    const result = CodePractice.result.sort(function (a, b) {
-        return a.id - b.id;
-    });
+    let result = [];
+    try {
+        result = CodePractice.result.sort(function (a, b) {
+            return a.id - b.id;
+        });
+    } catch (error) {
+        notification.error({ message: 'Hệ thống lỗi, vui lòng thử lại sau' });
+    }
     const [active, setActive] = useState(0);
     const [dataResult, setDataResult] = useState(result.length > 0 ? result[0].value : { input: [], output: '' });
     const handleChangeCase = (value, idx) => {
@@ -43,26 +48,31 @@ const Result = () => {
                 })}
             </Row>
             <Row className={styles.inputResultWrapper}>
-                <div className={styles.inputTitle}>input</div>
-                <div className={styles.inputWrapper}>
-                    <div style={{ display: 'block' }} className={styles.inputName}>
-                        nums =
-                    </div>
-                    <div>{dataResult.input[0]}</div>
-                </div>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputTitle}>Input</div>
+                {dataResult.input.map((input, idx) => {
+                    return (
+                        <div className={styles.inputWrapper} key={idx}>
+                            <div style={{ display: 'block' }} className={styles.inputName}>
+                                {input.name}
+                            </div>
+                            <div>{input.value}</div>
+                        </div>
+                    );
+                })}
+
+                {/* <div className={styles.inputWrapper}>
                     <div style={{ display: 'block' }} className={styles.inputName}>
                         target =
                     </div>
                     <div>{dataResult.input[1]}</div>
-                </div>
+                </div> */}
             </Row>
             <Row className={styles.outputResultWrapper}>
-                <div className={styles.outputTitle}>output</div>
+                <div className={styles.outputTitle}>Output</div>
                 <div className={styles.outputWrapper}>{dataResult.output}</div>
             </Row>
             <Row className={styles.expectedResultWrapper}>
-                <div className={styles.expectedTitle}>expected</div>
+                <div className={styles.expectedTitle}>Expected</div>
                 <div className={styles.expectedWrapper}>[1]</div>
             </Row>
         </Col>

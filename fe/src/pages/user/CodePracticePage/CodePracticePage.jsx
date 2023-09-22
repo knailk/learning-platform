@@ -14,8 +14,10 @@ export const CodePracticeContext = createContext();
 
 const initTestCase = {
     id: 0,
-    input: { type: VARIABLE_TYPE.ARRAY, value: '[2,7,11,15]' },
-    target: { type: VARIABLE_TYPE.NUMBER, value: '9' },
+    input: [
+        { name: 'nums', type: VARIABLE_TYPE.ARRAY, value: '[2,7,11,15]' },
+        { name: 'target', type: VARIABLE_TYPE.NUMBER, value: '9' },
+    ],
 };
 const initState = {
     testCase: initTestCase,
@@ -50,13 +52,14 @@ const reducer = (state, action) => {
         case SET_ACTIVE:
             return { ...state, testCase: action.testCase };
         case UPDATE_TESTCASE:
-            const newTestCase = {
-                ...state.testCase,
-                target: { ...state.testCase.target, value: action.targetValue },
-                input: { ...state.testCase.input, value: action.inputValue },
-            };
+            let newTestCase = state.testCase.input.map((value) => {
+                if (value.name === action.value.name) {
+                    return action.value;
+                } else return value;
+            });
+            newTestCase = { id: state.testCase.id, input: [...newTestCase] };
             const newArrTestCase = state.allTestCases.map((value) => {
-                if (value.id === newTestCase.id) {
+                if (value.id === state.testCase.id) {
                     return newTestCase;
                 } else return value;
             });
@@ -81,7 +84,6 @@ const CodePractice = () => {
 
     const handleRunBtn = () => {
         const code = editorRef.current.getValue();
-        console.log(testCaseState);
         try {
             setLoad(true);
             request_node
@@ -127,7 +129,7 @@ const CodePractice = () => {
                     ...response.data.data,
                     args: '["nums" ,"target"]',
                     available_code:
-                        'def twoSum(self, nums, target):\n    """\n    :type nums: List[int]\n    :type target: int\n    :rtype: List[int]\n    """',
+                        'class Solution(object):\n    def twoSum(self, nums, target):\n        """\n        :type nums: List[int]\n        :type target: int\n        :rtype: List[int]\n        """',
                     function: 'twoSum',
                 };
                 setProblem({ ...data, args: JSON.parse(data.args) });
@@ -137,7 +139,6 @@ const CodePractice = () => {
                         problem_id: response.data.data.id,
                     },
                 });
-                console.log(node_response.data);
                 setDefaultValue(node_response.data.data ? node_response.data.data : data.available_code);
             } catch (error) {
                 notification.error({ message: 'Lỗi hệ thống!' });

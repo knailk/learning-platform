@@ -5,9 +5,6 @@ const PythonShell = require('python-shell').PythonShell;
 const defaultPath = './data/code';
 const PORT = 3001;
 const app = express();
-const NUMBER = 'number';
-const STRING = 'string';
-const ARRAY = 'array';
 const utils = require('./utils/save');
 
 const corsOptions = {
@@ -18,17 +15,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
-
-function convert_type(value, type) {
-    switch (type) {
-        case NUMBER:
-            return parseInt(value);
-        case ARRAY:
-            return JSON.parse(value);
-        default:
-            return value;
-    }
-}
 
 app.post('/python', (req, res) => {
     let file_name = Date.now() + '.py';
@@ -62,19 +48,17 @@ app.post('/python', (req, res) => {
 });
 
 app.post('/code-practice', (req, res) => {
-    let file_name = 'Solution.py';
+    // let file_name = 'Solution.py';
     try {
         let file_path = defaultPath + '/' + req.body.user_id + '/code_practice/' + req.body.practice_code_id;
-
-        utils.saveFileCode(file_path, file_name, req.body.code);
+        utils.saveFileCode(file_path, 'Solution.py', req.body.code);
         utils.saveFileCode(file_path, 'main.py', `from Solution import Solution\nimport sys\nprint(Solution().${req.body.function_name}(*sys.argv[1:]))`);
-
         if (req.body.run === true) {
             let test_case = req.body.test_case;
-            let input_output = test_case.map((value) => {
-                return { id: value.id, input: [convert_type(value.input.value, value.input.type), convert_type(value.target.value, value.target.type)] };
-            });
-            console.log(input_output);
+            let input_output = utils.convertTestCase(test_case);
+            //     // let input_output = test_case.map((value) => {
+            //     //     return { id: value.id, input: [convert_type(value.input.value, value.input.type), convert_type(value.target.value, value.target.type)] };
+            //     // });
             const run_test_case = () => {
                 let return_value = [];
                 let error = false;
@@ -86,15 +70,13 @@ app.post('/code-practice', (req, res) => {
                     };
                     await PythonShell.run(file_path + '/' + 'main.py', options)
                         .then((messages) => {
-                            return_value.push({ id: element.id, value: { input: element.input, output: messages[0] } });
+                            return_value.push({ id: element.id, value: { input: element.original_input, output: messages[0] } });
                         })
                         .catch((err) => {
                             return_value = err.traceback;
                             error = true;
                         });
-                    console.log(index, return_value);
                     if (index === input_output.length - 1 || error === true) {
-                        console.log('final:', return_value);
                         res.send({ data: return_value });
                     }
                 });
@@ -105,7 +87,6 @@ app.post('/code-practice', (req, res) => {
         }
     } catch (error) {
         res.send({ data: 'Lỗi hệ thống, vui lòng thử lại sau' });
-        fs.unlinkSync(file_name);
     }
 });
 app.get('/code-practice/get-saved-file', (req, res) => {

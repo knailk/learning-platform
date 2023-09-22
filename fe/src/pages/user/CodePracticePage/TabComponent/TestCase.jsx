@@ -13,8 +13,6 @@ const TestCase = ({ args }) => {
     const UPDATE_TESTCASE = 'update';
     const CodePractice = useContext(CodePracticeContext);
     //useReducer for data testcase
-    const inputRef = useRef('1');
-    const targetRef = useRef('1');
     return (
         <>
             <Col>
@@ -57,34 +55,22 @@ const TestCase = ({ args }) => {
                         </div>
                     )}
                 </Row>
-                <Row className={styles.inputWrapper}>
-                    <span style={{ display: 'block' }}>nums =</span>
-                    <input
-                        onChange={(e) =>
-                            CodePractice.dispatch({
-                                type: UPDATE_TESTCASE,
-                                inputValue: e.target.value,
-                                targetValue: targetRef.current.value,
-                            })
-                        }
-                        value={CodePractice.testCaseState.testCase.input.value}
-                        ref={inputRef}
-                    />
-                </Row>
-                <Row className={styles.inputWrapper}>
-                    <span style={{ display: 'block' }}>target =</span>
-                    <input
-                        onChange={(e) =>
-                            CodePractice.dispatch({
-                                type: UPDATE_TESTCASE,
-                                targetValue: e.target.value,
-                                inputValue: inputRef.current.value,
-                            })
-                        }
-                        value={CodePractice.testCaseState.testCase.target.value}
-                        ref={targetRef}
-                    />
-                </Row>
+                {CodePractice.testCaseState.testCase.input.map((input, idx) => {
+                    return (
+                        <Row className={styles.inputWrapper} key={idx}>
+                            <span style={{ display: 'block' }}>{input.name} =</span>
+                            <input
+                                onChange={(e) =>
+                                    CodePractice.dispatch({
+                                        type: UPDATE_TESTCASE,
+                                        value: { ...input, value: e.target.value },
+                                    })
+                                }
+                                value={input.value}
+                            />
+                        </Row>
+                    );
+                })}
             </Col>
         </>
     );

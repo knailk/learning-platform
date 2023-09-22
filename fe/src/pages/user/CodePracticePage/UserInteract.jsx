@@ -67,7 +67,6 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, defaultEditorV
                             setLoad(false);
                         });
             } catch (e) {
-                console.log(e);
                 notification.error({ message: 'Lỗi hệ thống!' });
                 setLoad(false);
             }
