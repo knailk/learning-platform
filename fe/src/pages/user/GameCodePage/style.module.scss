@@ -7,6 +7,23 @@
     justify-content: center;
     overflow: hidden;
 }
+
+.gameCodePageHeader {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    .headerContent {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo img {
+        width: 150px;
+    }
+}
+
 .gameMap {
     // background-image: url('../../../../public/images/game/Dungeon_Map.jpg');
     background-size: contain;
@@ -52,16 +69,18 @@
         background-image: linear-gradient(to bottom, rgba(68, 54, 45, 0) 0%, rgb(68, 54, 45) 100%);
         z-index: 2;
     }
+    .btnBackToHome {
+    }
 }
 
 .itemMap {
     cursor: pointer;
-    width: 15px;
-    height: 15px;
-    background-color: rgb(193, 193, 193);
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
     position: absolute;
     z-index: 3;
-    border: 2px groove #fff;
+    // border: 4px solid #ff0000;
     transform: scaleY(0.75);
     &:hover {
         scale: 1.2;
@@ -70,16 +89,24 @@
     -moz-transform: scaleY(0.75);
     -ms-transform: scaleY(0.75);
     -o-transform: scaleY(0.75);
+
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
+
     transition: 0.1s all linear;
     -webkit-transition: 0.1s all linear;
     -moz-transition: 0.1s all linear;
     -ms-transition: 0.1s all linear;
     -o-transition: 0.1s all linear;
+
+    img {
+        width: 45px;
+        display: block;
+        align-items: center;
+    }
 }
 .mapItemDescription {
     width: 320px;
@@ -117,5 +144,30 @@
         -moz-transition: all 0.1s linear;
         -ms-transition: all 0.1s linear;
         -o-transition: all 0.1s linear;
+    }
+}
+
+.pointer {
+    // display: none;
+
+    .highlightPointer {
+        position: absolute;
+        height: 75px;
+        pointer-events: none;
+        z-index: 10;
+
+        animation-duration: 2s;
+        animation-name: moveUpDown;
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes moveUpDown {
+        0%,
+        100% {
+            transform: translate(-15px, -175px);
+        }
+        50% {
+            transform: translate(-15px, -75px); /* Adjust the distance as needed */
+        }
     }
 }
