@@ -59,13 +59,6 @@ const Result = () => {
                         </div>
                     );
                 })}
-
-                {/* <div className={styles.inputWrapper}>
-                    <div style={{ display: 'block' }} className={styles.inputName}>
-                        target =
-                    </div>
-                    <div>{dataResult.input[1]}</div>
-                </div> */}
             </Row>
             <Row className={styles.outputResultWrapper}>
                 <div className={styles.outputTitle}>Output</div>
@@ -73,7 +66,7 @@ const Result = () => {
             </Row>
             <Row className={styles.expectedResultWrapper}>
                 <div className={styles.expectedTitle}>Expected</div>
-                <div className={styles.expectedWrapper}>[1]</div>
+                    <div className={styles.expectedWrapper}>[1]</div>
             </Row>
         </Col>
     );

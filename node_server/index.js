@@ -48,7 +48,6 @@ app.post('/python', (req, res) => {
 });
 
 app.post('/code-practice', (req, res) => {
-    // let file_name = 'Solution.py';
     try {
         let file_path = defaultPath + '/' + req.body.user_id + '/code_practice/' + req.body.practice_code_id;
         utils.saveFileCode(file_path, 'Solution.py', req.body.code);
@@ -56,9 +55,6 @@ app.post('/code-practice', (req, res) => {
         if (req.body.run === true) {
             let test_case = req.body.test_case;
             let input_output = utils.convertTestCase(test_case);
-            //     // let input_output = test_case.map((value) => {
-            //     //     return { id: value.id, input: [convert_type(value.input.value, value.input.type), convert_type(value.target.value, value.target.type)] };
-            //     // });
             const run_test_case = () => {
                 let return_value = [];
                 let error = false;
