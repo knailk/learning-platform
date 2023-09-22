@@ -10,7 +10,7 @@ import request from 'utils/http';
 import { Button, Form, Input, Divider, notification } from 'antd';
 
 import { useAuth } from 'contexts/AuthContext';
-import styles from './Login.module.css';
+import styles from './Login.module.scss';
 import clsx from 'clsx';
 
 const cookies = new Cookies();
@@ -54,19 +54,19 @@ const LoginPage = () => {
             <Helmet>
                 <title>Đăng nhập || CPP</title>
             </Helmet>
-            <div className={clsx([styles.main],"loginPage")}>
+            <div className={styles.main}>
                 <section className={styles.login}>
-                    <div className={styles['login-container']}>
-                        <div className={styles['login-content']}>
-                            <div className={styles['login-image']}>
+                    <div className={styles.loginContainer}>
+                        <div className={styles.loginContent}>
+                            <div className={styles.loginImage}>
                                 <img src="/images/login.png" alt="sign in" />
                             </div>
 
-                            <div className={styles['login-form-container']}>
-                                <h2 className={styles['form-title']}>Đăng nhập</h2>
-                                <Form className={styles['login-form']} onFinish={handleLogin} form={form}>
+                            <div className={styles.loginFormContainer}>
+                                <h2 className={styles.formTitle}>Đăng nhập</h2>
+                                <Form className={styles.loginForm} onFinish={handleLogin} form={form}>
                                     <Form.Item
-                                        className={styles['form-group']}
+                                        className={styles.formGroup}
                                         name="username"
                                         rules={[{ required: true, message: 'Bạn phải nhập email!' }]}
                                     >
@@ -77,7 +77,7 @@ const LoginPage = () => {
                                         />
                                     </Form.Item>
                                     <Form.Item
-                                        className={styles['form-group']}
+                                        className={styles.formGroup}
                                         name="password"
                                         rules={[{ required: true, message: 'Bạn phải nhập mật khẩu!' }]}
                                     >
@@ -87,7 +87,7 @@ const LoginPage = () => {
                                             prefix={<FontAwesomeIcon icon={faLock} />}
                                         />
                                     </Form.Item>
-                                    <Form.Item className={`${styles['form-group']} ${styles['form-button']}`}>
+                                    <Form.Item className={`${styles.formGroup} ${styles.formButton}`}>
                                         <Button
                                             style={{
                                                 width: '100%',
@@ -103,15 +103,15 @@ const LoginPage = () => {
                                         </Button>
                                     </Form.Item>
                                 </Form>
-                                <div className={styles['card__footer']}>
-                                    <Link to="/forgot-password" className={styles['card__footer--left']}>
+                                <div className={styles.cardFooter}>
+                                    <Link to="/forgot-password" className={styles.cardFooterLeft}>
                                         Quên mật khẩu?
                                     </Link>
-                                    <Link to="/register" className={styles['card__footer--right']}>
+                                    <Link to="/register" className={styles.cardFooterRight}>
                                         Chưa có tài khoản?
                                     </Link>
                                 </div>
-                                <div className={styles['social-login']}>
+                                <div className={styles.socialLogin}>
                                     <Divider>Hoặc đăng nhập bằng</Divider>
                                     <ul className={styles.socials}>
                                         <li>
@@ -120,7 +120,7 @@ const LoginPage = () => {
                                                     icon={faFacebook}
                                                     style={{ color: '#4267B2' }}
                                                     size="2xl"
-                                                    className={styles['cpp-facebook']}
+                                                    className={styles.cppFacebook}
                                                 />
                                             </Link>
                                         </li>
@@ -130,7 +130,7 @@ const LoginPage = () => {
                                                     icon={faGoogle}
                                                     size="2xl"
                                                     style={{ color: '#DB4437' }}
-                                                    className={styles['cpp-google']}
+                                                    className={styles.cppGoogle}
                                                 />
                                             </Link>
                                         </li>
@@ -140,7 +140,7 @@ const LoginPage = () => {
                                                     icon={faTwitter}
                                                     style={{ color: '#1DA1F2' }}
                                                     size="2xl"
-                                                    className={styles['cpp-twitter']}
+                                                    className={styles.cppTwitter}
                                                 />
                                             </Link>
                                         </li>
@@ -150,7 +150,7 @@ const LoginPage = () => {
                                                     icon={faGithub}
                                                     style={{ color: '#6cc644' }}
                                                     size="2xl"
-                                                    className={styles['cpp-github']}
+                                                    className={styles.cppGithub}
                                                 />
                                             </Link>
                                         </li>
@@ -160,7 +160,7 @@ const LoginPage = () => {
                                                     icon={faApple}
                                                     style={{ color: '#555555' }}
                                                     size="2xl"
-                                                    className={styles['cpp-apple']}
+                                                    className={styles.cppApple}
                                                 />
                                             </Link>
                                         </li>

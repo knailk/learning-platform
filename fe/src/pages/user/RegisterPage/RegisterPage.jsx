@@ -8,7 +8,7 @@ import { Button, Form, Input, Divider, notification } from 'antd';
 import clsx from 'clsx';
 import { useAuth } from 'contexts/AuthContext';
 import request, { setAuthToken } from 'utils/http';
-import styles from './Register.module.css';
+import styles from './Register.module.scss';
 
 const cookies = new Cookies();
 
@@ -62,15 +62,15 @@ const RegisterPage = () => {
             <Helmet>
                 <title>Đăng ký tài khoản</title>
             </Helmet>
-            <div className={clsx([styles.main, 'registerPage'])}>
+            <div className={styles.main}>
                 <section className={styles.register}>
-                    <div className={styles['register-container']}>
-                        <div className={styles['register-content']}>
-                            <div className={styles['register-form-container']}>
-                                <h2 className={styles['form-title']}>Đăng ký tài khoản</h2>
-                                <Form form={form} onFinish={handleRegister} className={styles['register-form']}>
+                    <div className={styles.registerContainer}>
+                        <div className={styles.registerContent}>
+                            <div className={styles.registerFormContainer}>
+                                <h2 className={styles.formTitle}>Đăng ký tài khoản</h2>
+                                <Form form={form} onFinish={handleRegister} className={styles.registerForm}>
                                     <Form.Item
-                                        className={styles['form-group']}
+                                        className={styles.formGroup}
                                         name="name"
                                         rules={[{ required: true, message: 'Bạn phải nhập tên của bạn!' }]}
                                     >
@@ -81,7 +81,7 @@ const RegisterPage = () => {
                                         />
                                     </Form.Item>
                                     <Form.Item
-                                        className={styles['form-group']}
+                                        className={styles.formGroup}
                                         name="email"
                                         rules={[{ required: true, message: 'Bạn phải nhập email của bạn!' }]}
                                     >
@@ -92,7 +92,7 @@ const RegisterPage = () => {
                                         />
                                     </Form.Item>
                                     <Form.Item
-                                        className={styles['form-group']}
+                                        className={styles.formGroup}
                                         name="phone"
                                         rules={[{ required: true, message: 'Bạn phải nhập số điện thoại của bạn!' }]}
                                     >
@@ -103,7 +103,7 @@ const RegisterPage = () => {
                                         />
                                     </Form.Item>
                                     <Form.Item
-                                        className={styles['form-group']}
+                                        className={styles.formGroup}
                                         name="password"
                                         rules={[{ required: true, message: 'Bạn phải nhập mật khẩu!' }]}
                                     >
@@ -114,7 +114,7 @@ const RegisterPage = () => {
                                         />
                                     </Form.Item>
                                     <Form.Item
-                                        className={styles['form-group']}
+                                        className={styles.formGroup}
                                         name="confirmpassword"
                                         rules={[{ required: true, message: 'Nhập lại mật khẩu!' }]}
                                     >
@@ -124,7 +124,7 @@ const RegisterPage = () => {
                                             prefix={<FontAwesomeIcon icon={faKey} />}
                                         />
                                     </Form.Item>
-                                    <Form.Item className={`${styles['form-group']} ${styles['form-button']}`}>
+                                    <Form.Item className={`${styles.formGroup} ${styles.formButton}`}>
                                         <Button
                                             style={{
                                                 width: '100%',
@@ -140,9 +140,9 @@ const RegisterPage = () => {
                                     </Form.Item>
                                 </Form>
                             </div>
-                            <div className={styles['register-image']}>
+                            <div className={styles.registerImage}>
                                 <img src="images/register.png" alt="sing up" />
-                                <Link to="/login" className={styles['register-link']}>
+                                <Link to="/login" className={styles.registerLink}>
                                     Đã có tài khoản
                                 </Link>
                             </div>
