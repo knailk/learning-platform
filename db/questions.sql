@@ -1193,7 +1193,221 @@ SELECT
     NOW()
 FROM
     c1l5;
-
+------------------------------------------------------------ CHAPTER 1 - LESSON 6 ------------------------------------------------------------
+WITH c1l6 AS (
+    SELECT
+        ID
+    FROM
+        LESSONS
+    WHERE
+        name ='Cùng ôn lại về biến nhé!'
+)
+INSERT INTO
+    QUESTIONS (
+        ID,
+        LESSON_ID,
+        question_content,
+        answer_content,
+        score,
+        answer_type,
+        level,
+        required,
+        CREATED_AT,
+        UPDATED_AT
+    )
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Biến dùng để làm gì?',
+    ARRAY['In ra dữ liệu', 'Xóa dữ liệu', 'Lưu trữ dữ liệu', 'tạo mới dữ liệu'],
+    ARRAY[0,0,5,0],
+    'single_choice',
+    0,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Để khai báo biến, em sử dụng từ khóa nào?',
+    ARRAY['var', 'let', 'def', 'Không cần từ khóa'],
+    ARRAY[0,0,0,5],
+    'single_choice',
+    1,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Câu lệnh nào dùng để nhập giá trị từ bàn phím và gán cho một biến trong Python? (Chọn nhiều đáp án)',
+    ARRAY['input()','read()','get()','type()'],
+    ARRAY[5,-2,-2,-2],
+    'multiple_choice',
+    2,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Để xóa một biến trong Python, bạn sử dụng hàm _____.',
+    ARRAY['del()'],
+    ARRAY[5],
+    'text_input',
+    3,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Đâu là cách đặt tên biến hợp lệ trong Python? (Chọn nhiều đáp án)',
+    ARRAY['123variable', 'my_variable','$variable_name', '1_variable', 'variable_name'],
+    ARRAY[-5,5,-5,-5, 5],
+    'multiple_choice',
+    4,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Biến kiểu danh sách (list) trong Python được đặt trong dấu _____.',
+    -- ARRAY['[]'],
+    ARRAY[5],
+    'text_input',
+    5,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Biến kiểu số nguyên (integer) trong Python là kiểu dữ liệu _____.',
+    ARRAY['int'],
+    ARRAY[5],
+    'text_input',
+    6,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Trong Python, biến kiểu dữ liệu nào được sử dụng để lưu trữ dấu phẩy động với độ chính xác cao?',
+    ARRAY['int', 'float', 'decimal', 'complex'],
+    ARRAY[0,0,5,0],
+    'single_choice',
+    7,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Biến kiểu dữ liệu nào được sử dụng để lưu trữ một chuỗi các ký tự?',
+    ARRAY['int', 'float', 'str', 'list'],
+    ARRAY[0,0,5,0],
+    'single_choice',
+    8,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Trong Python, để thay đổi giá trị của một biến kiểu tuple, bạn có thể thực hiện điều này. Điều này đúng hoặc sai?',
+    ARRAY['Đúng', 'Sai'],
+    ARRAY[0,5],
+    'single_choice',
+    9,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Để thực hiện phép chia lấy phần dư trong Python, ta sử dụng toán tử nào?',
+    ARRAY['%', '*', '/', '//'],
+    ARRAY[5,0,0,0],
+    'single_choice',
+    10,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Biến kiểu dictionary trong Python được đặt trong dấu _____.',
+    ARRAY['{}'],
+    ARRAY[5],
+    'text_input',
+    11,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c1l6.ID,
+   'Biến trong Python là một định danh cho một vùng chứa dữ liệu trong bộ nhớ máy tính. Điều này đúng hoặc sai?',
+    ARRAY['Đúng', 'Sai'],
+    ARRAY[0,5],
+    'single_choice',
+    12,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c1l6;
 ------------------------------------------------------------ CHAPTER 2 - LESSON 0 ------------------------------------------------------------
 WITH c2l0 AS (
     SELECT
@@ -1834,6 +2048,221 @@ SELECT
 FROM
     c2l2;
 
+------------------------------------------------------------ CHAPTER 2 - LESSON 3 ------------------------------------------------------------
+WITH c2l3 AS (
+    SELECT
+        ID
+    FROM
+        LESSONS
+    WHERE
+        name ='Bạn đã hiểu rõ về chuỗi chưa!'
+)
+INSERT INTO
+    QUESTIONS (
+        ID,
+        LESSON_ID,
+        question_content,
+        answer_content,
+        score,
+        answer_type,
+        level,
+        required,
+        CREATED_AT,
+        UPDATED_AT
+    )
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Để định nghĩa một chuỗi (string) dài nhiều dòng trong Python, bạn sử dụng cặp ký tự nào sau đây?',
+    ARRAY[' '''' (hai dấu nháy đơn)', '"" (hai dấu nháy kép)', ''''''' '''''' (ba dấu nháy đơn)', '""" """ (ba dấu nháy kép)'],
+    ARRAY[0,0,0,5],
+    'single_choice',
+    0,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Các chuỗi trong Python có thể được cắt (slicing) bằng cách sử dụng:',
+    ARRAY[ 'Chỉ số dương',  'Chỉ số âm',  'Khoảng (range)', 'Cả a và b'],
+    ARRAY[0,0,0,5],
+    'single_choice',
+    1,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Đâu là các phương thức (method) sử dụng để kiểm tra các đặc điểm của chuỗi trong Python? (Chọn nhiều đáp án)',
+    ARRAY['isalpha()','isdigit()','isnumeric()','isalnum()', 'islower()'],
+    ARRAY[5,5,5,5,-10],
+    'multiple_choice',
+    2,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Hàm _____ được sử dụng để loại bỏ các khoảng trắng (whitespace) ở đầu và cuối của một chuỗi.',
+    ARRAY['strip()'],
+    ARRAY[5],
+    'text_input',
+    3,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Phương thức join() trong Python được sử dụng để làm gì? (Chọn nhiều đáp án)',
+    ARRAY['Nối (concatenate) nhiều chuỗi thành một chuỗi duy nhất.', 'Chuyển đổi chuỗi thành chữ hoa (uppercase).','Loại bỏ khoảng trắng (whitespace) ở đầu và cuối chuỗi.', 'Thay thế chuỗi con bằng chuỗi khác.'],
+    ARRAY[5,0,0,0],
+    'multiple_choice',
+    4,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Để trích xuất (slice) một phần của chuỗi từ vị trí 2 đến 5 (không bao gồm 5), bạn sử dụng cú pháp: _____[2:5].',
+    ARRAY['s'],
+    ARRAY[5],
+    'text_input',
+    5,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Hàm nào được sử dụng để chuyển đổi một chuỗi thành chữ hoa (uppercase)?',
+    ARRAY['upper()', 'lower()', 'title()','capitalize()'],
+    ARRAY[5,0,0,0],
+    'single_choice',
+    6,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Trong Python, biến kiểu dữ liệu nào được sử dụng để lưu trữ dấu phẩy động với độ chính xác cao?',
+    ARRAY['int', 'float', 'decimal', 'complex'],
+    ARRAY[0,0,5,0],
+    'single_choice',
+    7,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Để định nghĩa một chuỗi chứa dấu nháy đơn ('') bên trong, bạn có thể sử dụng dấu _____ để đánh dấu chuỗi.',
+    ARRAY['''],
+    ARRAY[5],
+    'text_input',
+    8,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Hàm nào được sử dụng để kiểm tra xem một chuỗi có kết thúc bằng một chuỗi con cụ thể không?',
+    ARRAY['startswith()','endswith()','contains()','find()'],
+    ARRAY[0,5,0,0],
+    'single_choice',
+    9,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Khi có nhiều ký tự đặt chỗ trong câu, chúng ta dùng kí tự gì để các giá trị được sắp xếp đúng thứ tự trong chuỗi?',
+    ARRAY['Ngoặc tròn', 'Ngoặc vuông', 'Ngoặc nhọn', 'Phần trăm'],
+    ARRAY[5,0,0,0],
+    'single_choice',
+    10,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Đâu là cách nối (concatenate) hai chuỗi trong Python?',
+    ARRAY['Sử dụng toán tử + (ví dụ: chuoi1 + chuoi2)','Sử dụng toán tử - (ví dụ: chuoi1 - chuoi2)','Sử dụng toán tử * (ví dụ: chuoi1 * chuoi2)','Sử dụng toán tử / (ví dụ: chuoi1 / chuoi2)'],
+    ARRAY[5,0,0,0],
+    'text_input',
+    11,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l3.ID,
+   'Đâu là cách để trích xuất (slice) một phần của chuỗi?',
+    -- ARRAY['Sử dụng hàm substring()', 'Sử dụng cú pháp [start:end]', 'Sử dụng hàm split()', ' Sử dụng hàm trim()'],
+    ARRAY[0,5,0,0],
+    'single_choice',
+    12,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l3;
 ------------------------------------------------------------ CHAPTER 2 - LESSON 4 ------------------------------------------------------------
 WITH c2l4 AS (
     SELECT
@@ -2541,6 +2970,222 @@ SELECT
     NOW()
 FROM
     c2l6;
+
+    ------------------------------------------------------------ CHAPTER 2 - LESSON 7 ------------------------------------------------------------
+WITH c2l7 AS (
+    SELECT
+        ID
+    FROM
+        LESSONS
+    WHERE
+        name ='Kiểm tra kiến thức về mảng nhé!'
+)
+INSERT INTO
+    QUESTIONS (
+        ID,
+        LESSON_ID,
+        question_content,
+        answer_content,
+        score,
+        answer_type,
+        level,
+        required,
+        CREATED_AT,
+        UPDATED_AT
+    )
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Mảng (list) có thể chứa các loại dữ liệu nào?',
+    ARRAY['Chỉ số nguyên (integer)', 'Chuỗi (string)', 'Bất kỳ loại dữ liệu nào', 'Số thực (float)'],
+    ARRAY[0,0,5,0],
+    'single_choice',
+    0,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Để truy cập phần tử cuối cùng của một mảng arr, em sử dụng chỉ số nào?',
+    ARRAY[ 'arr[-1]',  'arr[0]' , 'arr[len(arr)]' , 'arr[1]'],
+    ARRAY[5,0,0,0],
+    'single_choice',
+    1,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Cách nào sau đây dùng để tạo một mảng rỗng? (Chọn nhiều đáp án)',
+    ARRAY['empty_list = []','empty_list = list()','empty_list = {}','empty_list = [None]'],
+    ARRAY[5,5,-5,-5],
+    'multiple_choice',
+    2,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Để lấy độ dài (số phần tử) của một mảng my_list, bạn sử dụng hàm _____.',
+    ARRAY['reverse()'],
+    ARRAY[5],
+    'text_input',
+    3,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Hàm nào sau đây được sử dụng để loại bỏ một phần tử khỏi mảng?',
+    ARRAY['remove()', 'pop()', 'delete()',  'discard()'],
+    ARRAY[5,5,-5,-5],
+    'multiple_choice',
+    4,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Để đảo ngược một mảng arr, em sẽ sử dụng cú pháp _____.',
+    ARRAY['reverse()'],
+    ARRAY[5],
+    'text_input',
+    5,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Để sao chép (copy) một mảng arr sang một mảng mới, em sử dụng cú pháp nào sau đây?',
+    ARRAY['new_arr = arr.copy()', 'new_arr = arr', 'new_arr = copy(arr)','new_arr = arr[:]'],
+    ARRAY[5,-5,-5,5],
+    'multiple_choice',
+    6,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Hàm nào được sử dụng để thêm một phần tử vào cuối mảng?',
+    ARRAY[ 'append()' , 'insert()'  ,'extend()'  ,'add()'],
+    ARRAY[5,0,0,0],
+    'single_choice',
+    7,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Để kiểm tra xem một phần tử có tồn tại trong mảng my_list hay không, bạn sử dụng từ khóa _____.',
+    ARRAY['in'],
+    ARRAY[5],
+    'text_input',
+    8,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Để sắp xếp mảng arr theo thứ tự tăng dần, bạn sử dụng hàm _____.',
+    ARRAY['sort()'],
+    ARRAY[5],
+    'single_choice',
+    9,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Để thêm một mảng new_arr vào mảng arr, bạn sử dụng phương thức _____.',
+    ARRAY['extend()'],
+    ARRAY[5],
+    'single_choice',
+    10,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Phương thức nào sau đây được sử dụng để xoá tất cả phần tử trong mảng?',
+    ARRAY['clear()' , 'empty()', 'remove_all()', 'delete_all()'],
+    ARRAY[5,0,0,0],
+    'single_choice',
+    11,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7
+UNION
+ALL
+SELECT
+    UUID_GENERATE_V4(),
+    c2l7.ID,
+   'Phép toán nào sau đây được sử dụng để ghép nối hai mảng lại với nhau?',
+    ARRAY['add()', 'concat()', 'extend()', 'merge()'],
+    ARRAY[0,0,5,0],
+    'single_choice',
+    12,
+    true,
+    NOW(),
+    NOW()
+FROM
+    c2l7;
 ------------------------------------------------------------ CHAPTER 2 - LESSON 8 ------------------------------------------------------------
 WITH c2l8 AS (
     SELECT
