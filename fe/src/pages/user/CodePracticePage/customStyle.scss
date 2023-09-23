@@ -47,6 +47,7 @@
     &::-webkit-scrollbar {
         width: 15px;
         height: calc(100vh - 70px);
+        display: none;
     }
 
     /* Track */
