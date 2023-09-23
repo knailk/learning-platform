@@ -37,7 +37,6 @@ const Result = () => {
                 let flag = false;
                 result_temp = result_temp.map((value, idx) => {
                     if (solution[idx].value.output !== value.value.output && !flag) {
-                        setIsWrong(true);
                         flag = true;
                         if (CodePractice.type === 'submit') {
                             setDataResult({ ...value.value, expected: solution[idx].value.output });
@@ -45,6 +44,7 @@ const Result = () => {
                     }
                     return { ...value, value: { ...value.value, expected: solution[idx].value.output } };
                 });
+                setIsWrong(flag);
             } else {
                 result_temp = [];
             }

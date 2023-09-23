@@ -77,7 +77,7 @@ const CodePractice = () => {
     const editorRef = useRef(null);
     const [problem, setProblem] = useState(null);
     const [defaultValue, setDefaultValue] = useState(null);
-    const [load, setLoad] = useState(false);
+    const [load, setLoad] = useState('');
     const [type, setType] = useState('test');
     const [tab, setTab] = useState('1');
     const [testCaseState, dispatch] = useReducer(reducer, initState);
@@ -86,7 +86,7 @@ const CodePractice = () => {
         const code = editorRef.current.getValue();
         setType(type);
         try {
-            setLoad(true);
+            setLoad(type);
             request_node
                 .post('/code-practice', {
                     code,
@@ -100,14 +100,14 @@ const CodePractice = () => {
                 })
                 .then((data) =>
                     setTimeout(() => {
-                        setLoad(false);
+                        setLoad('');
                         setTab('2');
                         setResult({ status: 'success', value: data.data.data });
                     }, 500),
                 )
                 .catch((e) => {
                     setTimeout(() => {
-                        setLoad(false);
+                        setLoad('');
                         try {
                             setResult({ status: 'error', value: e.response.data.error });
                             setTab('2');
@@ -182,15 +182,16 @@ const CodePractice = () => {
                         <Col span={8} className={styles.btnExecuteWrapper}>
                             <span className={clsx([styles.btn, styles.btnRun])} onClick={() => handleRunBtn('test')}>
                                 <FontAwesomeIcon icon={faPlay} style={{ marginRight: 4 }} />
-                                {!load && 'Chạy thử'}
-                                {load && <Spin />}
+                                {load !== 'test' && 'Chạy thử'}
+                                {load === 'test' && <Spin />}
                             </span>
                             <span
                                 className={clsx([styles.btn, styles.btnSubmit])}
                                 onClick={() => handleRunBtn('submit')}
                             >
                                 <FontAwesomeIcon icon={faCloudArrowUp} style={{ marginRight: 4 }} />
-                                Nộp bài
+                                {load !== 'submit' && 'Nộp bài'}
+                                {load === 'submit' && <Spin />}
                             </span>
                         </Col>
                         <Col span={8}></Col>
