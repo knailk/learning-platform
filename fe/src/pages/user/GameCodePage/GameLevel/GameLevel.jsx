@@ -21,10 +21,10 @@ const GameLevel = () => {
         setOpen(false);
     };
     const { unityProvider, sendMessage, addEventListener, removeEventListener } = useUnityContext({
-        loaderUrl: '/Unity/Build/Unity.loader.js',
-        dataUrl: '/Unity/Build/Unity.data',
-        frameworkUrl: '/Unity/Build/Unity.framework.js',
-        codeUrl: '/Unity/Build/Unity.wasm',
+        loaderUrl: '/Unity/Build.loader.js',
+        dataUrl: '/Unity/Build.data',
+        frameworkUrl: '/Unity/Build.framework.js',
+        codeUrl: '/Unity/Build.wasm',
     });
 
     const UnityCallReact = useCallback((message, value) => {
@@ -35,7 +35,7 @@ const GameLevel = () => {
             setIsWin(false);
         } else {
             try {
-                request.post('games/' + gameLevel);
+                // request.post('games/' + gameLevel);
             } catch (error) {
                 notification.error({ message: 'Cập nhật thất bại' });
             }

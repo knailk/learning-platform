@@ -94,8 +94,8 @@ const CodePractice = () => {
                     practice_code_id: practiceId,
                     run: true,
                     test_case: testCaseState.allTestCases,
-                    function_name: problem.function,
-                    solution: problem.solution,
+                    function_name: problem.function_name,
+                    solution: problem.solution_code,
                     type: type,
                 })
                 .then((data) =>
@@ -122,7 +122,7 @@ const CodePractice = () => {
     };
 
     const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
-    const practiceId = '1de43a84-07fc-4a1c-9848-ccd0e8b6a250';
+    const practiceId = '4e722caf-6601-4a6c-98b6-e718392f0714';
 
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
@@ -134,25 +134,17 @@ const CodePractice = () => {
     useEffect(() => {
         const fetchProblem = async () => {
             try {
-                const response = await request.get('problems/1de43a84-07fc-4a1c-9848-ccd0e8b6a250');
-                let data = {
-                    ...response.data.data,
-                    args: '[{"name":"nums","type":"array","value":"[2,7,11,15]"},{"name":"target","type":"number","value":"9"}]',
-                    available_code:
-                        'class Solution(object):\n    def twoSum(self, nums, target):\n        """\n        :type nums: List[int]\n        :type target: int\n        :rtype: List[int]\n        """',
-                    function: 'twoSum',
-                    solution:
-                        'from typing import List\nclass Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        n = len(nums)\n        for i in range(n - 1):\n            for j in range(i + 1, n):\n                if nums[i] + nums[j] == target:\n                    return [i, j]\n        return []',
-                    testcase: '',
-                };
-                setProblem({ ...data, args: JSON.parse(data.args) });
-                dispatch({ type: INIT_TESTCASE, init: JSON.parse(data.args) });
+                const response = await request.get('problems/4e722caf-6601-4a6c-98b6-e718392f0714');
+                let data = response.data.data;
+                setProblem(data);
+                dispatch({ type: INIT_TESTCASE, init: data.args });
                 const node_response = await request_node.get('/code-practice/get-saved-file', {
                     params: {
                         user_id: 'c5c10397-37c3-4e96-a9c6-ab6ac47dd700',
                         problem_id: response.data.data.id,
                     },
                 });
+                console.log(data.available_code);
                 setDefaultValue(node_response.data.data ? node_response.data.data : data.available_code);
             } catch (error) {
                 notification.error({ message: 'Lỗi hệ thống!' });

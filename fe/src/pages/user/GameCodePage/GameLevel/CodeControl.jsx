@@ -3,6 +3,7 @@ import styles from './style.module.scss';
 import { Col, Popover, Row } from 'antd';
 import PythonEditor from 'components/PythonEditor';
 import PossibleMove from './PossibleMove';
+import { request_node } from 'utils/http';
 
 const possibleMove = ['hero.moveLeft(steps)', 'hero.moveRight(steps)', 'hero.moveUp(steps)', 'hero.moveDown(steps)'];
 
@@ -11,7 +12,6 @@ function CodeControl({ sendMessage, level }) {
     const [horseMoves, setHorseMoves] = useState('');
     const editorRef = useRef(null);
     const handleEditorDidMount = (editor, monaco) => {
-        console.log(editor);
         editorRef.current = editor;
         monaco.languages.registerCompletionItemProvider('python', {
             provideCompletionItems: () => {
@@ -19,25 +19,43 @@ function CodeControl({ sendMessage, level }) {
                     {
                         label: 'hero.moveLeft()',
                         kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: 'hero.moveLeft(${1:steps})',
+                        insertText: 'hero.moveLeft(${1:})',
                         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                     },
                     {
                         label: 'hero.moveRight()',
                         kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: 'hero.moveRight(${1:steps})',
+                        insertText: 'hero.moveRight(${1:})',
                         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                     },
                     {
                         label: 'hero.moveUp()',
                         kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: 'hero.moveUp(${1:steps})',
+                        insertText: 'hero.moveUp(${1:})',
                         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                     },
                     {
                         label: 'hero.moveDown()',
                         kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: 'hero.moveDown(${1:steps})',
+                        insertText: 'hero.moveDown(${1:})',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                    },
+                    {
+                        label: 'meet(hero, bandit)',
+                        kind: monaco.languages.CompletionItemKind.Keyword,
+                        insertText: 'meet(${1:hero}, ${2:bandit})',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                    },
+                    {
+                        label: 'if',
+                        kind: monaco.languages.CompletionItemKind.Keyword,
+                        insertText: 'if ${1:condition}:\n    ${2:expression}',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                    },
+                    {
+                        label: 'for range',
+                        kind: monaco.languages.CompletionItemKind.Keyword,
+                        insertText: 'for i in range(${1:range}):\n    ${3:expression}',
                         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                     },
                 ];
@@ -45,8 +63,16 @@ function CodeControl({ sendMessage, level }) {
             },
         });
     };
-    const CreateStates = () => {
-        sendMessage('SonRice', 'CreateStates', 'RUR');
+    const CreateStates = async () => {
+        try {
+            let response = await request_node.post('/game/run', {
+                code: editorRef.current.getValue(),
+            });
+            console.log(response.data.data);
+            sendMessage('SonRice', 'CreateStates', response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
     const reloadGame = () => {
         sendMessage('SonRice', 'ReLoadLevel');

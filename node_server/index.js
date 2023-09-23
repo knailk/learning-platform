@@ -123,8 +123,6 @@ app.post('/code-practice', (req, res) => {
             } catch (error) {
                 res.status(400).send({ error: { message: error, title: 'TestCase không hợp lệ' } });
             }
-            console.log(test);
-            console.log(req.body.test_case);
             const run_test_case = () => {
                 let return_value = [];
                 let return_solution = [];
@@ -137,7 +135,7 @@ app.post('/code-practice', (req, res) => {
                     let options = {
                         mode: 'text',
                         pythonOptions: ['-u'],
-                        args: JSON.stringify(args),
+                        args: [JSON.stringify(args)],
                     };
                     await PythonShell.run(file_path_user + '/' + 'main.py', options)
                         .then((messages) => {
@@ -161,8 +159,8 @@ app.post('/code-practice', (req, res) => {
                         if (error) {
                             res.status(400).send({ error: { message: utils.customErrorReturn(return_value), title: 'Lỗi Runtime' } });
                         } else {
-                            console.log(return_solution);
-                            console.log(return_value);
+                            console.log(return_value)
+                            console.log(return_solution)
                             res.send({
                                 data: {
                                     user: return_value,
@@ -190,6 +188,23 @@ app.get('/code-practice/get-saved-file', (req, res) => {
         let data_content = fs.readFileSync(path, 'utf8');
         res.send({ data: data_content });
     }
+});
+
+const file_path_game = './game';
+app.post('/game/run', (req, res) => {
+    utils.saveFileCode(file_path_game, 'main.py', 'from hero import Hero\nhero = Hero()\n' + req.body.code);
+    let options = {
+        mode: 'text',
+        pythonOptions: ['-u'],
+        args: null,
+    };
+    PythonShell.run(file_path_game + '/' + 'main.py', options)
+        .then((messages) => {
+            res.send({ data: messages.join('') });
+        })
+        .catch((err) => {
+            res.status(400).send({ data: err });
+        });
 });
 
 app.listen(PORT, () => {
