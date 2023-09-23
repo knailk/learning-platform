@@ -122,7 +122,7 @@ const CodePractice = () => {
     };
 
     const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
-    const practiceId = '1de43a84-07fc-4a1c-9848-ccd0e8b6a250';
+    const practiceId = '4e722caf-6601-4a6c-98b6-e718392f0714';
 
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
@@ -134,7 +134,7 @@ const CodePractice = () => {
     useEffect(() => {
         const fetchProblem = async () => {
             try {
-                const response = await request.get('problems/1de43a84-07fc-4a1c-9848-ccd0e8b6a250');
+                const response = await request.get('problems/1a67bff7-1f45-416a-af49-907ac8e6bd09');
                 let data = {
                     ...response.data.data,
                     args: '[{"name":"nums","type":"array","value":"[2,7,11,15]"},{"name":"target","type":"number","value":"9"}]',
