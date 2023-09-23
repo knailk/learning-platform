@@ -1,12 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
-import { Row, Col, Modal, Progress, Space } from 'antd';
+import { Row, Col, Modal, notification } from 'antd';
 import styles from './style.module.scss';
 import CodeControl from './CodeControl';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { Unity, useUnityContext } from 'react-unity-webgl';
-import clsx from 'clsx';
 import ResultComponent from './ResultComponent/ResultComponent';
 import NotEnough from './ResultComponent/NotEnough';
+import request from 'utils/http';
 
 const GameLevel = () => {
     const gameLevel = useParams().level;
@@ -34,6 +34,11 @@ const GameLevel = () => {
         if (message !== 'WIN') {
             setIsWin(false);
         } else {
+            try {
+                request.post('games/' + gameLevel);
+            } catch (error) {
+                notification.error({ message: 'Cập nhật thất bại' });
+            }
             setIsWin(true);
         }
         showModal();

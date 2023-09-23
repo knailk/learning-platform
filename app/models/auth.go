@@ -75,11 +75,12 @@ func (m *AuthModel) Register(ctx context.Context, req request.RegisterRequest) (
 	}
 
 	user := &entity.User{
-		ID:    uuid.New(),
-		Email: req.Email,
-		Name:  req.Name,
-		Birth: req.Birth,
-		Phone: req.Phone,
+		ID:               uuid.New(),
+		Email:            req.Email,
+		Name:             req.Name,
+		Birth:            req.Birth,
+		Phone:            req.Phone,
+		CurrentGameLevel: 1,
 	}
 
 	//Create the user and return back the user ID

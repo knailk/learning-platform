@@ -27,6 +27,8 @@ func main() {
 		entity.Problem{},
 		entity.Solution{},
 		entity.Submission{},
+
+		entity.Game{},
 	)
 
 	g.ApplyInterface(func(repository.UserRepository) {}, entity.User{})

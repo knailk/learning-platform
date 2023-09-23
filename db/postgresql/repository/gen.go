@@ -19,6 +19,7 @@ var (
 	Q              = new(Query)
 	Chapter        *chapter
 	Follow         *follow
+	Game           *game
 	Lecture        *lecture
 	Lesson         *lesson
 	LessonAnswer   *lessonAnswer
@@ -35,6 +36,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	Chapter = &Q.Chapter
 	Follow = &Q.Follow
+	Game = &Q.Game
 	Lecture = &Q.Lecture
 	Lesson = &Q.Lesson
 	LessonAnswer = &Q.LessonAnswer
@@ -52,6 +54,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		db:             db,
 		Chapter:        newChapter(db, opts...),
 		Follow:         newFollow(db, opts...),
+		Game:           newGame(db, opts...),
 		Lecture:        newLecture(db, opts...),
 		Lesson:         newLesson(db, opts...),
 		LessonAnswer:   newLessonAnswer(db, opts...),
@@ -70,6 +73,7 @@ type Query struct {
 
 	Chapter        chapter
 	Follow         follow
+	Game           game
 	Lecture        lecture
 	Lesson         lesson
 	LessonAnswer   lessonAnswer
@@ -89,6 +93,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		db:             db,
 		Chapter:        q.Chapter.clone(db),
 		Follow:         q.Follow.clone(db),
+		Game:           q.Game.clone(db),
 		Lecture:        q.Lecture.clone(db),
 		Lesson:         q.Lesson.clone(db),
 		LessonAnswer:   q.LessonAnswer.clone(db),
@@ -115,6 +120,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		db:             db,
 		Chapter:        q.Chapter.replaceDB(db),
 		Follow:         q.Follow.replaceDB(db),
+		Game:           q.Game.replaceDB(db),
 		Lecture:        q.Lecture.replaceDB(db),
 		Lesson:         q.Lesson.replaceDB(db),
 		LessonAnswer:   q.LessonAnswer.replaceDB(db),
@@ -131,6 +137,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 type queryCtx struct {
 	Chapter        IChapterDo
 	Follow         IFollowDo
+	Game           IGameDo
 	Lecture        ILectureDo
 	Lesson         ILessonDo
 	LessonAnswer   ILessonAnswerDo
@@ -147,6 +154,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
 		Chapter:        q.Chapter.WithContext(ctx),
 		Follow:         q.Follow.WithContext(ctx),
+		Game:           q.Game.WithContext(ctx),
 		Lecture:        q.Lecture.WithContext(ctx),
 		Lesson:         q.Lesson.WithContext(ctx),
 		LessonAnswer:   q.LessonAnswer.WithContext(ctx),

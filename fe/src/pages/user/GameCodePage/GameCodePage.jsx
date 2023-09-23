@@ -1,27 +1,54 @@
+import React, { useState, useEffect } from 'react';
 import styles from './style.module.scss';
 import ItemMap from './ItemMap';
+import { Helmet } from 'react-helmet';
+import { Row, notification } from 'antd';
 import './customStyle.scss';
+import { Link } from 'react-router-dom';
+import request from 'utils/http';
+import { MappingLocation } from './constant';
 
 const GameCodePage = () => {
-    const itemMap = {
-        title: 'Shadow Guard',
-        description:
-            'Hãy né lũ yêu tinh để nhặt kim cương và đến cánh cổng bên kia một cách an toàn. Coi chừng gai nhọn',
-        level: 1,
-    };
+    const [profile, setProfile] = useState(false);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await request.get('auth/me');
+                setProfile(response.data.user);
+            } catch (error) {
+                notification.error({
+                    message: 'Lỗi hệ thống!',
+                    description: error,
+                });
+            }
+        };
+        fetchProfile();
+    }, []);
+
     return (
         <>
+            <Helmet>
+                <title>Trò chơi lập trình</title>
+            </Helmet>
             <div className={styles.gameCodePageWrapper}>
+                <div className={styles.gameCodePageHeader}>
+                    <Row className={styles.logo}>
+                        <Link to={'/'}>
+                            <img src="/images/game/logo_game.png" alt="" />
+                        </Link>
+                    </Row>
+                </div>
                 <div className={styles.gameMap}>
-                    <img src="/images/game/Dungeon_Map.jpg" alt="" />
+                    <img src="/images/game/Dungeon_Map1.jpg" alt="" />
                     <div className={styles.linearLeft}></div>
                     <div className={styles.linearRight}></div>
                     <div className={styles.linearTop}></div>
                     <div className={styles.linearBottom}></div>
-                    <ItemMap left={'9%'} bottom={'25.5%'} data={itemMap} />
-                    <ItemMap left={'20%'} bottom={'20.5%'} data={itemMap} />
-                    <ItemMap left={'30%'} bottom={'20.5%'} data={itemMap} />
-                    <ItemMap left={'40%'} bottom={'22.5%'} data={itemMap} />
+
+                    {MappingLocation.map((item) => {
+                        return <ItemMap data={item} current={profile.current_game_level} />;
+                    })}
                 </div>
             </div>
         </>

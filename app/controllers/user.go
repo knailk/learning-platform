@@ -17,13 +17,13 @@ type UserController struct {
 }
 
 func (ctrl *UserController) GetProfile(ctx *gin.Context) {
-	au, err := ctrl.GetCurrentAuth(ctx)
+	auth, err := ctrl.GetCurrentAuth(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "User not logged in", "error": err.Error()})
 		return
 	}
 
-	user, err := ctrl.UserModel.One(ctx, au.ID)
+	user, err := ctrl.UserModel.One(ctx, auth.ID)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Error get user", "err": err.Error()})
 		return
