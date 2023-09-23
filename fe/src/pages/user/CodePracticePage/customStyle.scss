@@ -47,6 +47,7 @@
     &::-webkit-scrollbar {
         width: 15px;
         height: calc(100vh - 70px);
+        display: none;
     }
 
     /* Track */
@@ -67,48 +68,49 @@
     p {
         margin-bottom: 1rem;
     }
-    blockquote {
-        pre {
-            border-left: 2px solid #ffffff24;
-            color: #fff9 !important;
-            font-family: Menlo, sans-serif !important;
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-            margin-bottom: 1rem;
-            margin-top: 1rem;
-            overflow: visible;
-            padding-left: 1rem;
-            white-space: pre-wrap;
-            strong {
-                color: rgba(255, 255, 255, 0.9) !important;
-            }
-        }
+    pre {
+        border-left: 2px solid #ffffff24;
+        color: #fff9 !important;
+        font-family: Menlo, sans-serif !important;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        overflow: visible;
+        padding-left: 1rem;
+        white-space: pre-wrap;
     }
+    strong {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
     ul {
         margin-bottom: 1rem;
         margin-left: 1rem;
         margin-right: 1rem;
-        li {
-            margin-bottom: 0.75rem;
-            &::marker {
-                unicode-bidi: isolate;
-                font-variant-numeric: tabular-nums;
-                text-transform: none;
-                text-indent: 0px !important;
-                text-align: start !important;
-                text-align-last: start !important;
-            }
-            code {
-                background-color: #ffffff12;
-                border: 1px solid #f7faff1f;
-                color: #eff1f6bf !important;
-                border-radius: 5px;
-                font-family: Menlo, sans-serif !important;
-                font-size: 0.75rem;
-                line-height: 1rem;
-                padding: 0.125rem;
-                white-space: pre-wrap;
-            }
+    }
+
+    li {
+        margin-bottom: 0.75rem;
+        &::marker {
+            unicode-bidi: isolate;
+            font-variant-numeric: tabular-nums;
+            text-transform: none;
+            text-indent: 0px !important;
+            text-align: start !important;
+            text-align-last: start !important;
         }
+    }
+
+    code {
+        background-color: #ffffff12;
+        border: 1px solid #f7faff1f;
+        color: #eff1f6bf !important;
+        border-radius: 5px;
+        font-family: Menlo, sans-serif !important;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        padding: 0.125rem;
+        white-space: pre-wrap;
     }
 }
