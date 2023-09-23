@@ -71,7 +71,6 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, defaultEditorV
             }
         }
     };
-
     return (
         <>
             <Splitter direction={SplitDirection.Vertical} minHeights={[200, 200]} initialSizes={[55, 45]}>

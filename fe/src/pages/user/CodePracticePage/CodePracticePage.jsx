@@ -1,14 +1,14 @@
 import React, { useRef, useEffect, useState, createContext, useReducer, useMemo } from 'react';
 import clsx from 'clsx';
-import { Row, Col, notification, Spin } from 'antd';
+import { Row, Col, notification, Spin, Drawer } from 'antd';
 import Splitter, { SplitDirection } from '@devbookhq/splitter';
 import styles from './style.module.scss';
+import './customStyle.scss';
 import UserInteract from './UserInteract';
 import ProblemDescription from './ProblemDescription';
 import request, { request_node } from 'utils/http';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faCloudArrowUp, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { VARIABLE_TYPE } from 'utils/constant';
+import { faArrowLeft, faCloudArrowUp, faIndent, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 export const CodePracticeContext = createContext();
@@ -75,12 +75,16 @@ const reducer = (state, action) => {
 
 const CodePractice = () => {
     const editorRef = useRef(null);
-    const [problem, setProblem] = useState(null);
+    const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
+    const [problem, setProblem] = useState({});
+    const [problemId, setProblemId] = useState('5ae59f1e-d97c-4cdd-9846-62de19009bb6');
+    const [allProblems, setAllProblems] = useState([]);
     const [defaultValue, setDefaultValue] = useState(null);
     const [load, setLoad] = useState('');
     const [type, setType] = useState('test');
     const [tab, setTab] = useState('1');
     const [testCaseState, dispatch] = useReducer(reducer, initState);
+    const [open, setOpen] = useState(false);
     const [result, setResult] = useState({ status: '', data: [] });
     const handleRunBtn = (type) => {
         const code = editorRef.current.getValue();
@@ -91,9 +95,10 @@ const CodePractice = () => {
                 .post('/code-practice', {
                     code,
                     user_id: userId,
-                    practice_code_id: practiceId,
+                    practice_code_id: problemId,
                     run: true,
-                    test_case: testCaseState.allTestCases,
+                    user_test_case: testCaseState.allTestCases,
+                    test_case: problem.test_cases,
                     function_name: problem.function_name,
                     solution: problem.solution_code,
                     type: type,
@@ -120,42 +125,55 @@ const CodePractice = () => {
             notification.error({ message: 'Lỗi hệ thống!' });
         }
     };
-
-    const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
-    const practiceId = '4e722caf-6601-4a6c-98b6-e718392f0714';
-
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
-        let myBinding = editor.addCommand(monaco.KeyMod.Ctrl | monaco.KeyCode.KEY_S, function () {
-            alert('SAVE pressed!');
-        });
     };
-
+    const handleChangeProblem = (id) => {
+        setProblemId(id);
+        editorRef.current.setValue(defaultValue);
+    };
     useEffect(() => {
         const fetchProblem = async () => {
             try {
-                const response = await request.get('problems/4e722caf-6601-4a6c-98b6-e718392f0714');
+                const response = await request.get(`problems/${problemId}`);
                 let data = response.data.data;
                 setProblem(data);
                 dispatch({ type: INIT_TESTCASE, init: data.args });
                 const node_response = await request_node.get('/code-practice/get-saved-file', {
                     params: {
                         user_id: 'c5c10397-37c3-4e96-a9c6-ab6ac47dd700',
-                        problem_id: response.data.data.id,
+                        problem_id: problemId,
                     },
                 });
-                console.log(data.available_code);
-                setDefaultValue(node_response.data.data ? node_response.data.data : data.available_code);
+                let user_data = node_response.data.data;
+                setDefaultValue(user_data || data.available_code);
             } catch (error) {
                 notification.error({ message: 'Lỗi hệ thống!' });
             }
         };
         fetchProblem();
+    }, [problemId]);
+    useEffect(() => {
+        const fetchAllProblems = async () => {
+            try {
+                const response = await request.get('problems');
+                setAllProblems(response.data.data);
+            } catch (error) {
+                notification.error({ message: 'Lỗi hệ thống!' });
+            }
+        };
+        fetchAllProblems();
     }, []);
-    console.log(problem);
     const valueProvider = useMemo(() => {
-        return { dispatch: dispatch, testCaseState: testCaseState, problem: problem, result: result, type: type };
-    }, [testCaseState, result]);
+        return {
+            dispatch: dispatch,
+            testCaseState: testCaseState,
+            problem: problem,
+            result: result,
+            type: type,
+            problemId: problemId,
+        };
+    }, [testCaseState, result, problemId]);
     if (!problem) {
         return <Spin />;
     } else {
@@ -170,6 +188,10 @@ const CodePractice = () => {
                                     Quay về
                                 </span>
                             </Link>
+                            <span className={styles.btnBack} style={{ marginLeft: 4 }} onClick={() => setOpen(true)}>
+                                <FontAwesomeIcon icon={faIndent} style={{ marginRight: 4 }} />
+                                Xem thêm
+                            </span>
                         </Col>
                         <Col span={8} className={styles.btnExecuteWrapper}>
                             <span className={clsx([styles.btn, styles.btnRun])} onClick={() => handleRunBtn('test')}>
@@ -211,6 +233,38 @@ const CodePractice = () => {
                         </Splitter>
                     </Row>
                 </Col>
+                <Drawer
+                    title="Một số bài toán khác"
+                    placement={'left'}
+                    width={500}
+                    onClose={() => setOpen(false)}
+                    open={open}
+                    closeIcon={false}
+                    style={{ backgroundColor: 'rgb(42 42 42', color: 'white' }}
+                    maskStyle={{ backgroundColor: 'rgba(38 38 38,0.2)' }}
+                    headerStyle={{ color: 'white' }}
+                >
+                    <div className={clsx([styles.problemDrawer, 'problemDrawer'])}>
+                        {allProblems.map((value) => {
+                            return (
+                                <div
+                                    key={value.id}
+                                    className={styles.problemItem}
+                                    onClick={() => handleChangeProblem(value.id)}
+                                >
+                                    <Row>
+                                        <Col span={18} className={styles.title}>
+                                            <div>{value.title}</div>
+                                        </Col>
+                                        <Col span={5} className={styles.level}>
+                                            <div>{value.level}</div>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </Drawer>
             </CodePracticeContext.Provider>
         );
     }

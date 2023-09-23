@@ -7,7 +7,12 @@ const ProblemDescription = ({ problem }) => {
     return (
         <>
             <Row className={styles.problemDescription}>
-                <div className="detailDescription" dangerouslySetInnerHTML={{ __html: problem.description }} />
+                <Col>
+                    <div className={styles.problemTitle}>{problem.title}</div>
+                    <div className="detailDescription">
+                        <div dangerouslySetInnerHTML={{ __html: problem.description }} />
+                    </div>
+                </Col>
             </Row>
         </>
     );

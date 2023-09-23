@@ -6,6 +6,7 @@ const defaultPath = './data/code';
 const PORT = 3001;
 const app = express();
 const utils = require('./utils/save');
+const axios = require('axios');
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -116,7 +117,15 @@ app.post('/code-practice', (req, res) => {
         utils.saveFileCode(file_path_solution, 'Solution.py', req.body.solution);
         utils.saveFileCode(file_path_solution, 'main.py', main_content);
         if (req.body.run === true) {
-            let test_case = req.body.type === 'test' ? req.body.test_case : test;
+            let test_case = [];
+            if (req.body.type === 'test') {
+                test_case = req.body.user_test_case;
+            } else {
+                test_case = req.body.test_case.map((value, idx) => {
+                    return { id: idx, input: [...value.input] };
+                });
+                console.log(test_case);
+            }
             let input_output = [];
             try {
                 input_output = utils.convertTestCase(test_case);
@@ -159,8 +168,6 @@ app.post('/code-practice', (req, res) => {
                         if (error) {
                             res.status(400).send({ error: { message: utils.customErrorReturn(return_value), title: 'Lỗi Runtime' } });
                         } else {
-                            console.log(return_value)
-                            console.log(return_solution)
                             res.send({
                                 data: {
                                     user: return_value,
