@@ -9,15 +9,13 @@ import request, { request_node } from 'utils/http';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCloudArrowUp, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { VARIABLE_TYPE } from 'utils/constant';
+import { Link } from 'react-router-dom';
 
 export const CodePracticeContext = createContext();
 
 const initTestCase = {
     id: 0,
-    input: [
-        { name: 'nums', type: VARIABLE_TYPE.ARRAY, value: '[2,7,11,15]' },
-        { name: 'target', type: VARIABLE_TYPE.NUMBER, value: '9' },
-    ],
+    input: [],
 };
 const initState = {
     testCase: initTestCase,
@@ -28,6 +26,7 @@ const ADD_ACTION = 'add';
 const REMOVE_ACTION = 'remove';
 const SET_ACTIVE = 'active';
 const UPDATE_TESTCASE = 'update';
+const INIT_TESTCASE = 'init';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -68,8 +67,9 @@ const reducer = (state, action) => {
                 testCase: newTestCase,
                 allTestCases: newArrTestCase,
             };
-        default:
-            break;
+        default: //set initial state
+            const init = { ...state.testCase, input: action.init };
+            return { testCase: init, idIncrement: 0, allTestCases: [init] };
     }
 };
 
@@ -78,12 +78,13 @@ const CodePractice = () => {
     const [problem, setProblem] = useState(null);
     const [defaultValue, setDefaultValue] = useState(null);
     const [load, setLoad] = useState(false);
+    const [type, setType] = useState('test');
     const [tab, setTab] = useState('1');
     const [testCaseState, dispatch] = useReducer(reducer, initState);
     const [result, setResult] = useState({ status: '', data: [] });
-
-    const handleRunBtn = () => {
+    const handleRunBtn = (type) => {
         const code = editorRef.current.getValue();
+        setType(type);
         try {
             setLoad(true);
             request_node
@@ -94,6 +95,8 @@ const CodePractice = () => {
                     run: true,
                     test_case: testCaseState.allTestCases,
                     function_name: problem.function,
+                    solution: problem.solution,
+                    type: type,
                 })
                 .then((data) =>
                     setTimeout(() => {
@@ -103,13 +106,15 @@ const CodePractice = () => {
                     }, 500),
                 )
                 .catch((e) => {
-                    setLoad(false);
-                    try {
-                        setResult({ status: 'error', value: e.response.data.error });
-                        setTab('2');
-                    } catch (error) {
-                        notification.error({ message: 'Lỗi hệ thống!' });
-                    }
+                    setTimeout(() => {
+                        setLoad(false);
+                        try {
+                            setResult({ status: 'error', value: e.response.data.error });
+                            setTab('2');
+                        } catch (error) {
+                            notification.error({ message: 'Lỗi hệ thống!' });
+                        }
+                    }, 500);
                 });
         } catch (error) {
             notification.error({ message: 'Lỗi hệ thống!' });
@@ -132,12 +137,16 @@ const CodePractice = () => {
                 const response = await request.get('problems/1de43a84-07fc-4a1c-9848-ccd0e8b6a250');
                 let data = {
                     ...response.data.data,
-                    args: '["nums" ,"target"]',
+                    args: '[{"name":"nums","type":"array","value":"[2,7,11,15]"},{"name":"target","type":"number","value":"9"}]',
                     available_code:
                         'class Solution(object):\n    def twoSum(self, nums, target):\n        """\n        :type nums: List[int]\n        :type target: int\n        :rtype: List[int]\n        """',
                     function: 'twoSum',
+                    solution:
+                        'from typing import List\nclass Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        n = len(nums)\n        for i in range(n - 1):\n            for j in range(i + 1, n):\n                if nums[i] + nums[j] == target:\n                    return [i, j]\n        return []',
+                    testcase: '',
                 };
                 setProblem({ ...data, args: JSON.parse(data.args) });
+                dispatch({ type: INIT_TESTCASE, init: JSON.parse(data.args) });
                 const node_response = await request_node.get('/code-practice/get-saved-file', {
                     params: {
                         user_id: 'c5c10397-37c3-4e96-a9c6-ab6ac47dd700',
@@ -151,8 +160,9 @@ const CodePractice = () => {
         };
         fetchProblem();
     }, []);
+    console.log(problem);
     const valueProvider = useMemo(() => {
-        return { dispatch: dispatch, testCaseState: testCaseState, problem: problem, result: result };
+        return { dispatch: dispatch, testCaseState: testCaseState, problem: problem, result: result, type: type };
     }, [testCaseState, result]);
     if (!problem) {
         return <Spin />;
@@ -162,18 +172,23 @@ const CodePractice = () => {
                 <Col className={clsx([styles.codePracticeWrapper, 'codePracticeWrapperCustom'])}>
                     <Row className={styles.problemHeader}>
                         <Col span={8} className={styles.btnBackWrapper}>
-                            <span className={styles.btnBack}>
-                                <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: 4 }} />
-                                Quay về
-                            </span>
+                            <Link to="/">
+                                <span className={styles.btnBack}>
+                                    <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: 4 }} />
+                                    Quay về
+                                </span>
+                            </Link>
                         </Col>
                         <Col span={8} className={styles.btnExecuteWrapper}>
-                            <span className={clsx([styles.btn, styles.btnRun])} onClick={handleRunBtn}>
+                            <span className={clsx([styles.btn, styles.btnRun])} onClick={() => handleRunBtn('test')}>
                                 <FontAwesomeIcon icon={faPlay} style={{ marginRight: 4 }} />
                                 {!load && 'Chạy thử'}
                                 {load && <Spin />}
                             </span>
-                            <span className={clsx([styles.btn, styles.btnSubmit])}>
+                            <span
+                                className={clsx([styles.btn, styles.btnSubmit])}
+                                onClick={() => handleRunBtn('submit')}
+                            >
                                 <FontAwesomeIcon icon={faCloudArrowUp} style={{ marginRight: 4 }} />
                                 Nộp bài
                             </span>

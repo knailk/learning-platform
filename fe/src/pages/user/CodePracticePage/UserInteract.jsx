@@ -59,7 +59,6 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, defaultEditorV
                         .then((data) =>
                             setTimeout(() => {
                                 setLoad(false);
-                                setTab('2');
                             }, 500),
                         )
                         .catch((e) => {

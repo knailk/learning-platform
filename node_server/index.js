@@ -47,26 +47,99 @@ app.post('/python', (req, res) => {
     }
 });
 
+const test = [
+    {
+        id: 0,
+        input: [
+            { name: 'nums', type: 'array', value: '[2,6,1,8]' },
+            { name: 'target', type: 'number', value: '10' },
+        ],
+    },
+    {
+        id: 1,
+        input: [
+            { name: 'nums', type: 'array', value: '[25,6,123,52,89,1]' },
+            { name: 'target', type: 'number', value: '79' },
+        ],
+    },
+    {
+        id: 2,
+        input: [
+            { name: 'nums', type: 'array', value: '[2,7,89,2]' },
+            { name: 'target', type: 'number', value: '4' },
+        ],
+    },
+    {
+        id: 3,
+        input: [
+            { name: 'nums', type: 'array', value: '[10,22,1,6]' },
+            { name: 'target', type: 'number', value: '16' },
+        ],
+    },
+    {
+        id: 4,
+        input: [
+            { name: 'nums', type: 'array', value: '[2,5,7,9,2]' },
+            { name: 'target', type: 'number', value: '7' },
+        ],
+    },
+    {
+        id: 5,
+        input: [
+            { name: 'nums', type: 'array', value: '[2,7,9,1,2]' },
+            { name: 'target', type: 'number', value: '11' },
+        ],
+    },
+    {
+        id: 6,
+        input: [
+            { name: 'nums', type: 'array', value: '[7,5,3,1,8]' },
+            { name: 'target', type: 'number', value: '10' },
+        ],
+    },
+    {
+        id: 7,
+        input: [
+            { name: 'nums', type: 'array', value: '[1,2,6,4]' },
+            { name: 'target', type: 'number', value: '6' },
+        ],
+    },
+];
+
 app.post('/code-practice', (req, res) => {
     try {
-        let file_path = defaultPath + '/' + req.body.user_id + '/code_practice/' + req.body.practice_code_id;
-        utils.saveFileCode(file_path, 'Solution.py', req.body.code);
-        utils.saveFileCode(file_path, 'main.py', `from Solution import Solution\nimport sys\nprint(Solution().${req.body.function_name}(*sys.argv[1:]))`);
+        let main_content = `import sys\nimport json\nfrom ast import literal_eval\nfrom Solution import Solution\n\nprint(Solution().${req.body.function_name}(*json.loads(sys.argv[1])['input']))`;
+        let file_path_user = defaultPath + '/' + req.body.user_id + '/code_practice/' + req.body.practice_code_id + '/user';
+        let file_path_solution = defaultPath + '/' + req.body.user_id + '/code_practice/' + req.body.practice_code_id + '/solution';
+        utils.saveFileCode(file_path_user, 'Solution.py', req.body.code);
+        utils.saveFileCode(file_path_user, 'main.py', main_content);
+        utils.saveFileCode(file_path_solution, 'Solution.py', req.body.solution);
+        utils.saveFileCode(file_path_solution, 'main.py', main_content);
         if (req.body.run === true) {
-            let test_case = req.body.test_case;
-            let input_output = utils.convertTestCase(test_case);
+            let test_case = req.body.type === 'test' ? req.body.test_case : test;
+            let input_output = [];
+            try {
+                input_output = utils.convertTestCase(test_case);
+            } catch (error) {
+                res.status(400).send({ error: { message: error, title: 'TestCase không hợp lệ' } });
+            }
+            console.log(test);
+            console.log(req.body.test_case);
             const run_test_case = () => {
                 let return_value = [];
+                let return_solution = [];
                 let error = false;
                 let count = 0;
+                let count_solution = 0;
                 let total = input_output.length;
                 input_output.forEach(async (element, index) => {
+                    let args = { input: element.input };
                     let options = {
                         mode: 'text',
                         pythonOptions: ['-u'],
-                        args: element.input,
+                        args: JSON.stringify(args),
                     };
-                    await PythonShell.run(file_path + '/' + 'main.py', options)
+                    await PythonShell.run(file_path_user + '/' + 'main.py', options)
                         .then((messages) => {
                             count++;
                             return_value.push({ id: element.id, value: { input: element.original_input, output: messages[0] } });
@@ -75,11 +148,27 @@ app.post('/code-practice', (req, res) => {
                             return_value = err.traceback;
                             error = true;
                         });
-                    if (count === total || error === true) {
+                    await PythonShell.run(file_path_solution + '/' + 'main.py', options)
+                        .then((messages) => {
+                            count_solution++;
+                            return_solution.push({ id: element.id, value: { input: element.original_input, output: messages[0] } });
+                        })
+                        .catch((err) => {
+                            return_solution = err.traceback;
+                            error = true;
+                        });
+                    if ((count === total && count_solution === total) || error === true) {
                         if (error) {
-                            res.status(400).send({ error: utils.customErrorReturn(return_value) });
+                            res.status(400).send({ error: { message: utils.customErrorReturn(return_value), title: 'Lỗi Runtime' } });
                         } else {
-                            res.send({ data: return_value });
+                            console.log(return_solution);
+                            console.log(return_value);
+                            res.send({
+                                data: {
+                                    user: return_value,
+                                    solution: return_solution,
+                                },
+                            });
                         }
                     }
                 });
@@ -92,8 +181,9 @@ app.post('/code-practice', (req, res) => {
         res.send({ data: 'Lỗi hệ thống, vui lòng thử lại sau' });
     }
 });
+
 app.get('/code-practice/get-saved-file', (req, res) => {
-    let path = defaultPath + '/' + req.query.user_id + '/code_practice' + '/' + req.query.problem_id + '/Solution.py';
+    let path = defaultPath + '/' + req.query.user_id + '/code_practice' + '/' + req.query.problem_id + '/user' + '/Solution.py';
     if (!fs.existsSync(path)) {
         res.send({ data: '' });
     } else {

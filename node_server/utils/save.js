@@ -6,9 +6,17 @@ const ARRAY = 'array';
 const convertType = (value, type) => {
     switch (type) {
         case NUMBER:
-            return parseInt(value);
+            if (!isNaN(value)) {
+                return parseInt(value);
+            } else {
+                throw 'Giá trị ' + value + ' không phải là kiểu số';
+            }
         case ARRAY:
-            return JSON.parse(value);
+            try {
+                return JSON.parse(value);
+            } catch (error) {
+                throw 'Mảng ' + value + ' không hợp lệ';
+            }
         default:
             return value;
     }

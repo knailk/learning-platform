@@ -79,6 +79,9 @@
             overflow: visible;
             padding-left: 1rem;
             white-space: pre-wrap;
+            strong {
+                color: rgba(255, 255, 255, 0.9) !important;
+            }
         }
     }
     ul {

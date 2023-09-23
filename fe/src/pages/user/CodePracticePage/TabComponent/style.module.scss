@@ -2,11 +2,16 @@
     font-family: 'Menlo';
     src: url('../../../../../public/fonts/Menlo-Regular.ttf') format('truetype');
 }
-
+.wrongAnswer {
+    color: rgb(239 71 67);
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    margin-bottom: 10px;
+}
 .itemTestCase {
     position: relative;
-    width: 70px;
-    height: 30px;
+    padding: 3px 13px;
     display: flex;
     align-items: center;
     justify-content: center;
