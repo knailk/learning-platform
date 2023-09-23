@@ -80,6 +80,11 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		v1.GET("/submissions/:id", submission.Get)
 		v1.GET("/submissions/users", submission.ListByUserID)
 		v1.POST("/submissions", submission.Create)
+
+		/****** START Game ******/
+		game := &controllers.GameController{AuthController: auth, GameModel: &models.GameModel{Repo: repo}}
+		v1.GET("/games", game.ListGames)
+		v1.POST("/games/:id", game.CompleteGame)
 	}
 
 	// route not found

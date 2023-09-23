@@ -41,7 +41,6 @@ const LoginPage = () => {
             if (!response.data.user.verified) navigate('/confirm-register');
             navigate('/');
         } catch (error) {
-            console.log(error);
             notification.error({
                 message: 'Đăng nhập thất bại',
                 description: 'Tên đăng nhập hoặc mật khẩu không hợp lệ',

@@ -51,6 +51,7 @@ CREATE TABLE "users" (
     "birth" text,
     "score" integer,
     "current_lesson" char(36),
+    "current _game_level" integer,
     "verified" bool,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
@@ -123,6 +124,14 @@ CREATE TABLE "lesson_answers" (
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
 );
+CREATE TABLE "games" (
+    "id" char(36) PRIMARY KEY,
+    "title" text,
+    "level" integer,
+    "score" integer,
+    "created_at" timestamp NOT NULL DEFAULT (now()),
+    "updated_at" timestamp NOT NULL DEFAULT (now())
+)
 ALTER TABLE "user_tokens"
 ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 ALTER TABLE "follows"

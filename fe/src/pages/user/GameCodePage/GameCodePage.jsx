@@ -1,27 +1,31 @@
+import React, { useState, useEffect } from 'react';
 import styles from './style.module.scss';
 import ItemMap from './ItemMap';
 import { Helmet } from 'react-helmet';
-import { Button, Row } from 'antd';
+import { Row, notification } from 'antd';
 import './customStyle.scss';
 import { Link } from 'react-router-dom';
-
-const MappingLocation = [
-    { left: '22.5%', top: '12.5%', current: true },
-    { left: '30%', top: '17.5%' },
-    { left: '40%', top: '16.5%' },
-    { left: '50%', top: '20%' },
-    { left: '45.5%', top: '30%' },
-    { left: '32%', top: '34%' },
-    { left: '20%', top: '36%' },
-];
+import request from 'utils/http';
+import { MappingLocation } from './constant';
 
 const GameCodePage = () => {
-    const itemMap = {
-        title: 'Shadow Guard',
-        description:
-            'Hãy né lũ yêu tinh để nhặt kim cương và đến cánh cổng bên kia một cách an toàn. Coi chừng gai nhọn',
-        level: 1,
-    };
+    const [profile, setProfile] = useState(false);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await request.get('auth/me');
+                setProfile(response.data.user);
+            } catch (error) {
+                notification.error({
+                    message: 'Lỗi hệ thống!',
+                    description: error,
+                });
+            }
+        };
+        fetchProfile();
+    }, []);
+
     return (
         <>
             <Helmet>
@@ -43,7 +47,7 @@ const GameCodePage = () => {
                     <div className={styles.linearBottom}></div>
 
                     {MappingLocation.map((item) => {
-                        return <ItemMap left={item.left} top={item.top} current={item.current} data={itemMap} />;
+                        return <ItemMap data={item} current={profile.current_game_level} />;
                     })}
                 </div>
             </div>
