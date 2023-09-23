@@ -55,3 +55,37 @@ func (ctrl *ProblemController) Get(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": problem})
 }
+
+func (ctrl *ProblemController) Create(ctx *gin.Context) {
+	ent := entity.Problem{}
+
+	if err := ctx.ShouldBindJSON(&ent); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Parse problem error", "err": err.Error()})
+		return
+	}
+
+	err := ctrl.ProblemModel.Create(ctx, &ent)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Create problem error", "err": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "OK"})
+}
+
+func (ctrl *ProblemController) CreateTestCase(ctx *gin.Context) {
+	ent := entity.TestCase{}
+
+	if err := ctx.ShouldBindJSON(&ent); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Parse test case error", "err": err.Error()})
+		return
+	}
+
+	err := ctrl.ProblemModel.CreateTestCase(ctx, &ent)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Create test case error", "err": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "OK"})
+}

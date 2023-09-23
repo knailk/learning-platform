@@ -32,13 +32,16 @@ func newProblem(db *gorm.DB, opts ...gen.DOOption) problem {
 	_problem.Description = field.NewString(tableName, "description")
 	_problem.Level = field.NewString(tableName, "level")
 	_problem.URL = field.NewString(tableName, "url")
+	_problem.FunctionName = field.NewString(tableName, "function_name")
+	_problem.Args = field.NewField(tableName, "args")
 	_problem.AvailableCode = field.NewString(tableName, "available_code")
+	_problem.SolutionCode = field.NewString(tableName, "solution_code")
 	_problem.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_problem.CreatedAt = field.NewTime(tableName, "created_at")
-	_problem.Solution = problemHasOneSolution{
+	_problem.TestCases = problemHasManyTestCases{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Solution", "entity.Solution"),
+		RelationField: field.NewRelation("TestCases", "entity.TestCase"),
 	}
 
 	_problem.fillFieldMap()
@@ -55,10 +58,13 @@ type problem struct {
 	Description   field.String
 	Level         field.String
 	URL           field.String
+	FunctionName  field.String
+	Args          field.Field
 	AvailableCode field.String
+	SolutionCode  field.String
 	UpdatedAt     field.Time
 	CreatedAt     field.Time
-	Solution      problemHasOneSolution
+	TestCases     problemHasManyTestCases
 
 	fieldMap map[string]field.Expr
 }
@@ -80,7 +86,10 @@ func (p *problem) updateTableName(table string) *problem {
 	p.Description = field.NewString(table, "description")
 	p.Level = field.NewString(table, "level")
 	p.URL = field.NewString(table, "url")
+	p.FunctionName = field.NewString(table, "function_name")
+	p.Args = field.NewField(table, "args")
 	p.AvailableCode = field.NewString(table, "available_code")
+	p.SolutionCode = field.NewString(table, "solution_code")
 	p.UpdatedAt = field.NewTime(table, "updated_at")
 	p.CreatedAt = field.NewTime(table, "created_at")
 
@@ -107,13 +116,16 @@ func (p *problem) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *problem) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 9)
+	p.fieldMap = make(map[string]field.Expr, 12)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["title"] = p.Title
 	p.fieldMap["description"] = p.Description
 	p.fieldMap["level"] = p.Level
 	p.fieldMap["url"] = p.URL
+	p.fieldMap["function_name"] = p.FunctionName
+	p.fieldMap["args"] = p.Args
 	p.fieldMap["available_code"] = p.AvailableCode
+	p.fieldMap["solution_code"] = p.SolutionCode
 	p.fieldMap["updated_at"] = p.UpdatedAt
 	p.fieldMap["created_at"] = p.CreatedAt
 
@@ -129,13 +141,13 @@ func (p problem) replaceDB(db *gorm.DB) problem {
 	return p
 }
 
-type problemHasOneSolution struct {
+type problemHasManyTestCases struct {
 	db *gorm.DB
 
 	field.RelationField
 }
 
-func (a problemHasOneSolution) Where(conds ...field.Expr) *problemHasOneSolution {
+func (a problemHasManyTestCases) Where(conds ...field.Expr) *problemHasManyTestCases {
 	if len(conds) == 0 {
 		return &a
 	}
@@ -148,27 +160,27 @@ func (a problemHasOneSolution) Where(conds ...field.Expr) *problemHasOneSolution
 	return &a
 }
 
-func (a problemHasOneSolution) WithContext(ctx context.Context) *problemHasOneSolution {
+func (a problemHasManyTestCases) WithContext(ctx context.Context) *problemHasManyTestCases {
 	a.db = a.db.WithContext(ctx)
 	return &a
 }
 
-func (a problemHasOneSolution) Session(session *gorm.Session) *problemHasOneSolution {
+func (a problemHasManyTestCases) Session(session *gorm.Session) *problemHasManyTestCases {
 	a.db = a.db.Session(session)
 	return &a
 }
 
-func (a problemHasOneSolution) Model(m *entity.Problem) *problemHasOneSolutionTx {
-	return &problemHasOneSolutionTx{a.db.Model(m).Association(a.Name())}
+func (a problemHasManyTestCases) Model(m *entity.Problem) *problemHasManyTestCasesTx {
+	return &problemHasManyTestCasesTx{a.db.Model(m).Association(a.Name())}
 }
 
-type problemHasOneSolutionTx struct{ tx *gorm.Association }
+type problemHasManyTestCasesTx struct{ tx *gorm.Association }
 
-func (a problemHasOneSolutionTx) Find() (result *entity.Solution, err error) {
+func (a problemHasManyTestCasesTx) Find() (result []*entity.TestCase, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a problemHasOneSolutionTx) Append(values ...*entity.Solution) (err error) {
+func (a problemHasManyTestCasesTx) Append(values ...*entity.TestCase) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -176,7 +188,7 @@ func (a problemHasOneSolutionTx) Append(values ...*entity.Solution) (err error) 
 	return a.tx.Append(targetValues...)
 }
 
-func (a problemHasOneSolutionTx) Replace(values ...*entity.Solution) (err error) {
+func (a problemHasManyTestCasesTx) Replace(values ...*entity.TestCase) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -184,7 +196,7 @@ func (a problemHasOneSolutionTx) Replace(values ...*entity.Solution) (err error)
 	return a.tx.Replace(targetValues...)
 }
 
-func (a problemHasOneSolutionTx) Delete(values ...*entity.Solution) (err error) {
+func (a problemHasManyTestCasesTx) Delete(values ...*entity.TestCase) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -192,11 +204,11 @@ func (a problemHasOneSolutionTx) Delete(values ...*entity.Solution) (err error) 
 	return a.tx.Delete(targetValues...)
 }
 
-func (a problemHasOneSolutionTx) Clear() error {
+func (a problemHasManyTestCasesTx) Clear() error {
 	return a.tx.Clear()
 }
 
-func (a problemHasOneSolutionTx) Count() int64 {
+func (a problemHasManyTestCasesTx) Count() int64 {
 	return a.tx.Count()
 }
 

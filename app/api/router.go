@@ -73,13 +73,15 @@ func Handler(ctx context.Context, provider *provider.Provider) (*gin.Engine, err
 		problem := &controllers.ProblemController{AuthController: auth, ProblemModel: &models.ProblemModel{Repo: repo}}
 		v1.GET("/problems", problem.List)
 		v1.GET("/problems/:id", problem.Get)
+		v1.POST("/problems", problem.Create)
+		v1.POST("/problems/test-case", problem.CreateTestCase)
 
-		/****** START Submission ******/
-		submission := &controllers.SubmissionController{AuthController: auth, SubmissionModel: &models.SubmissionModel{Repo: repo}}
-		v1.GET("/submissions/users/recent", submission.GetMostRecent)
-		v1.GET("/submissions/:id", submission.Get)
-		v1.GET("/submissions/users", submission.ListByUserID)
-		v1.POST("/submissions", submission.Create)
+		// /****** START Submission ******/
+		// submission := &controllers.SubmissionController{AuthController: auth, SubmissionModel: &models.SubmissionModel{Repo: repo}}
+		// v1.GET("/submissions/users/recent", submission.GetMostRecent)
+		// v1.GET("/submissions/:id", submission.Get)
+		// v1.GET("/submissions/users", submission.ListByUserID)
+		// v1.POST("/submissions", submission.Create)
 
 		/****** START Game ******/
 		game := &controllers.GameController{AuthController: auth, GameModel: &models.GameModel{Repo: repo}}

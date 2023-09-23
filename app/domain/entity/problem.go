@@ -13,11 +13,20 @@ type Problem struct {
 	Description   string       `json:"description"`
 	Level         ProblemLevel `json:"level"`
 	URL           string       `json:"url" gorm:"unique"`
+	FunctionName  string       `json:"function_name"`
+	Args          []Arg        `json:"args" gorm:"type:jsonb"`
 	AvailableCode string       `json:"available_code"`
+	SolutionCode  string       `json:"solution_code"`
 	UpdatedAt     time.Time    `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
-	CreatedAt     time.Time    `json:"created_at" gorm:"default:CURRENT_TIMESTAMP()"`
+	CreatedAt     time.Time    `json:"-" gorm:"default:CURRENT_TIMESTAMP()"`
 
-	Solution Solution `json:"solution" gorm:"foreignKey:ProblemID"`
+	TestCases []TestCase `json:"test_cases" gorm:"foreignKey:ProblemID"`
+}
+
+type Arg struct {
+	Name  string `json:"name"`
+	Type  string `json:"type"`
+	Value string `json:"value"`
 }
 
 type ProblemLevel string

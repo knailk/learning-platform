@@ -27,7 +27,7 @@ var (
 	Question       *question
 	QuestionAnswer *questionAnswer
 	Solution       *solution
-	Submission     *submission
+	TestCase       *testCase
 	User           *user
 	UserToken      *userToken
 )
@@ -44,7 +44,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Question = &Q.Question
 	QuestionAnswer = &Q.QuestionAnswer
 	Solution = &Q.Solution
-	Submission = &Q.Submission
+	TestCase = &Q.TestCase
 	User = &Q.User
 	UserToken = &Q.UserToken
 }
@@ -62,7 +62,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Question:       newQuestion(db, opts...),
 		QuestionAnswer: newQuestionAnswer(db, opts...),
 		Solution:       newSolution(db, opts...),
-		Submission:     newSubmission(db, opts...),
+		TestCase:       newTestCase(db, opts...),
 		User:           newUser(db, opts...),
 		UserToken:      newUserToken(db, opts...),
 	}
@@ -81,7 +81,7 @@ type Query struct {
 	Question       question
 	QuestionAnswer questionAnswer
 	Solution       solution
-	Submission     submission
+	TestCase       testCase
 	User           user
 	UserToken      userToken
 }
@@ -101,7 +101,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Question:       q.Question.clone(db),
 		QuestionAnswer: q.QuestionAnswer.clone(db),
 		Solution:       q.Solution.clone(db),
-		Submission:     q.Submission.clone(db),
+		TestCase:       q.TestCase.clone(db),
 		User:           q.User.clone(db),
 		UserToken:      q.UserToken.clone(db),
 	}
@@ -128,7 +128,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Question:       q.Question.replaceDB(db),
 		QuestionAnswer: q.QuestionAnswer.replaceDB(db),
 		Solution:       q.Solution.replaceDB(db),
-		Submission:     q.Submission.replaceDB(db),
+		TestCase:       q.TestCase.replaceDB(db),
 		User:           q.User.replaceDB(db),
 		UserToken:      q.UserToken.replaceDB(db),
 	}
@@ -145,7 +145,7 @@ type queryCtx struct {
 	Question       IQuestionDo
 	QuestionAnswer IQuestionAnswerDo
 	Solution       ISolutionDo
-	Submission     ISubmissionDo
+	TestCase       ITestCaseDo
 	User           IUserDo
 	UserToken      IUserTokenDo
 }
@@ -162,7 +162,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Question:       q.Question.WithContext(ctx),
 		QuestionAnswer: q.QuestionAnswer.WithContext(ctx),
 		Solution:       q.Solution.WithContext(ctx),
-		Submission:     q.Submission.WithContext(ctx),
+		TestCase:       q.TestCase.WithContext(ctx),
 		User:           q.User.WithContext(ctx),
 		UserToken:      q.UserToken.WithContext(ctx),
 	}

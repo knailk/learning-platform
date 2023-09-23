@@ -29,7 +29,7 @@ func (m *GameModel) CompleteGame(ctx context.Context, level int, userID uuid.UUI
 	}
 
 	_, err = m.Repo.User.WithContext(ctx).Where(m.Repo.User.ID.Eq(userID)).Updates(&entity.User{
-		CurrentGameLevel: game.Level,
+		CurrentGameLevel: game.Level + 1,
 		Score:            user.Score + game.Score,
 	})
 	if err != nil {

@@ -159,44 +159,55 @@ CREATE TABLE "problems" (
     "description" text,
     "level" text,
     "url" text UNIQUE,
+    "function_name" text,
+    "args" jsonb,
     "available_code" text,
+    "solution_code" text,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
 );
-CREATE TABLE "solutions" (
+CREATE TABLE "test_cases" (
     "id" char(36) PRIMARY KEY,
     "problem_id" char(36) NOT NULL,
-    "code" text NOT NULL,
-    "language" varchar(20) NOT NULL,
+    "input" jsonb,
     "created_at" timestamp NOT NULL DEFAULT (now()),
     "updated_at" timestamp NOT NULL DEFAULT (now())
-);
-CREATE TABLE "submissions" (
-    "id" char(36) PRIMARY KEY,
-    "user_id" char(36) NOT NULL,
-    "problem_id" char(36) NOT NULL,
-    "solution_id" char(36) NOT NULL,
-    "status" varchar(10) NOT NULL CHECK (
-        "status" IN (
-            'Accepted',
-            'Wrong Answer',
-            'Time Limit Exceeded',
-            'Runtime Error'
-        )
-    ),
-    "time" real NOT NULL,
-    "memory" real NOT NULL,
-    "created_at" timestamp NOT NULL DEFAULT (now()),
-    "updated_at" timestamp NOT NULL DEFAULT (now())
-);
+) -- CREATE TABLE "solutions" (
+--     "id" char(36) PRIMARY KEY,
+--     "problem_id" char(36) NOT NULL,
+--     "code" text NOT NULL,
+--     "language" varchar(20) NOT NULL,
+--     "created_at" timestamp NOT NULL DEFAULT (now()),
+--     "updated_at" timestamp NOT NULL DEFAULT (now())
+-- );
+-- CREATE TABLE "submissions" (
+--     "id" char(36) PRIMARY KEY,
+--     "user_id" char(36) NOT NULL,
+--     "problem_id" char(36) NOT NULL,
+--     "solution_id" char(36) NOT NULL,
+--     "status" varchar(10) NOT NULL CHECK (
+--         "status" IN (
+--             'Accepted',
+--             'Wrong Answer',
+--             'Time Limit Exceeded',
+--             'Runtime Error'
+--         )
+--     ),
+--     "time" real NOT NULL,
+--     "memory" real NOT NULL,
+--     "created_at" timestamp NOT NULL DEFAULT (now()),
+--     "updated_at" timestamp NOT NULL DEFAULT (now())
+-- );
 ALTER TABLE "solutions"
 ADD FOREIGN KEY (problem_id) REFERENCES "problems" (id);
-ALTER TABLE "submissions"
-ADD FOREIGN KEY ("user_id") REFERENCES "users" (id);
-ALTER TABLE "submissions"
+-- ALTER TABLE "submissions"
+-- ADD FOREIGN KEY ("user_id") REFERENCES "users" (id);
+-- ALTER TABLE "submissions"
+-- ADD FOREIGN KEY ("problem_id") REFERENCES "problems" (id);
+-- ALTER TABLE "submissions"
+-- ADD FOREIGN KEY ("solution_id") REFERENCES "solutions" (id);
+ALTER TABLE "test_cases"
 ADD FOREIGN KEY ("problem_id") REFERENCES "problems" (id);
-ALTER TABLE "submissions"
-ADD FOREIGN KEY ("solution_id") REFERENCES "solutions" (id);
 ----
 --
 -- Name: public; Type: ACL; Schema: -; Owner: postgres

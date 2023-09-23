@@ -26,7 +26,7 @@ func main() {
 
 		entity.Problem{},
 		entity.Solution{},
-		entity.Submission{},
+		entity.TestCase{},
 
 		entity.Game{},
 	)

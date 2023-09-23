@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './style.module.scss';
 import ItemMap from './ItemMap';
 import { Helmet } from 'react-helmet';
-import { Row, notification } from 'antd';
+import { Row, Spin, notification } from 'antd';
 import './customStyle.scss';
 import { Link } from 'react-router-dom';
 import request from 'utils/http';
@@ -26,32 +26,36 @@ const GameCodePage = () => {
         fetchProfile();
     }, []);
 
-    return (
-        <>
-            <Helmet>
-                <title>Trò chơi lập trình</title>
-            </Helmet>
-            <div className={styles.gameCodePageWrapper}>
-                <div className={styles.gameCodePageHeader}>
-                    <Row className={styles.logo}>
-                        <Link to={'/'}>
-                            <img src="/images/game/logo_game.png" alt="" />
-                        </Link>
-                    </Row>
-                </div>
-                <div className={styles.gameMap}>
-                    <img src="/images/game/Dungeon_Map1.jpg" alt="" />
-                    <div className={styles.linearLeft}></div>
-                    <div className={styles.linearRight}></div>
-                    <div className={styles.linearTop}></div>
-                    <div className={styles.linearBottom}></div>
+    if (!profile) {
+        return <Spin />;
+    } else {
+        return (
+            <>
+                <Helmet>
+                    <title>Trò chơi lập trình</title>
+                </Helmet>
+                <div className={styles.gameCodePageWrapper}>
+                    <div className={styles.gameCodePageHeader}>
+                        <Row className={styles.logo}>
+                            <Link to={'/'}>
+                                <img src="/images/game/logo_game.png" alt="" />
+                            </Link>
+                        </Row>
+                    </div>
+                    <div className={styles.gameMap}>
+                        <img src="/images/game/Dungeon_Map1.jpg" alt="" />
+                        <div className={styles.linearLeft}></div>
+                        <div className={styles.linearRight}></div>
+                        <div className={styles.linearTop}></div>
+                        <div className={styles.linearBottom}></div>
 
-                    {MappingLocation.map((item) => {
-                        return <ItemMap data={item} current={profile.current_game_level} />;
-                    })}
+                        {MappingLocation.map((item) => {
+                            return <ItemMap data={item} current={profile.current_game_level} />;
+                        })}
+                    </div>
                 </div>
-            </div>
-        </>
-    );
+            </>
+        );
+    }
 };
 export default GameCodePage;
