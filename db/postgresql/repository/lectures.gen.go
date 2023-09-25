@@ -30,7 +30,7 @@ func newLecture(db *gorm.DB, opts ...gen.DOOption) lecture {
 	_lecture.ID = field.NewField(tableName, "id")
 	_lecture.LessonID = field.NewField(tableName, "lesson_id")
 	_lecture.Level = field.NewInt(tableName, "level")
-	_lecture.AnswerType = field.NewString(tableName, "answer_type")
+	_lecture.Type = field.NewString(tableName, "type")
 	_lecture.Content = field.NewString(tableName, "content")
 	_lecture.Required = field.NewBool(tableName, "required")
 	_lecture.UpdatedAt = field.NewTime(tableName, "updated_at")
@@ -44,15 +44,15 @@ func newLecture(db *gorm.DB, opts ...gen.DOOption) lecture {
 type lecture struct {
 	lectureDo lectureDo
 
-	ALL        field.Asterisk
-	ID         field.Field
-	LessonID   field.Field
-	Level      field.Int
-	AnswerType field.String
-	Content    field.String
-	Required   field.Bool
-	UpdatedAt  field.Time
-	CreatedAt  field.Time
+	ALL       field.Asterisk
+	ID        field.Field
+	LessonID  field.Field
+	Level     field.Int
+	Type      field.String
+	Content   field.String
+	Required  field.Bool
+	UpdatedAt field.Time
+	CreatedAt field.Time
 
 	fieldMap map[string]field.Expr
 }
@@ -72,7 +72,7 @@ func (l *lecture) updateTableName(table string) *lecture {
 	l.ID = field.NewField(table, "id")
 	l.LessonID = field.NewField(table, "lesson_id")
 	l.Level = field.NewInt(table, "level")
-	l.AnswerType = field.NewString(table, "answer_type")
+	l.Type = field.NewString(table, "type")
 	l.Content = field.NewString(table, "content")
 	l.Required = field.NewBool(table, "required")
 	l.UpdatedAt = field.NewTime(table, "updated_at")
@@ -105,7 +105,7 @@ func (l *lecture) fillFieldMap() {
 	l.fieldMap["id"] = l.ID
 	l.fieldMap["lesson_id"] = l.LessonID
 	l.fieldMap["level"] = l.Level
-	l.fieldMap["answer_type"] = l.AnswerType
+	l.fieldMap["type"] = l.Type
 	l.fieldMap["content"] = l.Content
 	l.fieldMap["required"] = l.Required
 	l.fieldMap["updated_at"] = l.UpdatedAt

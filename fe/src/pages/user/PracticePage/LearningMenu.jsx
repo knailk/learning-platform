@@ -123,11 +123,11 @@ const LearningMenu = () => {
         );
     });
     const itemsLecture = [
-        getItem('Danh sách các chapter đã học', '1', <FontAwesomeIcon icon={faBook} />, itemMenuLecture),
+        getItem('Danh sách các chương đã học', '1', <FontAwesomeIcon icon={faBook} />, itemMenuLecture),
     ];
     const itemsPractice = [
         getItem(
-            'Danh sách các bài tập của các chapter đã làm',
+            'Danh sách các bài tập của các chương đã làm',
             '2',
             <FontAwesomeIcon icon={faBook} />,
             itemMenuPractice,
