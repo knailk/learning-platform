@@ -35,15 +35,12 @@ app.post('/python', (req, res) => {
         PythonShell.run(file_path + '/' + file_name, options)
             .then((messages) => {
                 res.send({ data: messages.join('\r\n') });
-                fs.unlinkSync(file_name);
             })
             .catch((err) => {
                 res.send({ data: err.traceback });
-                fs.unlinkSync(file_name);
             });
     } catch (error) {
         res.send({ data: 'Lỗi hệ thống, vui lòng thử lại sau' });
-        fs.unlinkSync(file_name);
     }
 });
 
@@ -71,53 +68,54 @@ app.post('/code-practice', (req, res) => {
             } catch (error) {
                 res.status(400).send({ error: { message: error, title: 'TestCase không hợp lệ' } });
             }
-            const run_test_case = () => {
-                let return_value = [];
-                let return_solution = [];
-                let error = false;
-                let count = 0;
-                let count_solution = 0;
-                let total = input_output.length;
-                input_output.forEach(async (element, index) => {
-                    let args = { input: element.input };
-                    let options = {
-                        mode: 'text',
-                        pythonOptions: ['-u'],
-                        args: [JSON.stringify(args)],
-                    };
-                    await PythonShell.run(file_path_user + '/' + 'main.py', options)
-                        .then((messages) => {
-                            count++;
-                            return_value.push({ id: element.id, value: { input: element.original_input, output: messages[0] } });
-                        })
-                        .catch((err) => {
-                            return_value = err.traceback;
-                            error = true;
+            let return_value = [];
+            let return_solution = [];
+            let error = false;
+            let count = 0;
+            let count_solution = 0;
+            let total = input_output.length;
+            let flag = false;
+            input_output.every(async (element) => {
+                let args = { input: element.input };
+                let options = {
+                    mode: 'text',
+                    pythonOptions: ['-u'],
+                    args: [JSON.stringify(args)],
+                };
+                await PythonShell.run(file_path_user + '/' + 'main.py', options)
+                    .then((messages) => {
+                        count++;
+                        return_value.push({ id: element.id, value: { input: element.original_input, output: messages[0] } });
+                    })
+                    .catch((err) => {
+                        return_value = err.traceback;
+                        error = true;
+                    });
+                await PythonShell.run(file_path_solution + '/' + 'main.py', options)
+                    .then((messages) => {
+                        count_solution++;
+                        return_solution.push({ id: element.id, value: { input: element.original_input, output: messages[0] } });
+                    })
+                    .catch((err) => {
+                        return_solution = err.traceback;
+                        error = true;
+                    });
+                if (((count === total && count_solution === total) || error === true) && flag === false) {
+                    if (error) {
+                        res.status(400).send({ error: { message: utils.customErrorReturn(return_value), title: 'Lỗi Runtime' } });
+                        flag = true;
+                        return false;
+                    } else {
+                        res.send({
+                            data: {
+                                user: return_value,
+                                solution: return_solution,
+                            },
                         });
-                    await PythonShell.run(file_path_solution + '/' + 'main.py', options)
-                        .then((messages) => {
-                            count_solution++;
-                            return_solution.push({ id: element.id, value: { input: element.original_input, output: messages[0] } });
-                        })
-                        .catch((err) => {
-                            return_solution = err.traceback;
-                            error = true;
-                        });
-                    if ((count === total && count_solution === total) || error === true) {
-                        if (error) {
-                            res.status(400).send({ error: { message: utils.customErrorReturn(return_value), title: 'Lỗi Runtime' } });
-                        } else {
-                            res.send({
-                                data: {
-                                    user: return_value,
-                                    solution: return_solution,
-                                },
-                            });
-                        }
+                        return false;
                     }
-                });
-            };
-            run_test_case();
+                }
+            });
         } else {
             res.send({ data: 'success' });
         }

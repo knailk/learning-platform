@@ -3,14 +3,17 @@ body {
 }
 .gutterSplit {
     height: calc(100vh - 65px) !important;
-    background-color: #f0f0f0;
+    background-color: #f0f0f0 !important;
+}
+.gutterSplitVertical {
+    background-color: #f0f0f0 !important;
 }
 .codePracticeWrapper {
     position: relative;
     background-color: #f0f0f0;
     padding: 10px;
     .problemHeader {
-        color: rgb(255, 255, 255);
+        color: #1a1a1a;
         height: 40px;
         padding-bottom: 10px;
         .btnBackWrapper {
@@ -20,7 +23,7 @@ body {
                 background-color: rgba(0, 0, 0, 0.05);
                 padding: 5px 10px;
                 margin-right: 1.5px;
-                color: rgba(0, 0, 0, 0.6);
+                color: #1a1a1a;
                 cursor: pointer;
                 &:hover {
                     background-color: rgba(0, 0, 0, 0.1);
@@ -45,6 +48,7 @@ body {
                 background-color: rgba(0, 0, 0, 0.05);
                 padding: 5px;
                 margin-right: 1.5px;
+                color: #1a1a1a;
                 cursor: pointer;
                 &:hover {
                     background-color: rgba(0, 0, 0, 0.1);
@@ -58,7 +62,6 @@ body {
             .btnRun {
                 border-top-left-radius: 3px;
                 border-bottom-left-radius: 3px;
-                color: rgba(0, 0, 0, 0.6);
             }
             .btnSubmit {
                 border-top-right-radius: 3px;
@@ -70,11 +73,30 @@ body {
     .problemDetail {
         height: calc(100vh - 65px);
         padding: 20px 0px 20px 20px;
-        border: 1px solid;
-        background-color: #262626;
+        border: 1px solid #e2e8f0;
+        background-color: #fff;
         .problemDescription {
             height: 100%;
-            color: white;
+            color: #1a1a1a;
+            overflow-y: auto;
+            &::-webkit-scrollbar {
+                width: 13px;
+            }
+
+            /* Track */
+            &::-webkit-scrollbar-track {
+                background: rgb(218, 218, 218);
+            }
+
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+                background: #aeaeae;
+            }
+
+            /* Handle on hover */
+            &::-webkit-scrollbar-thumb:hover {
+                background: #979797;
+            }
             .problemTitle {
                 font-size: 24px;
                 line-height: 32px;
@@ -96,25 +118,48 @@ body {
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
             .header {
-                height: 30px;
-                display: flex;
-                align-items: center;
-                background-color: #00000005;
+                .code,
+                .btnReload {
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                    color: #1a1a1a;
+                    font-weight: 500;
+                    padding: 0px 10px;
+                    font-size: 13px;
+                }
+                .btnReload {
+                    justify-content: end;
+                    cursor: pointer;
+                    .icon {
+                        padding: 5px;
+                        &:hover {
+                            background-color: rgba(0, 0, 0, 0.1);
+                        }
+                        border-radius: 2px;
+                        -webkit-border-radius: 2px;
+                        -moz-border-radius: 2px;
+                        -ms-border-radius: 2px;
+                        -o-border-radius: 2px;
+                        transition: all linear 0.2s;
+                        -webkit-transition: all linear 0.2s;
+                        -moz-transition: all linear 0.2s;
+                        -ms-transition: all linear 0.2s;
+                        -o-transition: all linear 0.2s;
+                    }
+                }
+                background-color: #fafafa;
                 border-top-right-radius: 10px;
                 border-top-left-radius: 10px;
-                color: rgb(26, 26, 26);
-                font-weight: 500;
-                padding: 0px 10px;
-                font-size: 13px;
             }
             .footer {
                 display: flex;
                 align-items: center;
-                background-color: #00000005;
+                background-color: #fafafa;
                 height: 25px;
                 border-bottom-right-radius: 10px;
                 border-bottom-left-radius: 10px;
-                color: rgba(255, 255, 255, 0.5);
+                color: #1a1a1a;
                 font-weight: 400;
                 padding: 0px 10px;
                 font-size: 13px;
@@ -126,7 +171,7 @@ body {
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            background-color: #262626;
+            background-color: white;
             &::-webkit-scrollbar {
                 display: none;
             }
@@ -136,8 +181,9 @@ body {
                 position: sticky;
                 top: 0px;
                 overflow: hidden;
-                background-color: rgb(51, 51, 51);
-                color: rgb(119, 119, 119);
+                background-color: #fafafa;
+                color: rgba(38, 38, 38, 0.7);
+
                 font-weight: bold;
                 padding-left: 10px;
                 z-index: 100;
@@ -148,7 +194,7 @@ body {
             .contentConsole {
                 padding: 0px 0px 10px 20px;
                 width: calc(100% - 30px);
-                color: white;
+                color: #1a1a1a;
             }
             border-radius: 10px;
             -webkit-border-radius: 10px;
@@ -161,13 +207,13 @@ body {
 
 .problemDrawer {
     border: 1.5px solid;
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(0, 0, 0, 0.08);
     .problemItem {
         height: 50px;
         cursor: pointer;
         border-bottom-width: 1.5px;
         border-bottom-style: solid;
-        border-bottom-color: rgba(255, 255, 255, 0.12);
+        border-bottom-color: rgba(0, 0, 0, 0.08);
         display: grid;
         align-items: center;
         transition: all 0.3s ease 0s;
@@ -176,7 +222,7 @@ body {
         -ms-transition: all 0.3s ease 0s;
         -o-transition: all 0.3s ease 0s;
         &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.1);
         }
     }
     border-radius: 8px;

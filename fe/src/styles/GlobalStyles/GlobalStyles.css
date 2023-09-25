@@ -44,3 +44,16 @@ body {
     flex: 1;
     overflow: hidden;
 }
+.codicon-folding-expanded:before {
+    content: '\2212';
+    margin-top: -5px;
+}
+
+.codicon-folding-collapsed:before {
+    content: '\002B';
+    margin-top: -5px;
+}
+.codicon-find-selection:before {
+    content: '\2212';
+    margin-top: -5px;
+}
