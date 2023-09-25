@@ -7,6 +7,7 @@ const PythonEditor = ({
     width = '100%',
     defaultValue = '#Here is some python text',
     theme = 'dark_vs.json',
+    value = '',
 }) => {
     //SETTING FOR RESIZE OBSERVERS
     // Save a reference to the original ResizeObserver
@@ -72,6 +73,7 @@ const PythonEditor = ({
                     onMount={handleEditorDidMount}
                     beforeMount={handleEditorWillMount}
                     options={option}
+                    value={value}
                 />
             </div>
         </>

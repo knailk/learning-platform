@@ -7,71 +7,51 @@
     }
     .ant-tabs-tab-active {
         * {
-            color: white !important;
+            color: rgba(38, 38, 38, 0.7) !important;
         }
     }
 
     .ant-tabs-tab {
         &:hover {
-            color: white !important;
+            color: rgba(38, 38, 38, 0.7) !important;
         }
         &:focus {
-            color: white !important;
+            color: rgba(38, 38, 38, 0.7) !important;
         }
         &:active {
-            color: white !important;
+            color: rgba(38, 38, 38, 0.7) !important;
         }
     }
     .ant-tabs-tab-btn {
         &:hover {
-            color: white !important;
+            color: rgba(38, 38, 38, 0.7) !important;
         }
         &:focus {
-            color: white !important;
+            color: rgba(38, 38, 38, 0.7) !important;
         }
         &:active {
-            color: white !important;
+            color: rgba(38, 38, 38, 0.7) !important;
         }
     }
     .ant-tabs-ink-bar {
-        background: rgba(255, 255, 255, 0.6) !important;
+        background: rgb(26, 26, 26) !important;
     }
 
     .ant-spin-dot-item {
-        background-color: rgba(255, 255, 255, 0.6) !important;
+        background-color: rgb(26, 26, 26) !important;
     }
 }
 
 .detailDescription {
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-        width: 15px;
-        height: calc(100vh - 70px);
-        display: none;
-    }
+    // overflow-y: scroll;
 
-    /* Track */
-    &::-webkit-scrollbar-track {
-        background: rgb(51, 51, 51);
-    }
-
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-        background: #555;
-    }
-
-    /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {
-        background: #888;
-    }
-    height: 100%;
     p {
         margin-bottom: 1rem;
     }
     pre {
-        border-left: 2px solid #ffffff24;
-        color: #fff9 !important;
-        font-family: Menlo, sans-serif !important;
+        border-left: 2px solid #00000014;
+        color: #1a1a1a !important;
+        // font-family: Menlo, sans-serif !important;
         font-size: 0.875rem;
         line-height: 1.25rem;
         margin-bottom: 1rem;
@@ -81,7 +61,7 @@
         white-space: pre-wrap;
     }
     strong {
-        color: rgba(255, 255, 255, 0.9) !important;
+        color: #1a1a1a !important;
     }
 
     ul {
@@ -103,9 +83,9 @@
     }
 
     code {
-        background-color: #ffffff12;
-        border: 1px solid #f7faff1f;
-        color: #eff1f6bf !important;
+        background-color: #000a2008;
+        border: 1px solid #0000000d;
+        color: #262626bf !important;
         border-radius: 5px;
         font-family: Menlo, sans-serif !important;
         font-size: 0.75rem;

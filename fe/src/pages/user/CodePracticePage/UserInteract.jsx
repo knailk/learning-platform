@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, Spin, notification } from 'antd';
+import { Tabs, Spin, notification, Row, Col, Tooltip } from 'antd';
 import PythonEditor from 'components/PythonEditor';
 import Splitter, { SplitDirection } from '@devbookhq/splitter';
 import TestCase from './TabComponent/TestCase';
@@ -7,10 +7,10 @@ import Result from './TabComponent/Result';
 import styles from './style.module.scss';
 import './customStyle.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCode } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRotateRight, faCode } from '@fortawesome/free-solid-svg-icons';
 import { request_node } from 'utils/http';
 
-const UserInteract = ({ editorRef, problem, handleEditorDidMount, defaultEditorValue, tab, setTab }) => {
+const UserInteract = ({ editorRef, problem, handleEditorDidMount, editorValue, tab, setTab, setEditorValue }) => {
     const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
     const [load, setLoad] = useState(false);
     const itemsTab = [
@@ -73,16 +73,37 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, defaultEditorV
     };
     return (
         <>
-            <Splitter direction={SplitDirection.Vertical} minHeights={[200, 200]} initialSizes={[55, 45]}>
+            <Splitter
+                direction={SplitDirection.Vertical}
+                minHeights={[200, 200]}
+                initialSizes={[55, 45]}
+                gutterClassName={styles.gutterSplitVertical}
+            >
                 <div className={styles.pythonEditor} onKeyDown={handleKeyDown}>
                     <div className={styles.header}>
-                        <FontAwesomeIcon icon={faCode} style={{ marginRight: 5, color: '#4bf17b' }} />
-                        Code
+                        <Row>
+                            <Col span={12} className={styles.code}>
+                                <FontAwesomeIcon icon={faCode} style={{ marginRight: 5, color: '#4bf17b' }} />
+                                Code
+                            </Col>
+                            <Col span={12} className={styles.btnReload}>
+                                <Tooltip title="Khôi phục đoạn mã về mặc định" placement="left">
+                                    <FontAwesomeIcon
+                                        icon={faArrowRotateRight}
+                                        style={{ marginRight: 5, color: '#0000008c' }}
+                                        className={styles.icon}
+                                        onClick={() => setEditorValue(problem.available_code)}
+                                    />
+                                </Tooltip>
+                            </Col>
+                        </Row>
                     </div>
                     <PythonEditor
                         handleEditorDidMount={handleEditorDidMount}
                         height={'calc( 100% - 55px )'}
-                        defaultValue={defaultEditorValue}
+                        defaultValue={''}
+                        theme="light_vs.json"
+                        value={editorValue}
                     />
                     <div className={styles.footer}>
                         {!load && 'Nhấn Ctrl + S để lưu lại'}

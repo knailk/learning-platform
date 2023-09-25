@@ -10,6 +10,7 @@ import request, { request_node } from 'utils/http';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCloudArrowUp, faIndent, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { pythonIntellisense } from 'helper/utils';
 
 export const CodePracticeContext = createContext();
 
@@ -79,13 +80,13 @@ const CodePractice = () => {
     const [problem, setProblem] = useState({});
     const [problemId, setProblemId] = useState('5ae59f1e-d97c-4cdd-9846-62de19009bb6');
     const [allProblems, setAllProblems] = useState([]);
-    const [defaultValue, setDefaultValue] = useState(null);
+    const [editorValue, setEditorValue] = useState(null);
+    const [testCaseState, dispatch] = useReducer(reducer, initState);
+    const [result, setResult] = useState({ status: '', data: [] });
     const [load, setLoad] = useState('');
     const [type, setType] = useState('test');
     const [tab, setTab] = useState('1');
-    const [testCaseState, dispatch] = useReducer(reducer, initState);
     const [open, setOpen] = useState(false);
-    const [result, setResult] = useState({ status: '', data: [] });
     const handleRunBtn = (type) => {
         const code = editorRef.current.getValue();
         setType(type);
@@ -127,11 +128,13 @@ const CodePractice = () => {
     };
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
+        pythonIntellisense(monaco);
     };
     const handleChangeProblem = (id) => {
         setProblemId(id);
-        editorRef.current.setValue(defaultValue);
+        setResult({ status: '', data: [] });
     };
+
     useEffect(() => {
         const fetchProblem = async () => {
             try {
@@ -146,7 +149,7 @@ const CodePractice = () => {
                     },
                 });
                 let user_data = node_response.data.data;
-                setDefaultValue(user_data || data.available_code);
+                setEditorValue(user_data || data.available_code);
             } catch (error) {
                 notification.error({ message: 'Lỗi hệ thống!' });
             }
@@ -225,7 +228,8 @@ const CodePractice = () => {
                                     handleEditorDidMount={handleEditorDidMount}
                                     problem={problem}
                                     editorRef={editorRef}
-                                    defaultEditorValue={defaultValue}
+                                    editorValue={editorValue}
+                                    setEditorValue={setEditorValue}
                                     tab={tab}
                                     setTab={setTab}
                                 />
@@ -240,9 +244,6 @@ const CodePractice = () => {
                     onClose={() => setOpen(false)}
                     open={open}
                     closeIcon={false}
-                    style={{ backgroundColor: 'rgb(42 42 42', color: 'white' }}
-                    maskStyle={{ backgroundColor: 'rgba(38 38 38,0.2)' }}
-                    headerStyle={{ color: 'white' }}
                 >
                     <div className={clsx([styles.problemDrawer, 'problemDrawer'])}>
                         {allProblems.map((value) => {
@@ -257,7 +258,9 @@ const CodePractice = () => {
                                             <div>{value.title}</div>
                                         </Col>
                                         <Col span={5} className={styles.level}>
-                                            <div>{value.level}</div>
+                                            {value.level === 'easy' && <div style={{ color: '#15BD66' }}>Easy</div>}
+                                            {value.level === 'medium' && <div style={{ color: '#FFB800' }}>Medium</div>}
+                                            {value.level === 'hard' && <div style={{ color: '#FF334B' }}>Hard</div>}
                                         </Col>
                                     </Row>
                                 </div>
