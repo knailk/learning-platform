@@ -2,7 +2,7 @@ import React, { memo, useRef, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './style.module.scss';
 import { Col, Row, Carousel, Popconfirm, notification, Spin } from 'antd';
-import Lecture from './Lecture';
+import Lecture from 'components/Lecture/Lecture';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import Total from './Total';

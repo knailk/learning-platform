@@ -14,5 +14,18 @@
         width: 100%;
         margin-top: 30px;
         padding: 0;
+
+        pre {
+            width: 100%;
+            background-color: black;
+            border-left: 3px solid #994e4e24;
+            color: #fff9 !important;
+            font-family: Menlo, sans-serif !important;
+            font-size: 0.825rem;
+            line-height: 1.25rem;
+            overflow: visible;
+            padding-left: 1rem;
+            white-space: pre-wrap;
+        }
     }
 }
