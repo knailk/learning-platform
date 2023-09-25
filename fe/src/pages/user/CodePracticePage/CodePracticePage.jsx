@@ -80,12 +80,12 @@ const CodePractice = () => {
     const [problemId, setProblemId] = useState('5ae59f1e-d97c-4cdd-9846-62de19009bb6');
     const [allProblems, setAllProblems] = useState([]);
     const [defaultValue, setDefaultValue] = useState(null);
+    const [testCaseState, dispatch] = useReducer(reducer, initState);
+    const [result, setResult] = useState({ status: '', data: [] });
     const [load, setLoad] = useState('');
     const [type, setType] = useState('test');
     const [tab, setTab] = useState('1');
-    const [testCaseState, dispatch] = useReducer(reducer, initState);
     const [open, setOpen] = useState(false);
-    const [result, setResult] = useState({ status: '', data: [] });
     const handleRunBtn = (type) => {
         const code = editorRef.current.getValue();
         setType(type);
@@ -132,6 +132,7 @@ const CodePractice = () => {
         setProblemId(id);
         editorRef.current.setValue(defaultValue);
     };
+
     useEffect(() => {
         const fetchProblem = async () => {
             try {

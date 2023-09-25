@@ -83,6 +83,7 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, defaultEditorV
                         handleEditorDidMount={handleEditorDidMount}
                         height={'calc( 100% - 55px )'}
                         defaultValue={defaultEditorValue}
+                        theme="light_vs.json"
                     />
                     <div className={styles.footer}>
                         {!load && 'Nhấn Ctrl + S để lưu lại'}

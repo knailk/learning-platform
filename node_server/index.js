@@ -6,7 +6,6 @@ const defaultPath = './data/code';
 const PORT = 3001;
 const app = express();
 const utils = require('./utils/save');
-const axios = require('axios');
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -48,65 +47,6 @@ app.post('/python', (req, res) => {
     }
 });
 
-const test = [
-    {
-        id: 0,
-        input: [
-            { name: 'nums', type: 'array', value: '[2,6,1,8]' },
-            { name: 'target', type: 'number', value: '10' },
-        ],
-    },
-    {
-        id: 1,
-        input: [
-            { name: 'nums', type: 'array', value: '[25,6,123,52,89,1]' },
-            { name: 'target', type: 'number', value: '79' },
-        ],
-    },
-    {
-        id: 2,
-        input: [
-            { name: 'nums', type: 'array', value: '[2,7,89,2]' },
-            { name: 'target', type: 'number', value: '4' },
-        ],
-    },
-    {
-        id: 3,
-        input: [
-            { name: 'nums', type: 'array', value: '[10,22,1,6]' },
-            { name: 'target', type: 'number', value: '16' },
-        ],
-    },
-    {
-        id: 4,
-        input: [
-            { name: 'nums', type: 'array', value: '[2,5,7,9,2]' },
-            { name: 'target', type: 'number', value: '7' },
-        ],
-    },
-    {
-        id: 5,
-        input: [
-            { name: 'nums', type: 'array', value: '[2,7,9,1,2]' },
-            { name: 'target', type: 'number', value: '11' },
-        ],
-    },
-    {
-        id: 6,
-        input: [
-            { name: 'nums', type: 'array', value: '[7,5,3,1,8]' },
-            { name: 'target', type: 'number', value: '10' },
-        ],
-    },
-    {
-        id: 7,
-        input: [
-            { name: 'nums', type: 'array', value: '[1,2,6,4]' },
-            { name: 'target', type: 'number', value: '6' },
-        ],
-    },
-];
-
 app.post('/code-practice', (req, res) => {
     try {
         let main_content = `import sys\nimport json\nfrom ast import literal_eval\nfrom Solution import Solution\n\nprint(Solution().${req.body.function_name}(*json.loads(sys.argv[1])['input']))`;
@@ -124,7 +64,6 @@ app.post('/code-practice', (req, res) => {
                 test_case = req.body.test_case.map((value, idx) => {
                     return { id: idx, input: [...value.input] };
                 });
-                console.log(test_case);
             }
             let input_output = [];
             try {
