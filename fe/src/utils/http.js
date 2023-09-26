@@ -6,7 +6,8 @@ const request = axios.create({
     withCredentials: true,
 });
 export const request_node = axios.create({
-    baseURL: 'http://localhost:3001/',
+    // baseURL: 'http://localhost:3001/',
+    baseURL: 'https://editor.giongedu.store/',
     withCredentials: true,
 });
 
