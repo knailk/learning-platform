@@ -11,16 +11,8 @@ import CodeEditor from 'pages/user/LearningPage/CodeEditorComponent/CodeEditorIc
 const LecturePractice = () => {
     /// need to refactor this
     ///
-    const CHOOSE_ONE = 'single_choice';
     const FILL = 'text_input';
-    const CHOOSE_MULTI = 'multiple_choice';
-    const [activeOption, setActiveOption] = useState(-1);
-    const [selectionAnswer, setSelectionAnswer] = useState([]);
     const [dataUserAnswer, setDataUserAnswer] = useState('');
-    const [textInput, setTextInput] = useState('');
-    const [showCorrect, setShowCorrect] = useState(false);
-    const [showInCorrect, setShowInCorrect] = useState(false);
-    const [questionAnswers, setQuestionAnswers] = useState([]);
     const lessonRender = (question, answer) => {
         if (question.answer_type === FILL) {
             return (
@@ -78,82 +70,6 @@ const LecturePractice = () => {
                 </>
             );
         }
-        // switch (question.answer_type) {
-        //     case CHOOSE_ONE:
-        //         return (
-        //             <>
-        //                 <Row className={styles.question}>
-        //                     <h1>{question.question_content}</h1>
-        //                 </Row>
-        //                 <Row>
-        //                     <Col className={styles.answer}>
-        //                         {question.answer_content.map((item, idx) => (
-        //                             <Row
-        //                                 key={idx}
-        //                                 className={clsx([
-        //                                     styles.itemOption,
-        //                                     {
-        //                                         [styles.itemOptionActive]: answer.includes(item),
-        //                                     },
-        //                                 ])}
-        //                             >
-        //                                 {item}
-        //                             </Row>
-        //                         ))}
-        //                     </Col>
-        //                 </Row>
-        //             </>
-        //         );
-        //     case FILL:
-        //         return (
-        //             <>
-        //                 <Row className={styles.question}>
-        //                     <h1>{question.question_content}</h1>
-        //                 </Row>
-        //                 <Row>
-        //                     <Col className={styles.answer} style={{ marginLeft: 0, marginTop: 20 }}>
-        //                         <Row className={clsx(styles.itemFill)}>
-        //                             <Col>
-        //                                 <input
-        //                                     className={clsx(styles.inputText)}
-        //                                     type="text"
-        //                                     width={'auto'}
-        //                                     value={answer[0]}
-        //                                 />
-        //                             </Col>
-        //                         </Row>
-        //                     </Col>
-        //                 </Row>
-        //             </>
-        //         );
-        //     // case CHOOSE_MULTI:
-        //     //     return (
-        //     //         <>
-        //     //             <Row className={styles.question}>
-        //     //                 <h1>{question.question_content}</h1>
-        //     //             </Row>
-        //     //             <Row>
-        //     //                 <Col className={styles.answer}>
-        //     //                     {question.answer_content.map((item, idx) => (
-        //     //                         <Row
-        //     //                             key={idx}
-        //     //                             className={clsx([
-        //     //                                 styles.itemOption,
-        //     //                                 {
-        //     //                                     [styles.itemOptionActive]: selectionAnswer.includes(idx),
-        //     //                                 },
-        //     //                             ])}
-        //     //                         >
-        //     //                             {item}
-        //     //                         </Row>
-        //     //                     ))}
-        //     //                 </Col>
-        //     //             </Row>
-        //     //         </>
-        //     //     );
-        //     default:
-        //         break;
-        // }
     };
     const render = () => {
         if (lessonType === 'lecture') {
@@ -172,7 +88,6 @@ const LecturePractice = () => {
     const [lectureData, setLectureData] = useState({ lectures: [] });
     const [questionData, setQuestions] = useState([]);
     const [lessonType, setLessonType] = useState('');
-    const dataNullLesson = '00000000-0000-0000-0000-000000000000';
     let style = {
         padding: '30px 70px',
         marginBottom: '50px',

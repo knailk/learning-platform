@@ -66,21 +66,6 @@ const LearningMenu = () => {
     useEffect(() => {
         getData();
     }, []);
-
-    // if (finishState) {
-    //     finishState.forEach(function (item, idx) {
-    //         let existing = data_menu.filter(function (v, i) {
-    //             return v.chapter.chapter_id === item.chapter.chapter_id;
-    //         });
-    //         if (existing.length) {
-    //             let existingIndex = data_menu.indexOf(existing[0]);
-    //             data_menu[existingIndex].lesson = data_menu[existingIndex].lesson.concat(item.lesson);
-    //         } else {
-    //             if (typeof item.lesson === 'object') item.lesson = [item.lesson];
-    //             data_menu.push(item);
-    //         }
-    //     });
-    // }
     const handleItemSelected = ({ item, key, keyPath, selectedKeys, domEvent }) => {
         console.log(key);
     };
