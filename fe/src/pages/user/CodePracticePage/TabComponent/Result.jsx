@@ -5,7 +5,7 @@ import { CodePracticeContext } from '../CodePracticePage';
 import FailedResult from './FailedResult';
 import { useContext, useEffect, useState } from 'react';
 
-const Result = () => {
+const Result = ({ setIsCorrect }) => {
     const CodePractice = useContext(CodePracticeContext);
     const [isWrong, setIsWrong] = useState(false);
     const [result, setResult] = useState([]);
@@ -23,6 +23,7 @@ const Result = () => {
             expected: value.value.expected,
         });
     };
+
     useEffect(() => {
         try {
             let result_temp = [];
@@ -45,6 +46,9 @@ const Result = () => {
                     return { ...value, value: { ...value.value, expected: solution[idx].value.output } };
                 });
                 setIsWrong(flag);
+                if (CodePractice.type === 'submit') {
+                    setIsCorrect(!flag);
+                }
             } else {
                 result_temp = [];
             }
@@ -114,30 +118,41 @@ const Result = () => {
         );
     } else if (CodePractice.result.status === 'success' && CodePractice.type === 'submit') {
         return (
-            <Col>
-                {isWrong && <Row className={styles.wrongAnswer}>Câu trả lời sai</Row>}
-                <Row className={styles.inputResultWrapper}>
-                    <div className={styles.inputTitle}>Input</div>
-                    {dataResult.input.map((input, idx) => {
-                        return (
-                            <div className={styles.inputWrapper} key={idx}>
-                                <div style={{ display: 'block' }} className={styles.inputName}>
-                                    {input.name}
-                                </div>
-                                <div>{input.value}</div>
-                            </div>
-                        );
-                    })}
-                </Row>
-                <Row className={styles.outputResultWrapper}>
-                    <div className={styles.outputTitle}>Output</div>
-                    <div className={styles.outputWrapper}>{dataResult.output}</div>
-                </Row>
-                <Row className={styles.expectedResultWrapper}>
-                    <div className={styles.expectedTitle}>Expected</div>
-                    <div className={styles.expectedWrapper}>{dataResult.expected}</div>
-                </Row>
-            </Col>
+            <>
+                {isWrong && (
+                    <Col>
+                        <Row className={styles.wrongAnswer}>Câu trả lời bị sai cho trường hợp:</Row>
+                        <Row className={styles.inputResultWrapper}>
+                            <div className={styles.inputTitle}>Input</div>
+                            {dataResult.input.map((input, idx) => {
+                                return (
+                                    <div className={styles.inputWrapper} key={idx}>
+                                        <div style={{ display: 'block' }} className={styles.inputName}>
+                                            {input.name}
+                                        </div>
+                                        <div>{input.value}</div>
+                                    </div>
+                                );
+                            })}
+                        </Row>
+                        <Row className={styles.outputResultWrapper}>
+                            <div className={styles.outputTitle}>Output</div>
+                            <div className={styles.outputWrapper}>{dataResult.output}</div>
+                        </Row>
+                        <Row className={styles.expectedResultWrapper}>
+                            <div className={styles.expectedTitle}>Expected</div>
+                            <div className={styles.expectedWrapper}>{dataResult.expected}</div>
+                        </Row>
+                    </Col>
+                )}
+                {!isWrong && (
+                    <Col>
+                        <Row align={'middle'} className={styles.accepted}>
+                            Câu trả lời chính xác, bạn có thể xem đoạn mã tham khảo ở phía trên
+                        </Row>
+                    </Col>
+                )}
+            </>
         );
     } else {
         return (

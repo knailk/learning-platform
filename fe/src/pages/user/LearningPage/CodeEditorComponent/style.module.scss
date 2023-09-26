@@ -102,7 +102,6 @@
     }
 }
 
-
 .inputOutputWrapper {
     width: 100%;
     .outputTitle {
@@ -112,12 +111,12 @@
     .output {
         margin-top: 8px;
         textarea {
-            background-color: rgb(30, 41, 59);;
+            background-color: rgb(30, 41, 59);
             color: rgb(34, 197, 94);
             padding: 10px;
             resize: none;
             width: 97%;
-            height: 190px;
+            height: 120px;
             font-family: Consolas, 'Courier New', monospace !important;
             font-weight: normal;
             font-size: 14px;
@@ -134,21 +133,6 @@
             -moz-font-feature-settings: 'liga' 0, 'calt' 0;
         }
     }
-    // .input {
-    //     margin-top: 15px;
-    //     textarea {
-    //         font-family: Consolas, 'Courier New', monospace !important;
-    //         padding: 10px;
-    //         resize: none;
-    //         width: 95%;
-    //         height: 180px;
-    //         border-radius: 10px;
-    //         -webkit-border-radius: 10px;
-    //         -moz-border-radius: 10px;
-    //         -ms-border-radius: 10px;
-    //         -o-border-radius: 10px;
-    //     }
-    // }
     .executeBtnWrapper {
         position: absolute;
         right: 50px;
@@ -167,7 +151,6 @@
             user-select: none;
             text-align: center;
             text-decoration: none;
-            cursor: pointer;
             transition-duration: 0.4s;
             -webkit-transition-duration: 0.4s; /* Safari */
             &:hover {
