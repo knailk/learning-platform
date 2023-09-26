@@ -3,9 +3,6 @@ FROM node:16-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# Set the maximum heap memory size for Node.js
-ENV NODE_OPTIONS="--max-old-space-size=900"
-
 # Copy package.json and package-lock.json to the container
 COPY package.json ./
 
@@ -16,10 +13,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Expose the port of your application to bind with the host port
-EXPOSE 3000
-
-# Build the React app for production
-RUN npm run build
+EXPOSE 3001
 
 # Define the command to start your React app
 CMD ["npm", "start"]

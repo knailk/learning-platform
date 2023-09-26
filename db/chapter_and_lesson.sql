@@ -305,10 +305,11 @@ INSERT INTO LESSONS (
         CREATED_AT,
         UPDATED_AT
     )
-VALUES (
+VALUES 
+    (
         UUID_GENERATE_V4(),
         'aaf9ac8d-da9a-4f26-8534-881d60cfe055',
-        'Lệnh IF',
+        'Lệnh IF và khối lệnh ^^',
         'lecture',
         0,
         10,
@@ -318,7 +319,7 @@ VALUES (
     (
         UUID_GENERATE_V4(),
         'aaf9ac8d-da9a-4f26-8534-881d60cfe055',
-        'Khối lệnh là một khối các lệnh ^^',
+        'Điều kiện là để so sánh hai thứ với nhau',
         'lecture',
         1,
         10,
@@ -328,7 +329,7 @@ VALUES (
     (
         UUID_GENERATE_V4(),
         'aaf9ac8d-da9a-4f26-8534-881d60cfe055',
-        'Điều kiện là để so sánh hai thứ với nhau',
+        'Cùng học về lệnh IF-THEN-ELSE',
         'lecture',
         2,
         10,
@@ -338,7 +339,7 @@ VALUES (
     (
         UUID_GENERATE_V4(),
         'aaf9ac8d-da9a-4f26-8534-881d60cfe055',
-        'Cùng học về lệnh IF-THEN-ELSE',
+        'Vậy còn IF-ELIF?',
         'lecture',
         3,
         10,
@@ -348,7 +349,7 @@ VALUES (
     (
         UUID_GENERATE_V4(),
         'aaf9ac8d-da9a-4f26-8534-881d60cfe055',
-        'Vậy còn IF-ELIF?',
+        'Cùng kết hợp nhiều điều kiện nào!',
         'lecture',
         4,
         10,
@@ -358,7 +359,7 @@ VALUES (
     (
         UUID_GENERATE_V4(),
         'aaf9ac8d-da9a-4f26-8534-881d60cfe055',
-        'Cùng kết hợp nhiều điều kiện nào!',
+        'Biến không có giá trị-NONE',
         'lecture',
         5,
         10,
@@ -368,19 +369,9 @@ VALUES (
     (
         UUID_GENERATE_V4(),
         'aaf9ac8d-da9a-4f26-8534-881d60cfe055',
-        'Biến không có giá trị-NONE',
-        'lecture',
-        6,
-        10,
-        NOW(),
-        NOW()
-    ),
-    (
-        UUID_GENERATE_V4(),
-        'aaf9ac8d-da9a-4f26-8534-881d60cfe055',
         'Khác biệt giữa chuỗi và số!',
         'lecture',
-        7,
+        6,
         10,
         NOW(),
         NOW()
