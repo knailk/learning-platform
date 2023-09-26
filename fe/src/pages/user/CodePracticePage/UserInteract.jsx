@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, Spin, notification, Row, Col, Tooltip } from 'antd';
 import PythonEditor from 'components/PythonEditor';
 import Splitter, { SplitDirection } from '@devbookhq/splitter';
@@ -13,6 +13,8 @@ import { request_node } from 'utils/http';
 const UserInteract = ({ editorRef, problem, handleEditorDidMount, editorValue, tab, setTab, setEditorValue }) => {
     const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
     const [load, setLoad] = useState(false);
+    const [userCode, setUserCode] = useState('');
+    const [isCorrect, setIsCorrect] = useState(false);
     const itemsTab = [
         {
             key: '1',
@@ -28,7 +30,7 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, editorValue, t
             label: 'Kết quả',
             children: (
                 <div className={styles.contentConsole}>
-                    <Result />
+                    <Result setIsCorrect={setIsCorrect} />
                 </div>
             ),
         },
@@ -71,6 +73,19 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, editorValue, t
             }
         }
     };
+    const handleSolutionBtn = () => {
+        setUserCode(editorRef.current.getValue());
+        setEditorValue(problem.solution_code);
+    };
+    const handleCodeBtn = () => {
+        if (isCorrect === true) {
+            setEditorValue(userCode);
+        }
+    };
+    useEffect(() => {
+        console.log('setted');
+        setIsCorrect(false);
+    }, [problem.id]);
     return (
         <>
             <Splitter
@@ -82,11 +97,29 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, editorValue, t
                 <div className={styles.pythonEditor} onKeyDown={handleKeyDown}>
                     <div className={styles.header}>
                         <Row>
-                            <Col span={12} className={styles.code}>
+                            <Col span={10} className={styles.code}>
                                 <FontAwesomeIcon icon={faCode} style={{ marginRight: 5, color: '#4bf17b' }} />
-                                Code
+                                <div onClick={handleCodeBtn}>Code</div>
                             </Col>
-                            <Col span={12} className={styles.btnReload}>
+                            <Col span={12} className={styles.code} style={{ justifyContent: 'end' }}>
+                                {!isCorrect && (
+                                    <Tooltip
+                                        title="Sau khi hoàn thành bài tập bạn có thể xem tham khảo ở đây"
+                                        placement="left"
+                                    >
+                                        <div style={{ marginLeft: 2, color: 'rgba(26, 26, 26, 0.5)' }}>Tham khảo</div>
+                                    </Tooltip>
+                                )}
+                                {isCorrect && (
+                                    <div
+                                        style={{ marginLeft: 2, color: 'rgba(26, 26, 26)' }}
+                                        onClick={handleSolutionBtn}
+                                    >
+                                        Tham khảo
+                                    </div>
+                                )}
+                            </Col>
+                            <Col span={2} className={styles.btnReload}>
                                 <Tooltip title="Khôi phục đoạn mã về mặc định" placement="left">
                                     <FontAwesomeIcon
                                         icon={faArrowRotateRight}

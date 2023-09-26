@@ -127,10 +127,26 @@ body {
                     font-weight: 500;
                     padding: 0px 10px;
                     font-size: 13px;
+                    cursor: pointer;
+                    div {
+                        padding: 2px 5px;
+                        &:hover {
+                            background-color: rgba(0, 0, 0, 0.1);
+                        }
+                        border-radius: 2px;
+                        -webkit-border-radius: 2px;
+                        -moz-border-radius: 2px;
+                        -ms-border-radius: 2px;
+                        -o-border-radius: 2px;
+                        transition: all linear 0.2s;
+                        -webkit-transition: all linear 0.2s;
+                        -moz-transition: all linear 0.2s;
+                        -ms-transition: all linear 0.2s;
+                        -o-transition: all linear 0.2s;
+                    }
                 }
                 .btnReload {
                     justify-content: end;
-                    cursor: pointer;
                     .icon {
                         padding: 5px;
                         &:hover {
