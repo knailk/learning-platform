@@ -26,7 +26,7 @@ const LearningPath = ({ ...props }) => {
             <Row className={style.headerWrapper} justify={'space-between'}>
                 <Col className={style.lessonNumber} span={18} sm={18}>
                     {/* <h1>Cửa {props.data.level + 1}</h1> */}
-                    <h1>Cửa {props.data.level}</h1>
+                    <h1>Chương {props.data.level}</h1>
                     <span>{props.data.name}</span>
                 </Col>
                 <Col span={6} sm={6}>
