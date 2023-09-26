@@ -16,7 +16,6 @@ const Statistical = (props) => {
             } catch (error) {
                 notification.error({ message: 'Lỗi hệ thống!', description: error.message });
             }
-        
         };
 
         getUserInfo();
@@ -32,10 +31,7 @@ const Statistical = (props) => {
                         <div className={style.detail}>
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
-                                    <img
-                                        alt="learning"
-                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/goals/39f13d2de304cad2ac2f88b31a7e2ff4.svg"
-                                    />
+                                    <img style={{ height: 40 }} alt="learning" src="/images/learning.png" />
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
@@ -49,10 +45,7 @@ const Statistical = (props) => {
                         <div className={style.detail}>
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
-                                    <img
-                                        alt=""
-                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/icons/216ddc11afcbb98f44e53d565ccf479e.svg"
-                                    />
+                                    <img style={{ height: 40 }} alt="" src="/images/practice.png" />
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
@@ -66,10 +59,7 @@ const Statistical = (props) => {
                         <div className={style.detail}>
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
-                                    <img
-                                        alt="score"
-                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/profile/01ce3a817dd01842581c3d18debcbc46.svg"
-                                    />
+                                    <img style={{ height: 40 }} alt="score" src="/images/score.png" />
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>
@@ -84,10 +74,7 @@ const Statistical = (props) => {
                         <div className={style.detail}>
                             <Row>
                                 <Col span={4} className={style.imgDetail}>
-                                    <img
-                                        alt="rank"
-                                        src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/192181672ada150becd83a74a4266ae9.svg"
-                                    />
+                                    <img style={{ height: 40 }} alt="rank" src="/images/ranking.png" />
                                 </Col>
                                 <Col span={18}>
                                     <Row style={{ paddingTop: '5px' }}>

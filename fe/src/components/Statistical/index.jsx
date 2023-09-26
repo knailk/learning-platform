@@ -6,7 +6,7 @@ const StatisticalCpn = ({ title, total, img, height = 70 }) => {
         <div className={styles.detail} style={{ height: height }}>
             <Row>
                 <Col span={4} className={styles.imgDetail}>
-                    <img alt="img" src={img} />
+                    <img alt="img" src={img} style={{ height: height }} />
                 </Col>
                 <Col span={18}>
                     <Row style={{ paddingTop: '5px' }}>
