@@ -4,9 +4,11 @@ const FailedResult = ({ detail }) => {
     return (
         <Col className={styles.failedResultWrapper}>
             <Row className={styles.errorTitle}>{detail.title}</Row>
-            <Row className={styles.errorDetail}>
-                <pre>{detail.message}</pre>
-            </Row>
+            {detail.message && (
+                <Row className={styles.errorDetail}>
+                    <pre>{detail.message}</pre>
+                </Row>
+            )}
         </Col>
     );
 };

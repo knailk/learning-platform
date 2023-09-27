@@ -43,12 +43,11 @@ const convertTestCase = (test_cases) => {
 };
 
 const customErrorReturn = (traceback) => {
-    let regex = / {2}File ".*", line/g;
+    let regex = /File ".*", line/g;
+    traceback = traceback.replaceAll(regex, 'At Line');
     try {
-        let data = traceback.split('\r\n').slice(3);
-        data[0] = data[0].replace(regex, 'Error occured at Line');
-        // console.log(data);
-        return data.join('\r\n');
+        let data = traceback.split('\r\n');
+        return data.join('\r\n').trim();
     } catch (error) {
         return 'Đã xảy ra lỗi trong quá trình thực thi';
     }

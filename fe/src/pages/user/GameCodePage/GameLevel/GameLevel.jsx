@@ -20,6 +20,7 @@ const GameLevel = () => {
         console.log(e);
         setOpen(false);
     };
+
     const { unityProvider, sendMessage, addEventListener, removeEventListener } = useUnityContext({
         loaderUrl: '/Unity/Build.loader.js',
         dataUrl: '/Unity/Build.data',
@@ -35,13 +36,15 @@ const GameLevel = () => {
             setIsWin(false);
         } else {
             try {
-                // request.post('games/' + gameLevel);
+                request.post('games/' + gameLevel);
             } catch (error) {
                 notification.error({ message: 'Cập nhật thất bại' });
             }
             setIsWin(true);
         }
-        showModal();
+        setTimeout(() => {
+            showModal();
+        }, 500);
         console.log(`Message: ${message}, Value: ${value} => From Unity`);
     }, []);
 
@@ -51,7 +54,6 @@ const GameLevel = () => {
             removeEventListener('UnityCallReact', UnityCallReact);
         };
     }, [addEventListener, removeEventListener, UnityCallReact]);
-
     return (
         <>
             <Row className={styles.container}>
