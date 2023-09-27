@@ -124,12 +124,18 @@
         color: #1a1a1a;
         background-color: #f2f3f4;
         display: flex;
-        align-items: center;
         padding-left: 10px;
         border-color: transparent;
         margin-bottom: 10px;
         div {
             width: 100%;
+        }
+        input {
+            width: calc(100% - 10px);
+            padding: 0px;
+            &:focus {
+                outline: none;
+            }
         }
         font-size: 15px;
         letter-spacing: 1px;
@@ -161,8 +167,12 @@
         margin-top: 5px;
         font-size: 12px;
     }
-    div {
+    input {
         width: 100%;
+        padding: 0px;
+        &:focus {
+            outline: none;
+        }
     }
     .outputWrapper,
     .expectedWrapper {
