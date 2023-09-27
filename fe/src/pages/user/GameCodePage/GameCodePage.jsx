@@ -48,9 +48,8 @@ const GameCodePage = () => {
                         <div className={styles.linearRight}></div>
                         <div className={styles.linearTop}></div>
                         <div className={styles.linearBottom}></div>
-
-                        {MappingLocation.map((item) => {
-                            return <ItemMap data={item} current={profile.current_game_level} />;
+                        {MappingLocation.map((item, idx) => {
+                            return <ItemMap key={idx} data={item} current={profile.current_game_level} />;
                         })}
                     </div>
                 </div>

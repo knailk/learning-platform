@@ -25,14 +25,20 @@ const CodeEditorIcon = () => {
                 .post('/python', { code, user_id: userId })
                 .then((data) => {
                     setTimeout(() => {
-                        setOutput(data.data.data);
+                        setOutput({ status: 'success', value: data.data.data });
+                        console.log(data.data);
                         setLoad(false);
                     }, 500);
                 })
                 .catch((e) => {
                     setTimeout(() => {
-                        notification.error({ message: 'Lỗi hệ thống!' });
+                        console.log(e);
                         setLoad(false);
+                        try {
+                            setOutput({ status: 'error', value: e.response.data.error });
+                        } catch (error) {
+                            notification.error({ message: 'Lỗi hệ thống!' });
+                        }
                     }, 500);
                 });
         } catch (error) {
@@ -90,17 +96,15 @@ const CodeEditorIcon = () => {
                                 </Col>
                                 <Col span={19} className={clsx([styles.btnPlay, 'btnPlay'])}>
                                     <div onClick={getEditorValue}>
-                                        <Tooltip title="Khôi phục đoạn mã về mặc định" placement="left">
-                                            {load && <Spin />}
-                                            {!load && (
-                                                <FontAwesomeIcon
-                                                    icon={faPlay}
-                                                    style={{ color: '#ffffffe6' }}
-                                                    className={styles.icon}
-                                                />
-                                            )}
-                                            <p style={{ display: 'inline-block', marginLeft: 5 }}>Chạy đoạn mã</p>
-                                        </Tooltip>
+                                        {load && <Spin />}
+                                        {!load && (
+                                            <FontAwesomeIcon
+                                                icon={faPlay}
+                                                style={{ color: '#ffffffe6' }}
+                                                className={styles.icon}
+                                            />
+                                        )}
+                                        <p style={{ display: 'inline-block', marginLeft: 5 }}>Chạy đoạn mã</p>
                                     </div>
                                 </Col>
                                 <Col span={2} className={styles.btnExpand}>

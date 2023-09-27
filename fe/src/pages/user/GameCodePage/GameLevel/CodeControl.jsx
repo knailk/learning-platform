@@ -5,15 +5,51 @@ import PythonEditor from 'components/PythonEditor';
 import PossibleMove from './PossibleMove';
 import { request_node } from 'utils/http';
 
-const possibleMove = ['hero.moveLeft(steps)', 'hero.moveRight(steps)', 'hero.moveUp(steps)', 'hero.moveDown(steps)'];
+const possibleMove = [
+    {
+        name: 'hero.moveLeft(steps)',
+        description: 'Di chuyển Thánh Gióng sang trái',
+        example: 'hero.moveLeft(2)',
+        param: 'move',
+    },
+    {
+        name: 'hero.moveRight(steps)',
+        description: 'Di chuyển Thánh Gióng sang phải',
+        example: 'hero.moveRight(2)',
+        param: 'move',
+    },
+    {
+        name: 'hero.moveUp(steps)',
+        description: 'Di chuyển Thánh Gióng lên trên',
+        example: 'hero.moveUp(2)',
+        param: 'move',
+    },
+    {
+        name: 'hero.moveDown(steps)',
+        description: 'Di chuyển Thánh Gióng xuống dưới',
+        example: 'hero.moveDown(2)',
+        param: 'move',
+    },
+    {
+        name: 'hero.attack()',
+        description: 'Điều khiển Thánh Gióng tấn công mục tiêu',
+        example: 'hero.attack()',
+        param: '',
+    },
+    {
+        name: 'meet(hero, bandit)',
+        description: 'Kiểm tra Thánh Gióng có gặp tên cướp hay không',
+        example: 'meet(hero, bandit)',
+        param: 'meet',
+    },
+];
 
 function CodeControl({ sendMessage, level }) {
-    const [play, setPlay] = useState(false);
-    const [horseMoves, setHorseMoves] = useState('');
+    const provider = useRef(null);
     const editorRef = useRef(null);
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
-        monaco.languages.registerCompletionItemProvider('python', {
+        const providerMonaco = monaco.languages.registerCompletionItemProvider('python', {
             provideCompletionItems: () => {
                 let suggestions = [
                     {
@@ -41,6 +77,12 @@ function CodeControl({ sendMessage, level }) {
                         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                     },
                     {
+                        label: 'hero.attack()',
+                        kind: monaco.languages.CompletionItemKind.Keyword,
+                        insertText: 'hero.attack()',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                    },
+                    {
                         label: 'meet(hero, bandit)',
                         kind: monaco.languages.CompletionItemKind.Keyword,
                         insertText: 'meet(${1:hero}, ${2:bandit})',
@@ -62,13 +104,13 @@ function CodeControl({ sendMessage, level }) {
                 return { suggestions: suggestions };
             },
         });
+        provider.current = providerMonaco;
     };
     const CreateStates = async () => {
         try {
             let response = await request_node.post('/game/run', {
                 code: editorRef.current.getValue(),
             });
-            console.log(response.data.data);
             sendMessage('SonRice', 'CreateStates', response.data.data);
         } catch (error) {
             console.log(error);
@@ -82,7 +124,11 @@ function CodeControl({ sendMessage, level }) {
     useEffect(() => {
         sendMessage('GameManager', 'LoadLevel', parseInt(level));
     });
-
+    useEffect(() => {
+        return () => {
+            provider.current?.dispose();
+        };
+    }, []);
     return (
         <>
             <div className={styles.codeControlWrapper}>

@@ -60,7 +60,6 @@ const PythonEditor = ({
                 console.log(err);
             });
     };
-
     return (
         <>
             <div className={styles.codeEditor} style={{ height: height, width: width }}>

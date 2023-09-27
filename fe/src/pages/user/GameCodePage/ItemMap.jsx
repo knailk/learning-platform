@@ -15,9 +15,9 @@ const ItemMap = ({ data, current }) => {
         <div className={styles.mapItemDescription}>
             <div className={styles.titleDescription}>{data.title}</div>
             <div className={styles.description}>{data.description}</div>
-            <Link style={{ pointerEvents: current === data.level ? '' : 'none' }} to={`/play/level/${data.level}`}>
+            <a style={{ pointerEvents: current === data.level ? '' : 'none' }} href={`/play/level/${data.level}`}>
                 <div className={styles.buttonPlay}>Chơi</div>
-            </Link>
+            </a>
         </div>
     );
     return (

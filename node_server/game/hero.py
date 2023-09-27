@@ -10,3 +10,5 @@ class Hero:
     
     def moveDown(self, steps=1):
         print( ''.join(['D' for _i in range(steps)]))
+    def attack(self):
+        print('A')
