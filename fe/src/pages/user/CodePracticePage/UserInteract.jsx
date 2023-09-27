@@ -43,7 +43,7 @@ const UserInteract = ({ editorRef, problem, handleEditorDidMount, editorValue, t
 
     //handle save code
     const handleKeyDown = (e) => {
-        if (e.ctrlKey && e.key === 's') {
+        if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
             // Prevent the Save dialog to open
             e.preventDefault();
             //save code

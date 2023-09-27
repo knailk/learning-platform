@@ -4,40 +4,20 @@ import axios from 'axios';
 import { notification } from 'antd';
 import { request_node } from 'utils/http';
 
-const InputOutputDrawer = ({ ...props }) => {
-    const [output, setOutput] = useState('');
-    const userId = localStorage.getItem('user_info') ? JSON.parse(localStorage.getItem('user_info')).id : 'temp';
-    const getEditorValue = () => {
-        const code = props.editorRef.current.getValue();
-        try {
-            request_node
-                .post('/python', { code, user_id: userId })
-                .then((data) => setOutput(data.data.data))
-                .catch((e) => {
-                    notification.error({ message: 'Lỗi hệ thống!' });
-                });
-        } catch (error) {
-            notification.error({ message: 'Lỗi hệ thống!' });
-        }
-    };
+const InputOutputDrawer = ({ output }) => {
     return (
         <>
-            <div className={styles.inputOutputWrapper}>
-                <div className={styles.outputTitle}>Output</div>
-                <div className={styles.output}>
-                    <textarea value={output} disabled></textarea>
+            <div className={styles.outputWrapper}>
+                <div className={styles.outputHeader}>Output</div>
+                <div className={styles.outputContent}>
+                    <pre>{output}</pre>
+                    {/* <textarea value={output} disabled></textarea> */}
                 </div>
-                {/* <div className={styles.input}>
-                    <textarea placeholder="Input here"></textarea>
-                </div> */}
-                {/* <div onClick={getEditorValue} className={styles.executeBtn}>
-                    Compile and Execute
-                </div> */}
-                <div className={styles.executeBtnWrapper}>
+                {/* <div className={styles.executeBtnWrapper}>
                     <div type="primary" onClick={getEditorValue} className={styles.executeBtn}>
                         Run
                     </div>
-                </div>
+                </div> */}
             </div>
         </>
     );
