@@ -9,6 +9,8 @@ COPY package.json ./
 # Install app dependencies
 RUN npm install --legacy-peer-deps
 
+RUN apt-get update || : && apt-get install python -y
+
 # Copy the app source code to the container
 COPY . .
 
