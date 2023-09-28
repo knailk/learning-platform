@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCloudArrowUp, faIndent, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { pythonIntellisense } from 'helper/utils';
+import { Helmet } from 'react-helmet';
 
 export const CodePracticeContext = createContext();
 
@@ -181,94 +182,109 @@ const CodePractice = () => {
         return <Spin />;
     } else {
         return (
-            <CodePracticeContext.Provider value={valueProvider}>
-                <Col className={clsx([styles.codePracticeWrapper, 'codePracticeWrapperCustom'])}>
-                    <Row className={styles.problemHeader}>
-                        <Col span={8} className={styles.btnBackWrapper}>
-                            <Link to="/">
-                                <span className={styles.btnBack}>
-                                    <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: 4 }} />
-                                    Quay về
-                                </span>
-                            </Link>
-                            <span className={styles.btnBack} style={{ marginLeft: 4 }} onClick={() => setOpen(true)}>
-                                <FontAwesomeIcon icon={faIndent} style={{ marginRight: 4 }} />
-                                Xem thêm
-                            </span>
-                        </Col>
-                        <Col span={8} className={styles.btnExecuteWrapper}>
-                            <span className={clsx([styles.btn, styles.btnRun])} onClick={() => handleRunBtn('test')}>
-                                <FontAwesomeIcon icon={faPlay} style={{ marginRight: 4 }} />
-                                {load !== 'test' && 'Chạy thử'}
-                                {load === 'test' && <Spin />}
-                            </span>
-                            <span
-                                className={clsx([styles.btn, styles.btnSubmit])}
-                                onClick={() => handleRunBtn('submit')}
-                            >
-                                <FontAwesomeIcon icon={faCloudArrowUp} style={{ marginRight: 4 }} />
-                                {load !== 'submit' && 'Nộp bài'}
-                                {load === 'submit' && <Spin />}
-                            </span>
-                        </Col>
-                        <Col span={8}></Col>
-                    </Row>
-                    <Row style={{ width: '100%' }}>
-                        <Splitter
-                            direction={SplitDirection.Horizontal}
-                            initialSizes={[50, 50]}
-                            minWidths={[400, 400]}
-                            gutterClassName={styles.gutterSplit}
-                        >
-                            <Col className={styles.problemDetail}>
-                                <ProblemDescription problem={problem} />
-                            </Col>
-                            <Col className={styles.userInteract}>
-                                <UserInteract
-                                    handleEditorDidMount={handleEditorDidMount}
-                                    problem={problem}
-                                    editorRef={editorRef}
-                                    editorValue={editorValue}
-                                    setEditorValue={setEditorValue}
-                                    tab={tab}
-                                    setTab={setTab}
-                                />
-                            </Col>
-                        </Splitter>
-                    </Row>
-                </Col>
-                <Drawer
-                    title="Một số bài toán khác"
-                    placement={'left'}
-                    width={500}
-                    onClose={() => setOpen(false)}
-                    open={open}
-                    closeIcon={false}
-                >
-                    <div className={clsx([styles.problemDrawer, 'problemDrawer'])}>
-                        {allProblems.map((value) => {
-                            return (
-                                <div
-                                    key={value.id}
-                                    className={styles.problemItem}
-                                    onClick={() => handleChangeProblem(value.id)}
+            <>
+                <Helmet>
+                    <title>Luyện Tư Duy</title>
+                </Helmet>
+
+                <CodePracticeContext.Provider value={valueProvider}>
+                    <Col className={clsx([styles.codePracticeWrapper, 'codePracticeWrapperCustom'])}>
+                        <Row className={styles.problemHeader}>
+                            <Col span={8} className={styles.btnBackWrapper}>
+                                <Link to="/">
+                                    <span className={styles.btnBack}>
+                                        <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: 4 }} />
+                                        Quay về
+                                    </span>
+                                </Link>
+                                <span
+                                    className={styles.btnBack}
+                                    style={{ marginLeft: 4 }}
+                                    onClick={() => setOpen(true)}
                                 >
-                                    <Row>
-                                        <Col span={18} className={styles.title}>
-                                            <div>{value.title}</div>
-                                        </Col>
-                                        <Col span={5} className={styles.level}>
-                                            {value.level === 'easy' && <div style={{ color: '#15BD66' }}>Easy</div>}
-                                            {value.level === 'medium' && <div style={{ color: '#FFB800' }}>Medium</div>}
-                                            {value.level === 'hard' && <div style={{ color: '#FF334B' }}>Hard</div>}
-                                        </Col>
-                                    </Row>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </Drawer>
-            </CodePracticeContext.Provider>
+                                    <FontAwesomeIcon icon={faIndent} style={{ marginRight: 4 }} />
+                                    Xem thêm
+                                </span>
+                            </Col>
+                            <Col span={8} className={styles.btnExecuteWrapper}>
+                                <span
+                                    className={clsx([styles.btn, styles.btnRun])}
+                                    onClick={() => handleRunBtn('test')}
+                                >
+                                    <FontAwesomeIcon icon={faPlay} style={{ marginRight: 4 }} />
+                                    {load !== 'test' && 'Chạy thử'}
+                                    {load === 'test' && <Spin />}
+                                </span>
+                                <span
+                                    className={clsx([styles.btn, styles.btnSubmit])}
+                                    onClick={() => handleRunBtn('submit')}
+                                >
+                                    <FontAwesomeIcon icon={faCloudArrowUp} style={{ marginRight: 4 }} />
+                                    {load !== 'submit' && 'Nộp bài'}
+                                    {load === 'submit' && <Spin />}
+                                </span>
+                            </Col>
+                            <Col span={8}></Col>
+                        </Row>
+                        <Row style={{ width: '100%' }}>
+                            <Splitter
+                                direction={SplitDirection.Horizontal}
+                                initialSizes={[50, 50]}
+                                minWidths={[400, 400]}
+                                gutterClassName={styles.gutterSplit}
+                            >
+                                <Col className={styles.problemDetail}>
+                                    <ProblemDescription problem={problem} />
+                                </Col>
+                                <Col className={styles.userInteract}>
+                                    <UserInteract
+                                        handleEditorDidMount={handleEditorDidMount}
+                                        problem={problem}
+                                        editorRef={editorRef}
+                                        editorValue={editorValue}
+                                        setEditorValue={setEditorValue}
+                                        tab={tab}
+                                        setTab={setTab}
+                                    />
+                                </Col>
+                            </Splitter>
+                        </Row>
+                    </Col>
+                    <Drawer
+                        title="Một số bài toán khác"
+                        placement={'left'}
+                        width={500}
+                        onClose={() => setOpen(false)}
+                        open={open}
+                        closeIcon={false}
+                    >
+                        <div className={clsx([styles.problemDrawer, 'problemDrawer'])}>
+                            {allProblems.map((value) => {
+                                return (
+                                    <div
+                                        key={value.id}
+                                        className={styles.problemItem}
+                                        onClick={() => handleChangeProblem(value.id)}
+                                    >
+                                        <Row>
+                                            <Col span={18} className={styles.title}>
+                                                <div>{value.title}</div>
+                                            </Col>
+                                            <Col span={5} className={styles.level}>
+                                                {value.level === 'easy' && <div style={{ color: '#15BD66' }}>Easy</div>}
+                                                {value.level === 'medium' && (
+                                                    <div style={{ color: '#FFB800' }}>Medium</div>
+                                                )}
+                                                {value.level === 'hard' && <div style={{ color: '#FF334B' }}>Hard</div>}
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </Drawer>
+                </CodePracticeContext.Provider>
+            </>
         );
     }
 };

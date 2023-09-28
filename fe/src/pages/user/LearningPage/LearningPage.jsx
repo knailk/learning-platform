@@ -6,6 +6,7 @@ import LearningPath from './LearningPath';
 import RankingBox from './RankingBox';
 import MissionBox from './MissionBox';
 import request from 'utils/http';
+import { Helmet } from 'react-helmet';
 
 const LearningPage = () => {
     const dataNullLesson = '00000000-0000-0000-0000-000000000000';
@@ -77,31 +78,36 @@ const LearningPage = () => {
         getData();
     }, []);
     return (
-        <div className={clsx(style.content)}>
-            <Row className={style.wrapper}>
-                <Col sm={24} lg={16} className={style.learningPathWrapper}>
-                    {chapters.map(
-                        (element) =>
-                            // <LearningPath key={element.id} data={element} />
-                            element.level !== 0 && (
-                                <LearningPath
-                                    key={element.id}
-                                    data={element}
-                                    currentLesson={currentLesson}
-                                    finishState={finishState}
-                                    nextState={nextState}
-                                />
-                            ),
-                    )}
-                </Col>
-                <Col lg={8} className={style.boxWrapper}>
-                    <div className={style.fixedBox}>
-                        <RankingBox />
-                        <MissionBox />
-                    </div>
-                </Col>
-            </Row>
-        </div>
+        <>
+            <Helmet>
+                <title>Học tập</title>
+            </Helmet>
+            <div className={clsx(style.content)}>
+                <Row className={style.wrapper}>
+                    <Col sm={24} lg={16} className={style.learningPathWrapper}>
+                        {chapters.map(
+                            (element) =>
+                                // <LearningPath key={element.id} data={element} />
+                                element.level !== 0 && (
+                                    <LearningPath
+                                        key={element.id}
+                                        data={element}
+                                        currentLesson={currentLesson}
+                                        finishState={finishState}
+                                        nextState={nextState}
+                                    />
+                                ),
+                        )}
+                    </Col>
+                    <Col lg={8} className={style.boxWrapper}>
+                        <div className={style.fixedBox}>
+                            <RankingBox />
+                            <MissionBox />
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+        </>
     );
 };
 
