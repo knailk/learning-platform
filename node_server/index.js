@@ -8,7 +8,7 @@ const app = express();
 const utils = require('./utils/save');
 
 const corsOptions = {
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000', 'https://giongedu.store'],
     credentials: true,
     optionSuccessStatus: 200,
 };
