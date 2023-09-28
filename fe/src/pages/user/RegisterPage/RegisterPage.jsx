@@ -46,6 +46,7 @@ const RegisterPage = () => {
             cookies.set('verified', response.data.user.verified);
             cookies.set('email', response.data.user.email);
             cookies.set('is_login', true);
+            localStorage.setItem('user_info', JSON.stringify(response.data.user));
 
             navigate('/confirm-register');
         } catch (error) {
