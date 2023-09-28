@@ -101,18 +101,37 @@ const Result = ({ setIsCorrect }) => {
                                 <div style={{ display: 'block' }} className={styles.inputName}>
                                     {input.name}
                                 </div>
-                                <input defaultValue={input.value} />
+                                <input
+                                    value={input.value}
+                                    onChange={() => {
+                                        return false;
+                                    }}
+                                />
                             </div>
                         );
                     })}
                 </Row>
                 <Row className={styles.outputResultWrapper}>
                     <div className={styles.outputTitle}>Output</div>
-                    <input className={styles.outputWrapper} defaultValue={dataResult.output} type="text" />
+                    <input
+                        className={styles.outputWrapper}
+                        value={dataResult.output}
+                        onChange={() => {
+                            return false;
+                        }}
+                        type="text"
+                    />
                 </Row>
                 <Row className={styles.expectedResultWrapper}>
                     <div className={styles.expectedTitle}>Expected</div>
-                    <input className={styles.expectedWrapper} defaultValue={dataResult.expected} type="text" />
+                    <input
+                        className={styles.expectedWrapper}
+                        value={dataResult.expected}
+                        onChange={() => {
+                            return false;
+                        }}
+                        type="text"
+                    />
                 </Row>
             </Col>
         );
@@ -130,18 +149,37 @@ const Result = ({ setIsCorrect }) => {
                                         <div style={{ display: 'block' }} className={styles.inputName}>
                                             {input.name}
                                         </div>
-                                        <div>{input.value}</div>
+                                        <input
+                                            value={input.value}
+                                            onChange={() => {
+                                                return false;
+                                            }}
+                                        />
                                     </div>
                                 );
                             })}
                         </Row>
                         <Row className={styles.outputResultWrapper}>
                             <div className={styles.outputTitle}>Output</div>
-                            <div className={styles.outputWrapper}>{dataResult.output}</div>
+                            <input
+                                className={styles.outputWrapper}
+                                value={dataResult.output}
+                                onChange={() => {
+                                    return false;
+                                }}
+                                type="text"
+                            />
                         </Row>
                         <Row className={styles.expectedResultWrapper}>
                             <div className={styles.expectedTitle}>Expected</div>
-                            <div className={styles.expectedWrapper}>{dataResult.expected}</div>
+                            <input
+                                className={styles.expectedWrapper}
+                                value={dataResult.expected}
+                                onChange={() => {
+                                    return false;
+                                }}
+                                type="text"
+                            />
                         </Row>
                     </Col>
                 )}
