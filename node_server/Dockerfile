@@ -9,8 +9,8 @@ COPY package.json ./
 # Install app dependencies
 RUN npm install --legacy-peer-deps
 
-# Install Python using the apk package manager
-RUN apk update && apk add python
+# Install Python (Python 3 in this example)
+RUN apk update && apk add python3
 
 # Copy the app source code to the container
 COPY . .
