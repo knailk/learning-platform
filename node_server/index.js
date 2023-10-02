@@ -167,7 +167,11 @@ app.get('/code-practice/get-saved-file', (req, res) => {
 
 const file_path_game = './game';
 app.post('/game/run', (req, res) => {
-    utils.saveFileCode(file_path_game, 'main.py', 'from hero import Hero\nhero = Hero()\n' + req.body.code);
+    utils.saveFileCode(
+        file_path_game,
+        'main.py',
+        "from hero import Hero\nhero = Hero()\nbandit = Hero()\ndef meet(hero, bandit):\n    print('I')\n    return True\n" + req.body.code
+    );
     let options = {
         mode: 'text',
         pythonOptions: ['-u'],
