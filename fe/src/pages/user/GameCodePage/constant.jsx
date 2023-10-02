@@ -4,32 +4,28 @@ export const MappingLocation = [
         top: '12.5%',
         level: 1,
         title: 'Màn 1',
-        description:
-            'Hãy né lũ yêu tinh để nhặt kim cương và đến cánh cổng bên kia một cách an toàn. Coi chừng gai nhọn',
+        description: 'Điều khiển Thánh Gióng với các câu lệnh đơn giản để nhặt rương báu.',
     },
     {
         left: '30%',
         top: '17.5%',
         level: 2,
         title: 'Màn 2',
-        description:
-            'Hãy né lũ yêu tinh để nhặt kim cương và đến cánh cổng bên kia một cách an toàn. Coi chừng gai nhọn',
+        description: 'Điều khiển Thánh Gióng với các câu lệnh đơn giản để nhặt rương báu.',
     },
     {
         left: '40%',
         top: '16.5%',
         level: 3,
         title: 'Màn 3',
-        description:
-            'Hãy né lũ yêu tinh để nhặt kim cương và đến cánh cổng bên kia một cách an toàn. Coi chừng gai nhọn',
+        description: 'Điều khiển Thánh Gióng với các câu lệnh đơn giản để nhặt rương báu.',
     },
     {
         left: '50%',
         top: '20%',
         level: 4,
         title: 'Màn 4',
-        description:
-            'Hãy né lũ yêu tinh để nhặt kim cương và đến cánh cổng bên kia một cách an toàn. Coi chừng gai nhọn',
+        description: 'Điều khiển Thánh Gióng với các câu lệnh đơn giản để nhặt rương báu.',
     },
     {
         left: '45.5%',
@@ -37,22 +33,55 @@ export const MappingLocation = [
         level: 5,
         title: 'Màn 5',
         description:
-            'Hãy né lũ yêu tinh để nhặt kim cương và đến cánh cổng bên kia một cách an toàn. Coi chừng gai nhọn',
+            'Điều khiển Thánh Gióng với các câu lệnh đơn giản để nhặt rương báu và đi qua các điểm mục tiêu nhé.',
     },
     {
         left: '32%',
         top: '34%',
         level: 6,
         title: 'Màn 6',
-        description:
-            'Hãy né lũ yêu tinh để nhặt kim cương và đến cánh cổng bên kia một cách an toàn. Coi chừng gai nhọn',
+        description: 'Làm quen với cách truyền biến để có thể điều khiển Thánh Gióng dễ dàng hơn.',
     },
     {
-        left: '20%',
-        top: '36%',
+        left: '19%',
+        top: '38%',
         level: 7,
         title: 'Màn 7',
-        description:
-            'Hãy né lũ yêu tinh để nhặt kim cương và đến cánh cổng bên kia một cách an toàn. Coi chừng gai nhọn',
+        description: 'Làm quen với cách truyền biến để có thể điều khiển Thánh Gióng dễ dàng hơn.',
+    },
+    {
+        left: '22%',
+        top: '50%',
+        level: 8,
+        title: 'Màn 8',
+        description: 'Làm quen với cách truyền biến để có thể điều khiển Thánh Gióng dễ dàng hơn.',
+    },
+    {
+        left: '23%',
+        top: '62%',
+        level: 9,
+        title: 'Màn 9',
+        description: 'Hãy né tranh giao tranh để đi qua các điểm mục tiêu và nhặt rương báu.',
+    },
+    {
+        left: '30%',
+        top: '68%',
+        level: 10,
+        title: 'Màn 10',
+        description: 'Làm quen với câu lệnh tấn công',
+    },
+    {
+        left: '40%',
+        top: '72%',
+        level: 11,
+        title: 'Màn 11',
+        description: 'Làm quen với cú pháp điều kiện If',
+    },
+    {
+        left: '55%',
+        top: '82%',
+        level: 12,
+        title: 'Màn 12',
+        description: 'Làm quen với cú pháp vòng lặp for range',
     },
 ];
