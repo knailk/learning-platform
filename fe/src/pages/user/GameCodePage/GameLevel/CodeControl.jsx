@@ -5,6 +5,7 @@ import PythonEditor from 'components/PythonEditor';
 import PossibleMove from './PossibleMove';
 import { request_node } from 'utils/http';
 
+const MAX_LIMIT = 1000000000;
 const possibleMove = [
     {
         name: 'hero.moveLeft(steps)',
@@ -43,7 +44,23 @@ const possibleMove = [
         param: 'meet',
     },
 ];
-
+const limitCode = [
+    { level: 1, limitLine: 1 },
+    { level: 2, limitLine: 1 },
+    { level: 3, limitLine: 1 },
+    { level: 4, limitLine: 1 },
+    { level: 5, limitLine: 3 },
+    { level: 6, limitLine: 4 },
+    { level: 7, limitLine: 5 },
+    { level: 8, limitLine: 5 },
+    { level: 9, limitLine: 5 },
+    { level: 10, limitLine: 3 },
+    { level: 11, limitLine: MAX_LIMIT },
+    { level: 12, limitLine: MAX_LIMIT },
+    { level: 13, limitLine: 4 },
+    { level: 14, limitLine: MAX_LIMIT },
+    { level: 15, limitLine: 2 },
+];
 function CodeControl({ sendMessage, level }) {
     const provider = useRef(null);
     const editorRef = useRef(null);
@@ -124,11 +141,14 @@ function CodeControl({ sendMessage, level }) {
     useEffect(() => {
         sendMessage('GameManager', 'LoadLevel', parseInt(level));
     });
-    useEffect(() => {
-        return () => {
-            provider.current?.dispose();
-        };
-    }, []);
+    const handleKeyDown = (e) => {
+        const lineCount = editorRef.current.getModel().getLineCount();
+        console.log(lineCount);
+        const limitLineCode = limitCode.find((value) => value.level === parseInt(level));
+        if (lineCount > limitLineCode.limitLine) {
+            e.preventDefault();
+        }
+    };
     return (
         <>
             <div className={styles.codeControlWrapper}>
@@ -136,12 +156,13 @@ function CodeControl({ sendMessage, level }) {
                     <div className={styles.pythonIcon}></div>
                     Điều khiển Thánh Gióng bằng các câu lệnh
                 </div>
-                <div className={styles.codeEditor}>
+                <div className={styles.codeEditor} onKeyDown={handleKeyDown}>
                     <PythonEditor
                         handleEditorDidMount={handleEditorDidMount}
                         langue_type="javascript"
                         width={'calc( 100% - 55px )'}
                         theme={'game.json'}
+                        defaultValue=""
                     />
                     <div className={styles.buttonWrapper}>
                         <div className={styles.playBtn} onClick={CreateStates}>
@@ -152,7 +173,7 @@ function CodeControl({ sendMessage, level }) {
                         </div>
                     </div>
                 </div>
-                <div className={styles.possibleMoveWrapper}>
+                <div className={styles.tutorialWrapper}>
                     <div className={styles.possibleMove}>
                         {possibleMove.map((item, idx) => {
                             return (

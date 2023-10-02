@@ -1,8 +1,8 @@
 {
     "inherit": false,
-    "base": "vs-light",
+    "base": "vs",
     "colors": {
-        "editor.background": "#FFFFFF",
+        "editor.background": "#FFF6DF",
         "editor.foreground": "#000000",
         "editor.inactiveSelectionBackground": "#E5EBF1",
         "editorIndentGuide.background": "#D3D3D3",

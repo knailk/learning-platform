@@ -1,0 +1,137 @@
+.main {
+    background: radial-gradient(#2193b0, #6dd5ed);
+    /* padding: 50px 0; */
+    min-height: 100vh;
+    .content {
+        padding: 100px 200px 0px 200px;
+    }
+    .quizzWrapper {
+        padding: 30px 0px 0px 0px;
+        background: #fff;
+        margin: 0 auto;
+        width: 900px;
+        .question {
+            display: block;
+            p {
+                padding-left: 30px;
+                font-size: 17px;
+                font-weight: 500;
+            }
+            pre {
+                margin-left: 30px;
+                width: fit-content;
+                background-color: black;
+                border-left: 3px solid #994e4e24;
+                color: #fff9 !important;
+                font-family: Menlo, sans-serif !important;
+                font-size: 12px;
+                line-height: 1.25rem;
+                overflow: visible;
+                white-space: pre-wrap;
+                padding: 5px 20px 5px 5px;
+            }
+        }
+        .answer {
+            pre {
+                margin-left: 30px;
+                width: fit-content;
+                height: fit-content;
+                background-color: black;
+                border-left: 3px solid #994e4e24;
+                color: #fff9 !important;
+                font-family: Menlo, sans-serif !important;
+                font-size: 12px;
+                line-height: 1.25rem;
+                overflow: visible;
+                white-space: pre-wrap;
+                padding: 5px 20px 5px 5px;
+            }
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            .itemOption {
+                cursor: pointer;
+                width: 400px;
+                margin-top: 20px;
+                padding: 5px 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                font-weight: 500;
+                color: #4b4b4b;
+                border: 2px solid #e5e5e5;
+                border-radius: 10px;
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
+                -ms-border-radius: 10px;
+                -o-border-radius: 10px;
+                box-shadow: 1px 2px 0px #e5e5e5;
+            }
+            .itemOptionActive {
+                background-color: #b5ebf8;
+                color: #249ed8;
+                border: 2px solid #84d8ff;
+                box-shadow: 1px 2px 0px #84d8ff;
+            }
+        }
+        .actionButtonWrappper {
+            margin-top: 40px;
+            height: 90px;
+            border-top: 2px solid #e5e5e5;
+            width: 100%;
+            overflow: hidden;
+            background-color: white;
+            * {
+                font-family: din-round, sans-serif;
+            }
+            .actionButton {
+                cursor: pointer;
+                height: 50px;
+                width: 185px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #4b4b4b;
+                font-size: 17px;
+                font-weight: 600;
+                border: 2px solid #e5e5e5;
+                // box-shadow: 1px 2px 0px #e5e5e5;
+                border-radius: 10px;
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
+                -ms-border-radius: 10px;
+                -o-border-radius: 10px;
+                background-color: white;
+            }
+            .checkButton {
+                background-color: #57c2dc;
+                color: white !important;
+                border: 2px solid #e5e5e5;
+            }
+            .disableButton {
+                cursor: default !important;
+                background-color: #e5e5e5;
+                color: #a1a1a1 !important;
+            }
+            .skipButton {
+                background-color: hwb(17 2% 0%);
+                color: white;
+            }
+        }
+        .thanksContainer {
+            background-image: url('../../../../public/images/thank-you.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            height: 300px;
+            width: 100%;
+            font-size: 17px;
+            font-weight: bold;
+            display: flex !important;
+            align-items: end;
+            justify-content: center;
+            color: #3a3a3a;
+        }
+    }
+}

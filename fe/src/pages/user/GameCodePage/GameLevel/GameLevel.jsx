@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { Row, Col, Modal, notification } from 'antd';
+import { Row, Col, Modal, notification, Popover } from 'antd';
 import styles from './style.module.scss';
 import CodeControl from './CodeControl';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import { Unity, useUnityContext } from 'react-unity-webgl';
 import ResultComponent from './ResultComponent/ResultComponent';
 import NotEnough from './ResultComponent/NotEnough';
 import request from 'utils/http';
+import Guide from './Guide';
 
 const GameLevel = () => {
     const gameLevel = useParams().level;
@@ -68,10 +69,12 @@ const GameLevel = () => {
                             </a> */}
                         </Col>
                         <Col span={8} style={{ display: 'flex', justifyContent: 'center' }}>
-                            <div className={styles.titleHeader}>ShadowGuard</div>
+                            <div className={styles.titleHeader}>Màn {gameLevel}</div>
                         </Col>
                         <Col span={8} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <div className={styles.levelNumber}>Màn 1</div>
+                            <Popover content={<Guide />} placement="left">
+                                <div className={styles.levelNumber}>Hướng dẫn</div>
+                            </Popover>
                         </Col>
                     </Row>
                     <Row className={styles.gameLayout}>
