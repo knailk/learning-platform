@@ -6,7 +6,6 @@ import ProfilePage from '../pages/user/ProfilePage';
 import MasterLayout from '../pages/theme/MasterLayout';
 import LecurePractice from 'pages/user/PracticePage/PracticeComponent/LecurePractice';
 import { SIDEBAR_TYPE } from './constant';
-import GamePage from 'pages/user/GamePage';
 import CodePractice from 'pages/user/CodePracticePage/CodePracticePage';
 import GameCodePage from 'pages/user/GameCodePage/GameCodePage';
 import GameLevel from 'pages/user/GameCodePage/GameLevel/GameLevel';
@@ -39,13 +38,6 @@ export const ROUTERS = {
             inMenu: true,
             img: '/images/ranking.png',
             type: SIDEBAR_TYPE.SIDEBAR,
-        },
-        {
-            title: 'GAME',
-            path: '/game',
-            component: <GamePage />,
-            layout: MasterLayout,
-            inMenu: true,
         },
         {
             title: 'HỒ SƠ',
